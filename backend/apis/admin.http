@@ -1,0 +1,22 @@
+### Admin API Routes
+
+# Update subscription plans
+POST http://localhost:3000/api/admin/subscription-plans
+Content-Type: application/json
+
+{
+  "plan": "premium",
+  "price": 49.99
+}
+
+# Report a user
+POST http://localhost:3000/api/admin/report-user
+Content-Type: application/json
+
+{
+  "userId": "12345",
+  "reason": "Inappropriate behavior"
+}
+
+# Get disabled users
+GET http://localhost:3000/api/admin/disabled-users

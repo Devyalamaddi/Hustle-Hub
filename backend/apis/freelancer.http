@@ -1,0 +1,60 @@
+### Freelancer API Routes
+
+### Create freelancer
+POST http://localhost:8080/freelancer-api/signup
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "password": "password123",
+  "skills": ["Node.js","NextJS"],
+  "experience": "5 years"
+
+}
+
+### Freelancer login
+POST http://localhost:8080/freelancer-api/login
+Content-Type: application/json
+
+{
+  "email": "jane@example.com",
+  "password": "password123"
+}
+
+### Get all freelancers
+GET http://localhost:8080/freelancer-api/freelancers
+
+### Get freelancer by ID
+GET http://localhost:8080/freelancer-api/freelancers/67b4d207523a219b2e99ebdb
+
+### Update freelancer profile
+PUT http://localhost:8080/freelancer-api/freelancers/67b4d207523a219b2e99ebdb
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRkMjA3NTIzYTIxOWIyZTk5ZWJkYiIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzM5OTUzMjUxLCJleHAiOjE3NDAwMzk2NTF9.5inSKQXdIS2zTjJX2oUb1o6WaG8JdjWcxLcyBiZ42is
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "skills":[
+    "MERN",
+    "NextJS",
+    "C++"
+  ]
+}
+
+### Delete freelancer profile
+DELETE http://localhost:8080/freelancer-api/freelancers/67b4d207523a219b2e99ebdb
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRkMjA3NTIzYTIxOWIyZTk5ZWJkYiIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzM5OTUzMjUxLCJleHAiOjE3NDAwMzk2NTF9.5inSKQXdIS2zTjJX2oUb1o6WaG8JdjWcxLcyBiZ42is
+
+
+### Create gig
+POST http://localhost:8080/freelancer-api/gigs/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRkMjA3NTIzYTIxOWIyZTk5ZWJkYiIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzM5OTUzMjUxLCJleHAiOjE3NDAwMzk2NTF9.5inSKQXdIS2zTjJX2oUb1o6WaG8JdjWcxLcyBiZ42is
+Content-Type: application/json
+
+{
+  "title": "Website Development",
+  "jobID":"67b497d81d7ac6ffc7137c97",
+  "description": "I can build your website",
+  "price": 500
+}
