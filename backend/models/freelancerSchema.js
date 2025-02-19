@@ -25,10 +25,7 @@ const freelancerSchema = new mongoose.Schema(
       minlength: [8, 'Password must be at least 8 characters long']
     },
 
-    role: { 
-      type: String, 
-      enum: ['freelancer', 'client', 'admin'] 
-    },
+    
 
     certifications: [
       {
@@ -41,17 +38,22 @@ const freelancerSchema = new mongoose.Schema(
       default: false 
     },
 
+    
+    subscriptionId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'SubscriptionPlan',
+      default: null
+    },
+
+    subscriptionDurationInDays:{
+      type:Number,
+      default:0,
+    },
+    
     balance: { 
       type: Number, 
       default: 0 
     },
-
-    subscriptionId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Subscription',
-      default: null
-    },
-
     skills:[{
       type:String,
       required:true,

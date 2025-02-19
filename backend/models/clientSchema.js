@@ -65,7 +65,10 @@ const clientSchema = new mongoose.Schema(
       ref: 'Subscription',
       default: null
     },
-
+    subscriptionDurationInDays:{
+      type:Number,
+      default:0,
+    },
     
   },
   { timestamps: true }

@@ -3,7 +3,7 @@ const clientApp = express.Router();
 // const Client = require('../models/Schema');
 const Job = require('../models/jobSchema');
 const Gig = require('../models/gigSchema');
-const { createClient,clientLogin, getAllClients, getAllClientsByID, updateProfileClient, deleteProfileClient, getAllJobs, getJobById, updateJob, deleteJob, finaliseFreelancer } = require('../controllers/clientController');
+const { createClient,clientLogin, getAllClients, getAllClientsByID, updateProfileClient, deleteProfileClient, getAllJobs, getJobById, updateJob, deleteJob, finaliseFreelancer, getGigsByJob, getSubscriptionPlansForClients, buySubscription } = require('../controllers/clientController');
 const { createJob } = require('../controllers/jobController');
 const { clientOnly, protect } = require('../utils/authUtils');
 
@@ -23,6 +23,11 @@ clientApp.put('/jobs/:id', protect, clientOnly, updateJob);
 clientApp.delete('/jobs/:id', protect, clientOnly,deleteJob);
 
 // Get all gigs for a job and update with finalized freelancer
-clientApp.get('/jobs/:jobID/gigs', finaliseFreelancer);
+clientApp.get('/jobs/:jobID/gigs', getGigsByJob);
+clientApp.post('/jobs/:jobID/confirm-gig/:freelancerID', finaliseFreelancer);
+
+//subscriptions
+clientApp.get('/subscriptions', getSubscriptionPlansForClients);
+clientApp.post('/buy-subscription/:subscriptionPlanID', protect, buySubscription);
 
 module.exports = clientApp;

@@ -70,3 +70,14 @@ DELETE http://localhost:8080/client-api/jobs/67b497d81d7ac6ffc7137c97
 
 ### Get gigs for job and finalize freelancer
 GET http://localhost:8080/client-api/jobs/67b497d81d7ac6ffc7137c97/gigs
+
+### Post confirm freelancer
+POST http://localhost:8080/client-api/jobs/67b497d81d7ac6ffc7137c97/confirm-gig/67b498b1e751a11042ccceb3
+
+
+### get all client subscriptions
+GET http://localhost:8080/client-api/subscriptions
+
+### buying subscription
+POST http://localhost:8080/client-api/buy-subscription/67b5d9196ea3454876456d43
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRiZmFkN2ZjN2FhOWM4ODk5ZDY0MiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3Mzk5ODUwNzUsImV4cCI6MTc0MDA3MTQ3NX0.Pib-VDA86A0ENVr3hMewx6a2wMrzf6YQLKF1-tEoDDI
