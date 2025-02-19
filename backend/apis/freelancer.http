@@ -53,8 +53,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRkMjA3N
 Content-Type: application/json
 
 {
-  "title": "Website Development",
+  "title": "Website optimization",
   "jobID":"67b497d81d7ac6ffc7137c97",
-  "description": "I can build your website",
-  "price": 500
+  "description": "I can optimise the website",
+  "price": 700
 }
+
+### get all freelancer subscriptions
+GET http://localhost:8080/freelancer-api/subscriptions
+### buying subscription
+POST http://localhost:8080/freelancer-api/buy-subscription/67b5d63d6ea3454876456d3b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRkMjA3NTIzYTIxOWIyZTk5ZWJkYiIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzM5OTUzMjUxLCJleHAiOjE3NDAwMzk2NTF9.5inSKQXdIS2zTjJX2oUb1o6WaG8JdjWcxLcyBiZ42is

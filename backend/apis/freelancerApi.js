@@ -1,7 +1,7 @@
 const express = require('express');
 const freelancerApp = express.Router();
 // const Gig = require('../models/gigSchema');
-const { createFreelancer, getAllFreelancers, getFreelancerByID, updateProfileFreelancer, deleteProfileFreelancer, freelancerLogin, createGig,  } = require('../controllers/freelancerController');
+const { createFreelancer, getAllFreelancers, getFreelancerByID, updateProfileFreelancer, deleteProfileFreelancer, freelancerLogin, createGig,buySubscription, getSubscriptionPlans  } = require('../controllers/freelancerController');
 const { protect, freelancerOnly } = require('../utils/authUtils');
 
 freelancerApp.post('/signup', createFreelancer);
@@ -15,7 +15,8 @@ freelancerApp.delete('/freelancers/:id', protect,freelancerOnly,deleteProfileFre
 freelancerApp.post('/gigs', protect,freelancerOnly, createGig);
 
 // todo: subscription
-// freelancerApp.post('/buy-subscription',protect,buySubscription);
+freelancerApp.get('/subscriptions', getSubscriptionPlans);
+freelancerApp.post('/buy-subscription/:subscriptionPlanID',protect,buySubscription);
 
 
 module.exports = freelancerApp;

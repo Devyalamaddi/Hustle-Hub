@@ -2,6 +2,7 @@ const Freelancer = require('../models/freelancerSchema');
 const Gig = require('../models/gigSchema');
 const bcrypt=require('bcrypt');
 const { validateFreelancer, generateToken } = require('../utils/authUtils');
+const SubscriptionPlan = require('../models/subscriptionPlanSchema');
 
 
 const createFreelancer = async (req, res) => {
@@ -130,12 +131,39 @@ const createGig = async (req, res) => {
     }
 };
 
+const getSubscriptionPlans = async(req,res)=>{
+    try {
+        const subscriptionPlans = await SubscriptionPlan.find({for:"freelancer"});
+        return res.json(subscriptionPlans);
+    } catch (error) {
+        console.log("Error in getting the Subcriptions", error.message);
+        return res.status(500).json({ error: error.message });
+    }
+}
+
 const buySubscription = async(req,res)=>{
     try{
-        const {subscriptionID } = req.body;
-        const userID = req.user.id;
-        
+        const {subscriptionPlanID } = req.params;
+        const freelancerID = req.user.id;
+        // console.log(subscriptionPlanID);
+        const subscriptionPlan = await SubscriptionPlan.findById({_id:subscriptionPlanID});
+        if(!subscriptionPlan){
+            return res.status(404).json({message:'subscription not found'});
+        }
 
+        const freelancer = await Freelancer.findByIdAndUpdate(
+            freelancerID, 
+            { 
+                $set: { 
+                    subscriptionId: subscriptionPlanID, 
+                    subscriptionDurationInDays: subscriptionPlan.duration, 
+                    subscriptionStatus: true 
+                } 
+            },
+            { new: true } // This ensures the updated document is returned
+        );
+
+        return res.status(201).json(freelancer);
     }catch(err){
         console.log("Error in buying subscription",err.message);
         return res.status(500).json({message:"Error in buying subscription"});
@@ -145,10 +173,14 @@ const buySubscription = async(req,res)=>{
 
 module.exports = {
     createFreelancer,
+    freelancerLogin,
     getAllFreelancers,
     getFreelancerByID,
     updateProfileFreelancer,
     deleteProfileFreelancer,
+
     createGig,
-    freelancerLogin,
+
+    buySubscription,
+    getSubscriptionPlans,
 };
