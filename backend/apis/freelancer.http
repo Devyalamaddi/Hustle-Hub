@@ -64,3 +64,7 @@ GET http://localhost:8080/freelancer-api/subscriptions
 ### buying subscription
 POST http://localhost:8080/freelancer-api/buy-subscription/67b5d63d6ea3454876456d3b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRkMjA3NTIzYTIxOWIyZTk5ZWJkYiIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzM5OTUzMjUxLCJleHAiOjE3NDAwMzk2NTF9.5inSKQXdIS2zTjJX2oUb1o6WaG8JdjWcxLcyBiZ42is
+
+###report a freelancer
+POST http://localhost:8080/freelancer-api/report-client/67b4bfad7fc7aa9c8899d642
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRkMjA3NTIzYTIxOWIyZTk5ZWJkYiIsImlhdCI6MTc0MDA2MTU3NiwiZXhwIjoxNzQwMTQ3OTc2fQ.7Y8eX6sutOiWzexrmz3awJg789dH_aCUOxpJexJRbEM

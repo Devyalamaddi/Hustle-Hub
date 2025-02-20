@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const adminController = require('../controllers/adminController');
+const {getDisabledUsers} = require('../controllers/adminController');
 const { protect, adminOnly } = require('../utils/authUtils');
 
-// Update subscription plans
-router.post('/subscription-plans',protect,adminOnly, adminController.updateSubscriptionPlans);
+// // Update subscription plans
+// router.post('/subscription-plans',protect,adminOnly, adminController.updateSubscriptionPlans);
 
-// Report a user
-router.post('/report-user',protect,adminOnly , adminController.reportUser);
+// // Report a user
+// router.post('/report-user',protect,adminOnly , adminController.reportUser);
 
 // Get disabled users
-router.get('/disabled-users',protect,adminOnly , adminController.getDisabledUsers);
+router.get('/disabled-users',getDisabledUsers);
 
 module.exports = router;

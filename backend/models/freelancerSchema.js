@@ -63,6 +63,11 @@ const freelancerSchema = new mongoose.Schema(
       type:String,
       required:true,
     },
+    reportedCount:{
+      type:Number,
+      default:0,
+
+    },
     
   },
   { timestamps: true }

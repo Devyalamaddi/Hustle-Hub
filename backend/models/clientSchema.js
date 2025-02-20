@@ -69,7 +69,12 @@ const clientSchema = new mongoose.Schema(
       type:Number,
       default:0,
     },
-    
+
+    reportedCount:{
+      type:Number,
+      default:0,
+
+    },
   },
   { timestamps: true }
 );
