@@ -3,6 +3,7 @@ const Gig = require('../models/gigSchema');
 const bcrypt=require('bcrypt');
 const { validateFreelancer, generateToken } = require('../utils/authUtils');
 const SubscriptionPlan = require('../models/subscriptionPlanSchema');
+const Client = require('../models/clientSchema');
 
 
 const createFreelancer = async (req, res) => {
@@ -170,6 +171,25 @@ const buySubscription = async(req,res)=>{
     }
 }
 
+const reportClient = async(req,res)=>{
+    try{
+        const {clientID} = req.params;
+        const client = await Client.findByIdAndUpdate(
+            clientID,
+            {
+                $inc:{reportedCount:1}
+            },
+            {new:true}
+        );
+        
+        // console.log("clientID",clientID);
+        return res.status(201).json(client);
+    }catch(err){
+        console.log("Error while reporting a client",err.message);
+        return res.status(500).json({message:"Error while reporting a client"});
+    }
+}
+
 
 module.exports = {
     createFreelancer,
@@ -183,4 +203,6 @@ module.exports = {
 
     buySubscription,
     getSubscriptionPlans,
+
+    reportClient,
 };

@@ -3,67 +3,74 @@ const Client = require('../models/clientSchema');
 const Freelancer = require('../models/freelancerSchema');
 
 // Update subscription plans
-exports.updateSubscriptionPlans = async (req, res) => {
-  try {
-    const { plans } = req.body;
-    const admin = await Admin.findOne();
-    admin.subscriptionPlans = plans;
-    await admin.save();
-    res.status(200).json({ message: 'Subscription plans updated successfully' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+// exports.updateSubscriptionPlans = async (req, res) => {
+//   try {
+//     const { plans } = req.body;
+//     const admin = await Admin.findOne();
+//     admin.subscriptionPlans = plans;
+//     await admin.save();
+//     res.status(200).json({ message: 'Subscription plans updated successfully' });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
-// Report a user
-exports.reportUser = async (req, res) => {
-  try {
-    const { reportedUserId, reporterId, reason, userType } = req.body;
-    const admin = await Admin.findOne();
+// // Report a user
+// exports.reportUser = async (req, res) => {
+//   try {
+//     const { reportedUserId, reporterId, reason, userType } = req.body;
+//     const admin = await Admin.findOne();
     
-    admin.fraudReports.push({
-      reportedUser: reportedUserId,
-      reportedUserModel: userType === 'client' ? 'Client' : 'Freelancer',
-      reporter: reporterId,
-      reporterModel: userType === 'client' ? 'Freelancer' : 'Client',
-      reason
-    });
+//     admin.fraudReports.push({
+//       reportedUser: reportedUserId,
+//       reportedUserModel: userType === 'client' ? 'Client' : 'Freelancer',
+//       reporter: reporterId,
+//       reporterModel: userType === 'client' ? 'Freelancer' : 'Client',
+//       reason
+//     });
 
-    await admin.save();
+//     await admin.save();
 
-    // Check if user should be disabled
-    const reportsCount = admin.fraudReports.filter(
-      report => report.reportedUser.toString() === reportedUserId
-    ).length;
+//     // Check if user should be disabled
+//     const reportsCount = admin.fraudReports.filter(
+//       report => report.reportedUser.toString() === reportedUserId
+//     ).length;
 
-    if (reportsCount >= 10) {
-      admin.disabledUsers.push({
-        user: reportedUserId,
-        userModel: userType === 'client' ? 'Client' : 'Freelancer'
-      });
+//     if (reportsCount >= 10) {
+//       admin.disabledUsers.push({
+//         user: reportedUserId,
+//         userModel: userType === 'client' ? 'Client' : 'Freelancer'
+//       });
 
-      await admin.save();
+//       await admin.save();
 
-      // Update user status
-      if (userType === 'client') {
-        await Client.findByIdAndUpdate(reportedUserId, { status: false });
-      } else {
-        await Freelancer.findByIdAndUpdate(reportedUserId, { status: false });
-      }
-    }
+//       // Update user status
+//       if (userType === 'client') {
+//         await Client.findByIdAndUpdate(reportedUserId, { status: false });
+//       } else {
+//         await Freelancer.findByIdAndUpdate(reportedUserId, { status: false });
+//       }
+//     }
 
-    res.status(200).json({ message: 'User reported successfully' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+//     res.status(200).json({ message: 'User reported successfully' });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
 // Get disabled users
-exports.getDisabledUsers = async (req, res) => {
+const getDisabledUsers = async (req, res) => {
   try {
-    const admin = await Admin.findOne().populate('disabledUsers.user');
-    res.status(200).json(admin.disabledUsers);
+    // const admin = await Admin.findOne().populate('disabledUsers.user');
+    const disabledClients = await Client.find({ reportedCount: { $gt: 20 } });
+    const disabledFreelancer = await Freelancer.find({ reportedCount: { $gt: 0 } });
+
+   return res.status(200).json({"disabledFreelancer":disabledFreelancer, "disabledClients":disabledClients});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+module.exports={
+  getDisabledUsers,
+}

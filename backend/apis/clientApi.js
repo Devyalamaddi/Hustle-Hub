@@ -3,7 +3,7 @@ const clientApp = express.Router();
 // const Client = require('../models/Schema');
 const Job = require('../models/jobSchema');
 const Gig = require('../models/gigSchema');
-const { createClient,clientLogin, getAllClients, getAllClientsByID, updateProfileClient, deleteProfileClient, getAllJobs, getJobById, updateJob, deleteJob, finaliseFreelancer, getGigsByJob, getSubscriptionPlansForClients, buySubscription } = require('../controllers/clientController');
+const { createClient,clientLogin, getAllClients, getAllClientsByID, updateProfileClient, deleteProfileClient, getAllJobs, getJobById, updateJob, deleteJob, finaliseFreelancer, getGigsByJob, getSubscriptionPlansForClients, buySubscription, reportFreelancer } = require('../controllers/clientController');
 const { createJob } = require('../controllers/jobController');
 const { clientOnly, protect } = require('../utils/authUtils');
 
@@ -29,5 +29,8 @@ clientApp.post('/jobs/:jobID/confirm-gig/:freelancerID', finaliseFreelancer);
 //subscriptions
 clientApp.get('/subscriptions', getSubscriptionPlansForClients);
 clientApp.post('/buy-subscription/:subscriptionPlanID', protect, buySubscription);
+
+//reporting a freelancer
+clientApp.post('/report-freelancer/:freelancerID', protect, clientOnly, reportFreelancer )
 
 module.exports = clientApp;

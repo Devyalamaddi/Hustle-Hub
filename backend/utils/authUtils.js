@@ -95,7 +95,7 @@ const clientOnly = (req, res, next) => {
 };
 
 const freelancerOnly = (req, res, next) => {
-  // console.log("req in freelancer",req);
+  console.log("req in freelancer",req);
   if (req.user.role !== 'freelancer') {
     return res.status(403).json({ message: 'Access restricted to freelancers only' });
   }
