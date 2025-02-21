@@ -107,46 +107,61 @@ const deleteProfileClient = async (req, res) => {
     }
 };
 
+
 const createJob = async (req, res) => {
     try {
-      const { title, description, budget, milestones } = req.body;
-      const clientId = req.user._id; // Assuming authenticated client
-  
-      // Create the job
-      const job = await Job.create({
-        title,
-        description,
-        budget,
-        client: clientId
-      });
-  
-      // Create milestones if provided
-      if (milestones && milestones.length > 0) {
-        const milestonePromises = milestones.map(milestone => {
-          return Milestone.create({
-            jobId: job._id,
-            title: milestone.title,
-            description: milestone.description,
-            amount: milestone.amount,
-            dueDate: milestone.dueDate,
-            createdBy: clientId
-          });
+        const { title, description, budget, type, status, teamRequired, milestones } = req.body;
+        const clientId = req.user.id; 
+        // console.log("clientId:",req.user);
+        // Step 1: Create the job without milestones
+        const job = await Job.create({
+            title,
+            description,
+            clientId,
+            budget,
+            type,
+            status,
+            teamRequired
         });
-  
-        await Promise.all(milestonePromises);
-      }
-  
-      res.status(201).json({
-        success: true,
-        data: job
-      });
+
+        // Step 2: Create milestones and store their IDs
+        let milestoneIds = [];
+        if (milestones && milestones.length > 0) {
+            const milestonePromises = milestones.map(milestone => {
+                return Milestone.create({
+                    jobId: job._id,
+                    title: milestone.title,
+                    description: milestone.description,
+                    amount: milestone.amount,
+                    dueDate: milestone.dueDate,
+                    createdBy: clientId
+                });
+            });
+
+            const createdMilestones = await Promise.all(milestonePromises);
+            milestoneIds = createdMilestones.map(milestone => milestone._id);
+        }
+
+        // Step 3: Update the job with milestone IDs
+        job.milestones = milestoneIds;
+        await job.save();
+
+        // Step 4: Populate the job with milestones before sending response
+        const populatedJob = await Job.findById(job._id).populate("milestones");
+
+        res.status(201).json({
+            success: true,
+            data: populatedJob
+        });
     } catch (error) {
-      res.status(400).json({
-        success: false,
-        error: error.message
-      });
+        res.status(400).json({
+            success: false,
+            error: error.message
+        });
     }
-  };
+};
+
+
 
 const getAllJobs = async (req, res) => {
     try {
@@ -200,17 +215,10 @@ const deleteJob = async (req, res) => {
 const getGigsByJob = async (req, res) => {
     try {
         const { jobID } = req.params;
-        const { freelancerID } = req.query;
+        // const { freelancerID } = req.query;
 
         // Get all gigs for the job
         const gigs = await Gig.find({ jobID });
-
-        // // If freelancerID is provided, update the job
-        // if (freelancerID) {
-        //     await Job.findByIdAndUpdate(jobID, {
-        //         $push: { freelancers: freelancerID }
-        //     });
-        // }
 
         res.status(200).json(gigs);
     } catch (error) {
@@ -221,12 +229,14 @@ const getGigsByJob = async (req, res) => {
 const finaliseFreelancer = async (req, res) => {
     try {
         const { jobID, freelancerID } = req.params;
-        // console.log("finaliseFreelancer funtion --->>> jobID:"+jobID+"freelancerID"+freelancerID);
 
         // Get all gigs for the job
-        const gigs = await Gig.find({
-            $and: [{ jobID }, { userID:freelancerID }]
-          });
+        const gig = await Gig.findOneAndUpdate(
+            { $and: [{ jobID }, { userID: freelancerID }] }, 
+            { $set: { status: "accepted" } },
+            { new: true } 
+        );
+        
           
         // If freelancerID is provided, update the job
         if (freelancerID) {
@@ -235,7 +245,7 @@ const finaliseFreelancer = async (req, res) => {
             });
         }
 
-        res.status(200).json(gigs);
+        res.status(200).json(gig);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

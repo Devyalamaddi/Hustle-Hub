@@ -16,13 +16,13 @@ const generateToken = async(userId) => {
     throw new Error('User not found');
 
   }
-
-  return jwt.sign({ 
+  const token = await jwt.sign({ 
     id: userId, 
     role: user.role  
   }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN
-  });
+  })
+  return token;
 };
 
 // Validate client credentials
@@ -91,11 +91,12 @@ const clientOnly = (req, res, next) => {
   if (req.user.role !== 'client') {
     return res.status(403).json({ message: 'Access restricted to clients only' });
   }
+  // console.log("end of cleintOnly");
   next();
 };
 
 const freelancerOnly = (req, res, next) => {
-  console.log("req in freelancer",req);
+  // console.log("req in freelancer",req);
   if (req.user.role !== 'freelancer') {
     return res.status(403).json({ message: 'Access restricted to freelancers only' });
   }

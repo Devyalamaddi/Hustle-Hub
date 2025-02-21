@@ -68,6 +68,9 @@ const freelancerSchema = new mongoose.Schema(
       default:0,
 
     },
+    role:{
+      type:String,
+    }
     
   },
   { timestamps: true }

@@ -3,8 +3,8 @@ const clientApp = express.Router();
 // const Client = require('../models/Schema');
 const Job = require('../models/jobSchema');
 const Gig = require('../models/gigSchema');
-const { createClient,clientLogin, getAllClients, getAllClientsByID, updateProfileClient, deleteProfileClient, getAllJobs, getJobById, updateJob, deleteJob, finaliseFreelancer, getGigsByJob, getSubscriptionPlansForClients, buySubscription, reportFreelancer } = require('../controllers/clientController');
-const { createJob } = require('../controllers/jobController');
+const { createClient,clientLogin, getAllClients, getAllClientsByID, updateProfileClient,createJob, deleteProfileClient, getAllJobs, getJobById, updateJob, deleteJob, finaliseFreelancer, getGigsByJob, getSubscriptionPlansForClients, buySubscription, reportFreelancer } = require('../controllers/clientController');
+// const { createJob } = require('../controllers/jobController');
 const { clientOnly, protect } = require('../utils/authUtils');
 
 // Client routes

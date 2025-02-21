@@ -5,60 +5,93 @@ POST http://localhost:8080/client-api/signin
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "password",
-  "companyName": "company-1",
-  "industry": "industry-1",
-  "contactInfo": "contact@company.in"
+  "name": "Devendra-Client",
+  "email": "dev@client.com",
+  "password": "dev-client",
+  "companyName": "company-dev",
+  "industry": "industry-dev",
+  "contactInfo": "contact@company.dev.in"
 }
+### 67b75904b5da604dfe41b060
 
 ### Client login
 POST http://localhost:8080/client-api/login
 Content-Type: application/json
 
 {
-  "email": "john@example.com",
-  "password": "password"
+  "email": "dev@client.com",
+  "password": "dev-client"
 }
+### eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc1OTA0YjVkYTYwNGRmZTQxYjA2MCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NDAwNjkxNzgsImV4cCI6MTc0MDE1NTU3OH0.yZZej-xF30Waag-RtOqDVtU8C1npeHaSBK5yVYFTC0k
 
 ### Get all clients
 GET http://localhost:8080/client-api/clients
 
 ### Get client by ID
-GET http://localhost:8080/client-api/clients/67b48a4ab16ace989214d17e
+GET http://localhost:8080/client-api/clients/67b75852b5da604dfe41b056
 
 ### Update client profile
-PUT http://localhost:8080/client-api/clients/67b48a4ab16ace989214d17e
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRiZmFkN2ZjN2FhOWM4ODk5ZDY0MiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3Mzk5MDMwMjIsImV4cCI6MTczOTk4OTQyMn0.-mKzz24_9AubFQwT5r0TEUsgBza6gBzYDzEmw-cil7A
+PUT http://localhost:8080/client-api/clients/67b75904b5da604dfe41b060
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc1OTA0YjVkYTYwNGRmZTQxYjA2MCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NDAwNjkxNzgsImV4cCI6MTc0MDE1NTU3OH0.yZZej-xF30Waag-RtOqDVtU8C1npeHaSBK5yVYFTC0k
 Content-Type: application/json
 
 {
-  "name": "John Smith"
+  "name": "Dev-Client",
+  "certifications":["certificate-1","certificate-2"]
 }
 
 ### Delete client profile
-DELETE http://localhost:8080/client-api/clients/67b48a4ab16ace989214d17e
+DELETE http://localhost:8080/client-api/clients/67b75852b5da604dfe41b056
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc1ODUyYjVkYTYwNGRmZTQxYjA1NiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NDAwNjkwMDQsImV4cCI6MTc0MDE1NTQwNH0.GawlyxS4ty94nHPwZnhyo4tnhod0tZb2kqY2Q75kq0k
+
 
 ### Create job
 POST http://localhost:8080/client-api/post-job
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRiZmFkN2ZjN2FhOWM4ODk5ZDY0MiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3Mzk5MDMwMjIsImV4cCI6MTczOTk4OTQyMn0.-mKzz24_9AubFQwT5r0TEUsgBza6gBzYDzEmw-cil7A
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc1OTA0YjVkYTYwNGRmZTQxYjA2MCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NDAwNjkxNzgsImV4cCI6MTc0MDE1NTU3OH0.yZZej-xF30Waag-RtOqDVtU8C1npeHaSBK5yVYFTC0k
 Content-Type: application/json
 
 {
-  "title": "Web Development",
-  "description": "Need a website built"
+  "title": "Website Development",
+  "description": "Develop a responsive e-commerce website.",
+  "clientId": "67b75852b5da604dfe41b056",
+  "budget": 5000,
+  "type": "online",
+  "status": "in-progress",
+  "teamRequired": true,
+  "milestones": [
+    {
+      "title": "Design Phase",
+      "description": "Create UI/UX design",
+      "amount": 1500,
+      "dueDate": "2024-03-01"
+    },
+    {
+      "title": "Development Phase",
+      "description": "Code the website",
+      "amount": 2500,
+      "dueDate": "2024-04-01"
+    },
+    {
+      "title": "Deployment",
+      "description": "Launch the website",
+      "amount": 1000,
+      "dueDate": "2024-05-01"
+    }
+  ]
 }
+
+
+
 
 ### Get all jobs
 GET http://localhost:8080/client-api/jobs
 
 ### Get job by ID
-GET http://localhost:8080/client-api/jobs/67b497d81d7ac6ffc7137c97
+GET http://localhost:8080/client-api/jobs/67b75ea7ce2c05b5a4094176
 
 ### Update job
-PUT http://localhost:8080/client-api/jobs/67b497d81d7ac6ffc7137c97
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRiZmFkN2ZjN2FhOWM4ODk5ZDY0MiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3Mzk5MDMwMjIsImV4cCI6MTczOTk4OTQyMn0.-mKzz24_9AubFQwT5r0TEUsgBza6gBzYDzEmw-cil7A
+PUT http://localhost:8080/client-api/jobs/67b75ea7ce2c05b5a4094176
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc1OTA0YjVkYTYwNGRmZTQxYjA2MCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NDAwNjkxNzgsImV4cCI6MTc0MDE1NTU3OH0.yZZej-xF30Waag-RtOqDVtU8C1npeHaSBK5yVYFTC0k
 Content-Type: application/json
 
 {
@@ -66,13 +99,13 @@ Content-Type: application/json
 }
 
 ### Delete job
-DELETE http://localhost:8080/client-api/jobs/67b497d81d7ac6ffc7137c97
+DELETE http://localhost:8080/client-api/jobs/67b75ea7ce2c05b5a4094176
 
 ### Get gigs for job and finalize freelancer
-GET http://localhost:8080/client-api/jobs/67b497d81d7ac6ffc7137c97/gigs
+GET http://localhost:8080/client-api/jobs/67b75ea7ce2c05b5a4094176/gigs
 
 ### Post confirm freelancer
-POST http://localhost:8080/client-api/jobs/67b497d81d7ac6ffc7137c97/confirm-gig/67b498b1e751a11042ccceb3
+POST http://localhost:8080/client-api/jobs/67b75ea7ce2c05b5a4094176/confirm-gig/67b76222261b0e2d253fa130
 
 
 ### get all client subscriptions
@@ -80,8 +113,8 @@ GET http://localhost:8080/client-api/subscriptions
 
 ### buying subscription
 POST http://localhost:8080/client-api/buy-subscription/67b5d9196ea3454876456d43
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRiZmFkN2ZjN2FhOWM4ODk5ZDY0MiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3Mzk5ODUwNzUsImV4cCI6MTc0MDA3MTQ3NX0.Pib-VDA86A0ENVr3hMewx6a2wMrzf6YQLKF1-tEoDDI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc1OTA0YjVkYTYwNGRmZTQxYjA2MCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NDAwNjkxNzgsImV4cCI6MTc0MDE1NTU3OH0.yZZej-xF30Waag-RtOqDVtU8C1npeHaSBK5yVYFTC0k
 
 ###report a freelancer
 POST http://localhost:8080/client-api/report-freelancer/67b4d207523a219b2e99ebdb
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRiZmFkN2ZjN2FhOWM4ODk5ZDY0MiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NDAwNTg2NTcsImV4cCI6MTc0MDE0NTA1N30.4nqla12ns1k_QNxf_010Gb9kgqdHgCy8GPuFUUwCQrg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc1OTA0YjVkYTYwNGRmZTQxYjA2MCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NDAwNjkxNzgsImV4cCI6MTc0MDE1NTU3OH0.yZZej-xF30Waag-RtOqDVtU8C1npeHaSBK5yVYFTC0k

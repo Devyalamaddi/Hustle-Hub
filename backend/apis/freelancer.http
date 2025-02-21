@@ -5,66 +5,108 @@ POST http://localhost:8080/freelancer-api/signup
 Content-Type: application/json
 
 {
-  "name": "Jane Doe",
-  "email": "jane@example.com",
-  "password": "password123",
-  "skills": ["Node.js","NextJS"],
-  "experience": "5 years"
+  "name": "Hasnika",
+  "email": "sri@gmail.com",
+  "password": "hasnika",
+  "skills": ["NextJS","Typescript","TailwindCSS"],
+  "experience": "4 years"
 
 }
+### 67b76222261b0e2d253fa130
 
 ### Freelancer login
 POST http://localhost:8080/freelancer-api/login
 Content-Type: application/json
 
 {
-  "email": "jane@example.com",
-  "password": "password123"
+  "email": "dev@gmail.com",
+  "password": "devendra"
 }
+### eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMDcxNDcyLCJleHAiOjE3NDAxNTc4NzJ9.Cjd_hbia7MtoARepCaZcBXO0MhjBLmv4Q5gOHapvxHA
+
 
 ### Get all freelancers
 GET http://localhost:8080/freelancer-api/freelancers
 
 ### Get freelancer by ID
-GET http://localhost:8080/freelancer-api/freelancers/67b4d207523a219b2e99ebdb
+GET http://localhost:8080/freelancer-api/freelancers/67b76222261b0e2d253fa130
 
 ### Update freelancer profile
-PUT http://localhost:8080/freelancer-api/freelancers/67b4d207523a219b2e99ebdb
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRkMjA3NTIzYTIxOWIyZTk5ZWJkYiIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzM5OTUzMjUxLCJleHAiOjE3NDAwMzk2NTF9.5inSKQXdIS2zTjJX2oUb1o6WaG8JdjWcxLcyBiZ42is
+PUT http://localhost:8080/freelancer-api/freelancers/67b76222261b0e2d253fa130
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMDcxNDcyLCJleHAiOjE3NDAxNTc4NzJ9.Cjd_hbia7MtoARepCaZcBXO0MhjBLmv4Q5gOHapvxHA
 Content-Type: application/json
 
 {
-  "name": "Jane Doe",
+  "name": "Devendra Yalamaddi",
   "skills":[
     "MERN",
     "NextJS",
     "C++"
-  ]
+  ],
+  "certifications":["certificate-1","certificate-2"]
 }
 
 ### Delete freelancer profile
-DELETE http://localhost:8080/freelancer-api/freelancers/67b4d207523a219b2e99ebdb
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRkMjA3NTIzYTIxOWIyZTk5ZWJkYiIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzM5OTUzMjUxLCJleHAiOjE3NDAwMzk2NTF9.5inSKQXdIS2zTjJX2oUb1o6WaG8JdjWcxLcyBiZ42is
-
+DELETE http://localhost:8080/freelancer-api/freelancers/67b76222261b0e2d253fa130
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMDcxNDcyLCJleHAiOjE3NDAxNTc4NzJ9.Cjd_hbia7MtoARepCaZcBXO0MhjBLmv4Q5gOHapvxHA
 
 ### Create gig
-POST http://localhost:8080/freelancer-api/gigs/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRkMjA3NTIzYTIxOWIyZTk5ZWJkYiIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzM5OTUzMjUxLCJleHAiOjE3NDAwMzk2NTF9.5inSKQXdIS2zTjJX2oUb1o6WaG8JdjWcxLcyBiZ42is
+POST http://localhost:8080/freelancer-api/gigs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMDcxNDcyLCJleHAiOjE3NDAxNTc4NzJ9.Cjd_hbia7MtoARepCaZcBXO0MhjBLmv4Q5gOHapvxHA
 Content-Type: application/json
 
 {
   "title": "Website optimization",
-  "jobID":"67b497d81d7ac6ffc7137c97",
+  "jobID":"67b75ea7ce2c05b5a4094176",
   "description": "I can optimise the website",
   "price": 700
 }
+
+### get gigs
+GET http://localhost:8080/freelancer-api/gigs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMDcxNDcyLCJleHAiOjE3NDAxNTc4NzJ9.Cjd_hbia7MtoARepCaZcBXO0MhjBLmv4Q5gOHapvxHA
+
+
+### Team creation
+POST http://localhost:8080/freelancer-api/teams/new-team
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMTEwMjE4LCJleHAiOjE3NDAxOTY2MTh9.wFS2PrIV5JEJ-AjEyGMByX6V63NneDHJ2wOa_ZlrsLI
+Content-Type: application/json
+
+{
+  "teamName":"Dream-Developers",
+  "teamMembers":["67b7f96e57eca2278f4bc03f"]
+}
+
+### get teams
+GET http://localhost:8080/freelancer-api/teams
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMTEwMjE4LCJleHAiOjE3NDAxOTY2MTh9.wFS2PrIV5JEJ-AjEyGMByX6V63NneDHJ2wOa_ZlrsLI
+
+
+### get team by ID
+GET http://localhost:8080/freelancer-api/teams/67b8085579591b4efc280973
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMTEwMjE4LCJleHAiOjE3NDAxOTY2MTh9.wFS2PrIV5JEJ-AjEyGMByX6V63NneDHJ2wOa_ZlrsLI
+
+### update the team
+PUT http://localhost:8080/freelancer-api/teams/update-team/67b8085579591b4efc280973
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMTEwMjE4LCJleHAiOjE3NDAxOTY2MTh9.wFS2PrIV5JEJ-AjEyGMByX6V63NneDHJ2wOa_ZlrsLI
+Content-Type: application/json
+
+{
+  "updatedDetails":{
+    "teamName":"Dream-Developers- updated",
+    "teamMembers":["67b7f96e57eca2278f4bc03f"]
+  }
+}
+
+### delete a team
+DELETE http://localhost:8080/freelancer-api/teams/delete-team/67b8085579591b4efc280973
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMTEwMjE4LCJleHAiOjE3NDAxOTY2MTh9.wFS2PrIV5JEJ-AjEyGMByX6V63NneDHJ2wOa_ZlrsLI
 
 ### get all freelancer subscriptions
 GET http://localhost:8080/freelancer-api/subscriptions
 ### buying subscription
 POST http://localhost:8080/freelancer-api/buy-subscription/67b5d63d6ea3454876456d3b
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRkMjA3NTIzYTIxOWIyZTk5ZWJkYiIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzM5OTUzMjUxLCJleHAiOjE3NDAwMzk2NTF9.5inSKQXdIS2zTjJX2oUb1o6WaG8JdjWcxLcyBiZ42is
-
-###report a freelancer
-POST http://localhost:8080/freelancer-api/report-client/67b4bfad7fc7aa9c8899d642
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YjRkMjA3NTIzYTIxOWIyZTk5ZWJkYiIsImlhdCI6MTc0MDA2MTU3NiwiZXhwIjoxNzQwMTQ3OTc2fQ.7Y8eX6sutOiWzexrmz3awJg789dH_aCUOxpJexJRbEM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMDcxNDcyLCJleHAiOjE3NDAxNTc4NzJ9.Cjd_hbia7MtoARepCaZcBXO0MhjBLmv4Q5gOHapvxHA
+###report a client
+POST http://localhost:8080/freelancer-api/report-client/67b75904b5da604dfe41b060
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMDcxNDcyLCJleHAiOjE3NDAxNTc4NzJ9.Cjd_hbia7MtoARepCaZcBXO0MhjBLmv4Q5gOHapvxHA
