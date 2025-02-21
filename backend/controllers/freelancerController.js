@@ -4,6 +4,7 @@ const bcrypt=require('bcrypt');
 const { validateFreelancer, generateToken } = require('../utils/authUtils');
 const SubscriptionPlan = require('../models/subscriptionPlanSchema');
 const Client = require('../models/clientSchema');
+const Team = require('../models/teamSchema');
 
 
 const createFreelancer = async (req, res) => {
@@ -128,9 +129,97 @@ const createGig = async (req, res) => {
 
         res.status(201).json(gig);
     } catch (error) {
+        console.log("Error in createGig", error.message);
         res.status(500).json({ message: error.message });
     }
 };
+
+const getGigs = async(req,res)=>{
+    try{
+        const freelancerID = req.user.id;
+        const gigs = await Gig.find({userID:freelancerID});
+        return res.json(gigs);
+
+    }catch(err){
+        console.log("Error in getting freelancer's gigs: ",err.message);
+        return res.send(500).json({message: err.message});
+    }
+}
+
+const createTeam = async(req,res)=>{
+    try{
+        let {teamName, teamMembers} = req.body;
+        const freelancerID = req.user.id;
+        teamMembers=[...teamMembers,freelancerID]
+        const team = await Team.create({
+            "name":teamName,
+            "members":teamMembers,
+        });
+        return res.status(201).json({"message":"Succesfully created a new team","team":team});
+    }catch(err){
+        console.log("Error in creating Team by freelancer: ", err.message);
+        return res.status(500).json({message:err.message});
+    }
+}
+
+const getAllTeams = async(req,res)=>{
+    try{
+        const freelancerID=req.user.id;
+        const teams = await Team.find({
+            members:freelancerID,
+        })
+        return res.status(201).json(teams);
+    }catch(err){
+        console.log("Error in getting all teams", err.message);
+        return res.status(500).json("Error in getting all teams");
+    }
+}
+
+const getTeamByID = async(req,res)=>{
+    try{
+        const {teamID} = req.params;
+        const team = await Team.findById(teamID);
+        return res.json(team);
+    }catch(err){
+        console.log("Error in getting team by id", err.message);
+        return res.status(500).json("Error in getting team by id");
+    }
+}
+
+const updateTeam =async(req,res)=>{
+    try{
+        const {teamID} = req.params;
+        const {updatedDetails} = req.body;
+        if(updatedDetails){
+            updatedDetails.name=updatedDetails.teamName;
+            delete updatedDetails.teamName;
+        }
+
+        const updatedTeam = await Team.findByIdAndUpdate(
+            teamID,
+            updatedDetails,
+            {new:true}
+        )
+
+        return res.status(201).json(updatedTeam);
+
+    }catch(err){
+        console.log("Error in updating the team details ", err.message);
+        return res.status(500).json("Error in updating the team details");
+    }
+}
+
+const deleteTeamByID = async(req,res)=>{
+    try{
+        const {teamID} = req.params;
+        const deletedTeam = await Team.findByIdAndDelete(teamID);
+
+        return res.status(200).json(deletedTeam);
+    }catch(err){
+        console.log("Error in deleting the team",err.message);
+        return res.status(500).json("Error in deleteing the team");
+    }
+}
 
 const getSubscriptionPlans = async(req,res)=>{
     try {
@@ -200,6 +289,13 @@ module.exports = {
     deleteProfileFreelancer,
 
     createGig,
+    getGigs,
+
+    createTeam,
+    getAllTeams,
+    getTeamByID,
+    updateTeam,
+    deleteTeamByID,
 
     buySubscription,
     getSubscriptionPlans,

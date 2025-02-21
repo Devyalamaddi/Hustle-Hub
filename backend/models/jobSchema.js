@@ -1,52 +1,51 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const jobSchema = new mongoose.Schema({
     title: {
-      type:String,
+        type: String,
     },
 
     description: {
-      type:String,
+        type: String,
     },
 
     clientId: { 
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: 'Client' 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Client' 
     },
 
     freelancers: [
-      { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'Freelancer' 
-      }
+        { 
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'Freelancer' 
+        }
     ],
 
     budget: {
-      type:Number,
+        type: Number,
     },
 
     type: { 
-      type: String, 
-      enum: ['online', 'offline'] 
+        type: String, 
+        enum: ['online', 'offline'] 
     },
 
     status: { 
-      type: String, 
-      enum: ['open', 'in-progress', 'completed'] 
+        type: String, 
+        enum: ['open', 'in-progress', 'completed'] 
     },
 
     milestones: [
-      { 
-        title: String, 
-        amount: Number, 
-        status: String 
-      }
+        { 
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'Milestone' 
+        }
     ],
 
     teamRequired: {
-      type:Boolean
+        type: Boolean
     },
-  });
+});
 
 const Job = mongoose.model('Job', jobSchema);
 module.exports = Job;

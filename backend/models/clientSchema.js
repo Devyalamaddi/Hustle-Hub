@@ -41,7 +41,6 @@ const clientSchema = new mongoose.Schema(
 
     role: { 
       type: String, 
-      enum: ['freelancer', 'client', 'admin'] 
     },
 
     certifications: [

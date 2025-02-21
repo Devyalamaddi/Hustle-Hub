@@ -8,26 +8,11 @@ const teamSchema = new mongoose.Schema({
     members: [
       { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User' 
+        ref: 'Freelancer',
+        required:true, 
       },
     ],
 
-    jobId: { 
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: 'Job' 
-    },
-
-    paymentSplit: [
-      { 
-        userId: {
-          type:mongoose.Schema.Types.ObjectId
-        },
-
-        amount: {
-          type: Number
-        } 
-      },
-    ],
     status: { 
       type: String, 
       enum: ['active', 'completed'] 
