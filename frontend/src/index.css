@@ -1,68 +1,66 @@
+@import "tailwindcss";
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    --background: #FAF3E0;
+    --card: #FFFFFF;
+    --text-primary: #4A5568;
+    --text-secondary: #A0AEC0;
+    --primary: #F4A8A3;
+    --success: #A3E4D7;
+    --success-hover: #81C9B7;
+    --warning: #FCD34D;
+    --warning-hover: #FBBF24;
+    --error: #F8AFA6;
+    --gradient-start: #FAD4D8;
+    --gradient-end: #B3E5FC;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* 🌙 Dark Mode */
+.dark {
+    --background: #1E293B;
+    --card: #2D3B50;
+    --text-primary: #F8F9FA;
+    --text-secondary: #A8B3C1;
+    --primary: #A78BFA;
+    --success: #81C9B7;
+    --success-hover: #5AA897;
+    --warning: #E3A663;
+    --warning-hover: #C97A3F;
+    --error: #D77A89;
+    --gradient-start: #6D86A6;
+    --gradient-end: #8E6EA7;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+/* @import "tailwindcss";
+
+:root {
+    --background: #FDF6F0;
+    --card: #FFFFFF;
+    --text-primary: #3B3F5E;
+    --text-secondary: #8D96A6;
+    --primary: #F4B4C4;
+    --success: #A7E4C2;
+    --success-hover: #86CFAF;
+    --warning: #F5D97D;
+    --warning-hover: #E4C469;
+    --error: #F6A6A6;
+    --gradient-start: #F7C8E0;
+    --gradient-end: #C4E2F7;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* 🌙 Dark Mode */
+/*.dark {
+    --background: #1B1E30;
+    --card: #2A2F48;
+    --text-primary: #ECEFF4;
+    --text-secondary: #A5B0C2;
+    --primary: #C69AF8;
+    --success: #86B8A8;
+    --success-hover: #6A9F90;
+    --warning: #E3A878;
+    --warning-hover: #CB8458;
+    --error: #D88795;
+    --gradient-start: #8D9FC1;
+    --gradient-end: #A28DC6;
 }
+ */
