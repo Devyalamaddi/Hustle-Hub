@@ -5,10 +5,10 @@ POST http://localhost:8080/freelancer-api/signup
 Content-Type: application/json
 
 {
-  "name": "Hasnika",
-  "email": "sri@gmail.com",
-  "password": "hasnika",
-  "skills": ["NextJS","Typescript","TailwindCSS"],
+  "name": "Devendra",
+  "email": "dev@gmail.com",
+  "password": "devendra",
+  "skills": ["ReactJS","Javascript","TailwindCSS"],
   "experience": "4 years"
 
 }
