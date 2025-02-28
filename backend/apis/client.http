@@ -85,6 +85,7 @@ Content-Type: application/json
 
 ### Get all jobs
 GET http://localhost:8080/client-api/jobs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc1OTA0YjVkYTYwNGRmZTQxYjA2MCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NDA0ODA2MjksImV4cCI6MTc0MDU2NzAyOX0.XEPUimSgUXYPmRTfUYkI-dTn0jpO75GlqgnV1m0KcxU
 
 ### Get job by ID
 GET http://localhost:8080/client-api/jobs/67b75ea7ce2c05b5a4094176

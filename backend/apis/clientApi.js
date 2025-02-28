@@ -17,7 +17,7 @@ clientApp.delete('/clients/:id',  protect, clientOnly, deleteProfileClient);
 
 // Job routes
 clientApp.post('/post-job', protect, clientOnly,createJob);
-clientApp.get('/jobs', getAllJobs);
+clientApp.get('/jobs',protect, getAllJobs);
 clientApp.get('/jobs/:id', getJobById);
 clientApp.put('/jobs/:id', protect, clientOnly, updateJob);
 clientApp.delete('/jobs/:id', protect, clientOnly,deleteJob);

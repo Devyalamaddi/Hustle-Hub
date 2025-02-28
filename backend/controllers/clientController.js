@@ -165,7 +165,16 @@ const createJob = async (req, res) => {
 
 const getAllJobs = async (req, res) => {
     try {
-        const jobs = await Job.find();
+        const clientID = req.user.id;
+        const jobs = await Job.find({
+            clientId: clientID,
+        })
+        .populate({
+            path: "freelancers",
+            select: "-password",
+        })
+        .populate("milestones"); 
+               
         res.json(jobs);
     } catch (error) {
         res.status(500).json({ error: error.message });
