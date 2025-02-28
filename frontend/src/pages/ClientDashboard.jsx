@@ -473,10 +473,12 @@ function ClientDashboard() {
                 </div>
               )}
 
-              {showMilestones && (
+              {
+                showMilestones && (
                 <div className="absolute right-[calc(70%+20px)] top-0 transition-all transform bg-white/60 bg-opacity-70 backdrop-blur-md rounded-lg shadow-lg p-6 w-[350px] max-w-[400px] z-20 animate-slidein-right">
                   <h3 className="text-xl font-bold text-gray-900">Milestones</h3>
-                  {isJobDetails.milestones.map((milestone) => (
+                  {
+                    isJobDetails.milestones.map((milestone) => (
                     <div key={milestone._id} className="mt-4 text-gray-700">
                       <p><strong>{milestone.title}</strong></p>
                       <p>{milestone.description}</p>
@@ -485,7 +487,8 @@ function ClientDashboard() {
                     </div>
                   ))}
                 </div>
-              )}
+              )
+              }
             </div>
           )}
         </div>
