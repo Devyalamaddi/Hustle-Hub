@@ -1,7 +1,7 @@
 const express = require('express');
 const freelancerApp = express.Router();
 // const Gig = require('../models/gigSchema');
-const { createFreelancer, getAllFreelancers, getFreelancerByID, updateProfileFreelancer, deleteProfileFreelancer, freelancerLogin, createGig, getGigs,createTeam , getAllTeams,getTeamByID,updateTeam, deleteTeamByID, buySubscription, getSubscriptionPlans, reportClient  } = require('../controllers/freelancerController');
+const { createFreelancer, getAllFreelancers, getFreelancerByID, updateProfileFreelancer, deleteProfileFreelancer, freelancerLogin, getJobPosts, createGig, getGigs,createTeam , getAllTeams,getTeamByID,updateTeam, deleteTeamByID, buySubscription, getSubscriptionPlans, reportClient  } = require('../controllers/freelancerController');
 const { protect, freelancerOnly } = require('../utils/authUtils');
 
 freelancerApp.post('/signup', createFreelancer);
@@ -14,6 +14,9 @@ freelancerApp.delete('/freelancers/:id', protect,freelancerOnly,deleteProfileFre
 // Create a new gig
 freelancerApp.post('/gigs', protect,freelancerOnly, createGig);
 freelancerApp.get('/gigs',protect,getGigs);
+
+//to get all job posts from clients
+freelancerApp.get('/job-posts',getJobPosts);
 
 //todo: teams CRUD
 freelancerApp.post('/teams/new-team', protect, createTeam);

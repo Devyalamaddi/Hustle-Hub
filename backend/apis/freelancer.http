@@ -50,6 +50,10 @@ Content-Type: application/json
 DELETE http://localhost:8080/freelancer-api/freelancers/67b76222261b0e2d253fa130
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMDcxNDcyLCJleHAiOjE3NDAxNTc4NzJ9.Cjd_hbia7MtoARepCaZcBXO0MhjBLmv4Q5gOHapvxHA
 
+### get jobs
+GET http://localhost:8080/freelancer-api/job-posts
+
+
 ### Create gig
 POST http://localhost:8080/freelancer-api/gigs
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMDcxNDcyLCJleHAiOjE3NDAxNTc4NzJ9.Cjd_hbia7MtoARepCaZcBXO0MhjBLmv4Q5gOHapvxHA
@@ -64,8 +68,7 @@ Content-Type: application/json
 
 ### get gigs
 GET http://localhost:8080/freelancer-api/gigs
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMDcxNDcyLCJleHAiOjE3NDAxNTc4NzJ9.Cjd_hbia7MtoARepCaZcBXO0MhjBLmv4Q5gOHapvxHA
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwNzE0NzQxLCJleHAiOjE3NDA4MDExNDF9.-RnoIwG1BTmm1hv_UVsoTIvjCSP0fkdOyaGA97Ds9fA
 
 ### Team creation
 POST http://localhost:8080/freelancer-api/teams/new-team
