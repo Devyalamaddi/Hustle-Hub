@@ -8,6 +8,8 @@ import FreelancerHome from './pages/FreelancerHome';
 import ClientDashboard from './pages/ClientDashboard';
 import CommonLoginPage from './pages/CommonLoginPage';
 import FreelancerDashboard from './pages/FreelancerDashboard';
+import FreelancerSubscriptionsPage from './pages/FreelancerSubscriptionsPage';
+import ClientSubscriptionPage from './pages/ClientSubscriptionPage';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,18 @@ const router = createBrowserRouter([
         path: 'freelancer/dashboard',
         element: <FreelancerDashboard/>,
       },
+      {
+        path: 'client/subscription',
+        element: <ClientSubscriptionPage />,
+      },
+      {
+        path: 'freelancer/subscription',
+        element: <FreelancerSubscriptionsPage />,
+      }
+      // {
+      //   path:'home',
+      //   element: <FreelancerHome />
+      // }
     ],
   },
 ]);

@@ -293,8 +293,8 @@ function ClientDashboard() {
 
           {postingNewJob && (
             <div className="fixed inset-0 z-50 bg-gray-600/15 flex justify-center items-center backdrop-blur-sm">
-              <div className="relative transition-all transform bg-[var(--card-background)] bg-opacity-70 backdrop-blur-md rounded-lg shadow-lg p-6 w-[350px] max-w-[400px] z-10 animate-fadein">
-                
+              <div className="relative transition-all transform bg-[var(--card-background)] bg-opacity-70 backdrop-blur-md rounded-lg shadow-lg p-6 w-[350px] max-w-[400px] z-10 animate-fadein max-h-[80vh] overflow-y-auto">
+  
                 {/* Step 1: Job Details */}
                 {step === 1 && (
                   <>
@@ -480,7 +480,8 @@ function ClientDashboard() {
                   {
                     isJobDetails.milestones.map((milestone) => (
                     <div key={milestone._id} className="mt-4 text-gray-700">
-                      <p><strong>{milestone.title}</strong></p>
+                      {/* <h3>MileStone:</h3> */}
+                      <p>MileStone: <strong>{milestone.title}</strong></p>
                       <p>{milestone.description}</p>
                       <p>Amount: ${milestone.amount}</p>
                       <p>Due Date: {new Date(milestone.dueDate).toLocaleDateString()}</p>

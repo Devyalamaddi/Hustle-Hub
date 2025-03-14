@@ -5,6 +5,7 @@ const { validateFreelancer, generateToken } = require('../utils/authUtils');
 const SubscriptionPlan = require('../models/subscriptionPlanSchema');
 const Client = require('../models/clientSchema');
 const Team = require('../models/teamSchema');
+const Job = require('../models/jobSchema');
 
 
 const createFreelancer = async (req, res) => {
@@ -61,7 +62,7 @@ const getFreelancerByID = async (req, res) => {
         const freelancer = await Freelancer.findOne({ 
             _id: req.params.id,
             role: 'freelancer'
-        });
+        }).populate('subscriptionId');
         if (!freelancer) {
             return res.status(404).json({ error: 'Freelancer not found' });
         }
@@ -137,7 +138,7 @@ const createGig = async (req, res) => {
 const getGigs = async(req,res)=>{
     try{
         const freelancerID = req.user.id;
-        const gigs = await Gig.find({userID:freelancerID});
+        const gigs = await Gig.find({userID:freelancerID}).populate('jobID');
         return res.json(gigs);
 
     }catch(err){
@@ -183,6 +184,16 @@ const getTeamByID = async(req,res)=>{
     }catch(err){
         console.log("Error in getting team by id", err.message);
         return res.status(500).json("Error in getting team by id");
+    }
+}
+
+const getJobPosts = async(req,res)=>{
+    try{
+        const jobPosts = await Job.find({}).populate('clientId');
+        return res.json(jobPosts);
+    }catch(err){
+        console.log("Error in getting job posts",err.message);
+        return res.status(500).json({message:"Error in getting job posts"});
     }
 }
 
@@ -287,6 +298,8 @@ module.exports = {
     getFreelancerByID,
     updateProfileFreelancer,
     deleteProfileFreelancer,
+
+    getJobPosts,
 
     createGig,
     getGigs,

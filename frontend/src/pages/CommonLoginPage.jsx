@@ -28,6 +28,7 @@ const CommonLoginPage = () => {
   const onSubmit = (data) => {
     console.log("Login Data:", data);
     toast.success(`Logged in as ${data.role}`, { position: "top-center" });
+    localStorage.setItem("type", data.role);
     reset();
     navigate(`/${data.role}/dashboard`);
   };
