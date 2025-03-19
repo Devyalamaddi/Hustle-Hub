@@ -1,5 +1,6 @@
 import React ,{ useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
+import DarkModeToggle from '../ui/DarkModeToggle';
 
 function Navbar() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem("theme") === "dark");
@@ -31,14 +32,8 @@ function Navbar() {
           <Link to={`/${type}/subscription`} className="mx-4 text-lg text-[var(--text-primary)] hover:text-[var(--primary)] transition-colors duration-300">Subscriptions</Link>
           <Link to={`/${type}/dashboard`} className="mx-4 text-lg text-[var(--text-primary)] hover:text-[var(--primary)] transition-colors duration-300">Dashboard</Link>
         
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className={`text-white px-2 py-1 rounded-full ${
-              darkMode ? 'bg-white/50 text-black' : 'bg-gray-600'
-            }`}
-          >
-            {darkMode ? "☀️" : "🌙"}
-          </button>
+          <DarkModeToggle darkMode={darkMode} setDarkMode={setDarkMode} />
+
 
         </nav>
     </header>

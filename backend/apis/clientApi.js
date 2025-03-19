@@ -33,4 +33,8 @@ clientApp.post('/buy-subscription/:subscriptionPlanID', protect, buySubscription
 //reporting a freelancer
 clientApp.post('/report-freelancer/:freelancerID', protect, clientOnly, reportFreelancer )
 
+// To Do:
+//password recovery
+//password reset
+
 module.exports = clientApp;
