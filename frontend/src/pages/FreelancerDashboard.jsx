@@ -1,5 +1,6 @@
 import React from 'react'
 import FreelancerProfile from './FreelancerProfile'
+import TeamsFreelancer from './TeamsFreelancer';
 
 function FreelancerDashboard() {
   const gigsByFreelancer = [
@@ -57,6 +58,7 @@ function FreelancerDashboard() {
         </div>
         </div>
       </div>
+      <TeamsFreelancer/>
     </div>
   )
 }

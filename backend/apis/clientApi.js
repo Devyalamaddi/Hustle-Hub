@@ -8,26 +8,26 @@ const { createClient,clientLogin, getAllClients, getAllClientsByID, updateProfil
 const { clientOnly, protect } = require('../utils/authUtils');
 
 // Client routes
-clientApp.post('/signin', createClient);
-clientApp.post('/login', clientLogin);
+clientApp.post('/signin', createClient);//d
+clientApp.post('/login', clientLogin);//d
 clientApp.get('/clients', getAllClients);
 clientApp.get('/clients/:id', getAllClientsByID);
 clientApp.put('/clients/:id',  protect, clientOnly,updateProfileClient);
 clientApp.delete('/clients/:id',  protect, clientOnly, deleteProfileClient);
 
 // Job routes
-clientApp.post('/post-job', protect, clientOnly,createJob);
-clientApp.get('/jobs',protect, getAllJobs);
-clientApp.get('/jobs/:id', getJobById);
+clientApp.post('/post-job', protect, clientOnly,createJob);//d
+clientApp.get('/jobs',protect, getAllJobs);//d
+clientApp.get('/jobs/:id', getJobById);//d
 clientApp.put('/jobs/:id', protect, clientOnly, updateJob);
 clientApp.delete('/jobs/:id', protect, clientOnly,deleteJob);
 
 // Get all gigs for a job and update with finalized freelancer
-clientApp.get('/jobs/:jobID/gigs', getGigsByJob);
-clientApp.post('/jobs/:jobID/confirm-gig/:freelancerID', finaliseFreelancer);
+clientApp.get('/jobs/:jobID/gigs', getGigsByJob);//d
+clientApp.post('/jobs/:jobID/confirm-gig/:freelancerID', finaliseFreelancer);//d
 
 //subscriptions
-clientApp.get('/subscriptions', getSubscriptionPlansForClients);
+clientApp.get('/subscriptions', getSubscriptionPlansForClients);//d
 clientApp.post('/buy-subscription/:subscriptionPlanID', protect, buySubscription);
 
 //reporting a freelancer

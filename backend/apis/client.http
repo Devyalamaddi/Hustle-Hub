@@ -1,6 +1,6 @@
 ### Client API Routes
 
-### Create client
+### Create client(d)
 POST http://localhost:8080/client-api/signin
 Content-Type: application/json
 
@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 ### 67b75904b5da604dfe41b060
 
-### Client login
+### Client login(d)
 POST http://localhost:8080/client-api/login
 Content-Type: application/json
 
@@ -45,7 +45,7 @@ DELETE http://localhost:8080/client-api/clients/67b75852b5da604dfe41b056
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc1ODUyYjVkYTYwNGRmZTQxYjA1NiIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NDAwNjkwMDQsImV4cCI6MTc0MDE1NTQwNH0.GawlyxS4ty94nHPwZnhyo4tnhod0tZb2kqY2Q75kq0k
 
 
-### Create job
+### Create job(d)
 POST http://localhost:8080/client-api/post-job
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc1OTA0YjVkYTYwNGRmZTQxYjA2MCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NDAwNjkxNzgsImV4cCI6MTc0MDE1NTU3OH0.yZZej-xF30Waag-RtOqDVtU8C1npeHaSBK5yVYFTC0k
 Content-Type: application/json
@@ -83,11 +83,11 @@ Content-Type: application/json
 
 
 
-### Get all jobs
+### Get all jobs(d)
 GET http://localhost:8080/client-api/jobs
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc1OTA0YjVkYTYwNGRmZTQxYjA2MCIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE3NDA0ODA2MjksImV4cCI6MTc0MDU2NzAyOX0.XEPUimSgUXYPmRTfUYkI-dTn0jpO75GlqgnV1m0KcxU
 
-### Get job by ID
+### Get job by ID(d)
 GET http://localhost:8080/client-api/jobs/67b75ea7ce2c05b5a4094176
 
 ### Update job
@@ -102,14 +102,14 @@ Content-Type: application/json
 ### Delete job
 DELETE http://localhost:8080/client-api/jobs/67b75ea7ce2c05b5a4094176
 
-### Get gigs for job and finalize freelancer
+### Get gigs for job and finalize freelancer(d)
 GET http://localhost:8080/client-api/jobs/67b75ea7ce2c05b5a4094176/gigs
 
 ### Post confirm freelancer
 POST http://localhost:8080/client-api/jobs/67b75ea7ce2c05b5a4094176/confirm-gig/67b76222261b0e2d253fa130
 
 
-### get all client subscriptions
+### get all client subscriptions(d)
 GET http://localhost:8080/client-api/subscriptions
 
 ### buying subscription

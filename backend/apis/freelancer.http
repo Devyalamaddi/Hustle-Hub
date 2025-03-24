@@ -1,6 +1,6 @@
 ### Freelancer API Routes
 
-### Create freelancer
+### Create freelancer(d)
 POST http://localhost:8080/freelancer-api/signup
 Content-Type: application/json
 
@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 ### 67b76222261b0e2d253fa130
 
-### Freelancer login
+### Freelancer login(d)
 POST http://localhost:8080/freelancer-api/login
 Content-Type: application/json
 
@@ -33,11 +33,11 @@ GET http://localhost:8080/freelancer-api/freelancers/67b76222261b0e2d253fa130
 
 ### Update freelancer profile
 PUT http://localhost:8080/freelancer-api/freelancers/67b76222261b0e2d253fa130
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQwMDcxNDcyLCJleHAiOjE3NDAxNTc4NzJ9.Cjd_hbia7MtoARepCaZcBXO0MhjBLmv4Q5gOHapvxHA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3Yjc2MjIyMjYxYjBlMmQyNTNmYTEzMCIsInJvbGUiOiJmcmVlbGFuY2VyIiwiaWF0IjoxNzQyODM0MTM2LCJleHAiOjE3NDI5MjA1MzZ9.LIPkjYpsnWy_7PiA0bfJO2F_FFfxRdDp92tXz-ccA2g
 Content-Type: application/json
 
 {
-  "name": "Devendra Yalamaddi",
+  "name": "Devendra-updated",
   "skills":[
     "MERN",
     "NextJS",
