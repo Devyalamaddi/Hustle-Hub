@@ -24,8 +24,6 @@ app.use(express.json());
 // Routes
 app.use('/freelancer-api', freelancerRoutes);
 app.use('/client-api', clientRoutes);
-// app.use('/client/job-api', jobRoutes);
-// app.use('/freelancer/team-api', teamRoutes);
 app.use('/admin-api', adminRoutes);
 
 // Error handling

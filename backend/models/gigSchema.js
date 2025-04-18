@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
 const gigSchema = new mongoose.Schema({
     jobID: {
@@ -20,6 +20,15 @@ const gigSchema = new mongoose.Schema({
         enum: ['pending', 'accepted', 'rejected'],
         default: 'pending'
     },
+    // New fields for team applications
+    isTeamApplication: {
+        type: Boolean,
+        default: false
+    },
+    teamID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Team'
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -28,4 +37,4 @@ const gigSchema = new mongoose.Schema({
 
 const Gig = mongoose.model('Gig', gigSchema);
 
-module.exports = Gig
+module.exports = Gig;

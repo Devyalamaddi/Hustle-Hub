@@ -7,6 +7,395 @@ const Client = require('../models/clientSchema');
 const Team = require('../models/teamSchema');
 const Job = require('../models/jobSchema');
 
+const Team = require('../models/teamSchema');
+const Freelancer = require('../models/freelancerSchema');
+const TeamInvitation = require('../models/teamInvitationSchema');
+const Job = require('../models/jobSchema');
+
+// Send an invitation to join a team
+const sendTeamInvitation = async (req, res) => {
+  try {
+    const { teamID, freelancerID } = req.params;
+    const senderID = req.user.id;
+    
+    // Check if team exists
+    const team = await Team.findById(teamID);
+    if (!team) {
+      return res.status(404).json({ message: 'Team not found' });
+    }
+    
+    // Check if sender is in the team
+    if (!team.members.includes(senderID)) {
+      return res.status(403).json({ message: 'You must be a team member to invite others' });
+    }
+    
+    // Check if sender is admin or the team creator (first member)
+    const isAdmin = team.roles && team.roles.get(senderID) === 'admin';
+    const isCreator = team.members[0].toString() === senderID;
+    
+    if (!isAdmin && !isCreator) {
+      return res.status(403).json({ message: 'Only team admins can send invitations' });
+    }
+    
+    // Check if freelancer exists
+    const freelancer = await Freelancer.findById(freelancerID);
+    if (!freelancer) {
+      return res.status(404).json({ message: 'Freelancer not found' });
+    }
+    
+    // Check if freelancer is already a member
+    if (team.members.includes(freelancerID)) {
+      return res.status(400).json({ message: 'Freelancer is already a team member' });
+    }
+    
+    // Check if invitation already exists
+    const existingInvitation = await TeamInvitation.findOne({
+      teamID,
+      to: freelancerID,
+      status: 'pending'
+    });
+    
+    if (existingInvitation) {
+      return res.status(400).json({ message: 'Invitation already sent to this freelancer' });
+    }
+    
+    // Create invitation
+    const invitation = await TeamInvitation.create({
+      teamID,
+      from: senderID,
+      to: freelancerID,
+      status: 'pending'
+    });
+    
+    res.status(201).json({ message: 'Team invitation sent successfully', invitation });
+  } catch (error) {
+    console.log("Error in sending team invitation:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get all pending invitations for the current user
+const getTeamInvitations = async (req, res) => {
+  try {
+    const freelancerID = req.user.id;
+    
+    const invitations = await TeamInvitation.find({
+      to: freelancerID,
+      status: 'pending'
+    })
+    .populate('teamID', 'name status')
+    .populate('from', 'name email');
+    
+    res.json(invitations);
+  } catch (error) {
+    console.log("Error in getting team invitations:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Accept a team invitation
+const acceptTeamInvitation = async (req, res) => {
+  try {
+    const { teamID } = req.params;
+    const freelancerID = req.user.id;
+    
+    // Find the invitation
+    const invitation = await TeamInvitation.findOne({
+      teamID,
+      to: freelancerID,
+      status: 'pending'
+    });
+    
+    if (!invitation) {
+      return res.status(404).json({ message: 'Invitation not found' });
+    }
+    
+    // Update invitation status
+    invitation.status = 'accepted';
+    await invitation.save();
+    
+    // Add freelancer to the team
+    const team = await Team.findById(teamID);
+    if (!team) {
+      return res.status(404).json({ message: 'Team not found' });
+    }
+    
+    if (!team.members.includes(freelancerID)) {
+      team.members.push(freelancerID);
+      
+      // Set role as member
+      if (!team.roles) {
+        team.roles = new Map();
+      }
+      team.roles.set(freelancerID, 'member');
+      
+      await team.save();
+    }
+    
+    res.json({ message: 'Team invitation accepted successfully', team });
+  } catch (error) {
+    console.log("Error in accepting team invitation:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Reject a team invitation
+const rejectTeamInvitation = async (req, res) => {
+  try {
+    const { teamID } = req.params;
+    const freelancerID = req.user.id;
+    
+    // Find the invitation
+    const invitation = await TeamInvitation.findOne({
+      teamID,
+      to: freelancerID,
+      status: 'pending'
+    });
+    
+    if (!invitation) {
+      return res.status(404).json({ message: 'Invitation not found' });
+    }
+    
+    // Update invitation status
+    invitation.status = 'rejected';
+    await invitation.save();
+    
+    res.json({ message: 'Team invitation rejected successfully' });
+  } catch (error) {
+    console.log("Error in rejecting team invitation:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Leave a team
+const leaveTeam = async (req, res) => {
+  try {
+    const { teamID } = req.params;
+    const freelancerID = req.user.id;
+    
+    // Find the team
+    const team = await Team.findById(teamID);
+    if (!team) {
+      return res.status(404).json({ message: 'Team not found' });
+    }
+    
+    // Check if freelancer is a member
+    if (!team.members.includes(freelancerID)) {
+      return res.status(400).json({ message: 'You are not a member of this team' });
+    }
+    
+    // Remove freelancer from team
+    team.members = team.members.filter(member => member.toString() !== freelancerID);
+    
+    // If team is now empty, delete it
+    if (team.members.length === 0) {
+      await Team.findByIdAndDelete(teamID);
+      return res.json({ message: 'You left the team and it was deleted as no members remained' });
+    }
+    
+    // If the leaving member was an admin, assign admin to the first member
+    if (team.roles && team.roles.get(freelancerID) === 'admin') {
+      const newAdminID = team.members[0];
+      team.roles.set(newAdminID.toString(), 'admin');
+    }
+    
+    // Remove role for the leaving member
+    if (team.roles) {
+      team.roles.delete(freelancerID);
+    }
+    
+    await team.save();
+    res.json({ message: 'You left the team successfully', team });
+  } catch (error) {
+    console.log("Error in leaving team:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Remove a member from a team (admin only)
+const removeMemberFromTeam = async (req, res) => {
+  try {
+    const { teamID, memberID } = req.params;
+    const adminID = req.user.id;
+    
+    // Find the team
+    const team = await Team.findById(teamID);
+    if (!team) {
+      return res.status(404).json({ message: 'Team not found' });
+    }
+    
+    // Check if user is admin or team creator
+    const isAdmin = team.roles && team.roles.get(adminID) === 'admin';
+    const isCreator = team.members[0].toString() === adminID;
+    
+    if (!isAdmin && !isCreator) {
+      return res.status(403).json({ message: 'Only team admins can remove members' });
+    }
+    
+    // Prevent removing yourself through this endpoint
+    if (memberID === adminID) {
+      return res.status(400).json({ message: 'Cannot remove yourself. Use the leave team endpoint instead' });
+    }
+    
+    // Check if member exists in team
+    if (!team.members.includes(memberID)) {
+      return res.status(400).json({ message: 'Member not found in team' });
+    }
+    
+    // Remove member from team
+    team.members = team.members.filter(member => member.toString() !== memberID);
+    
+    // Remove member's role
+    if (team.roles) {
+      team.roles.delete(memberID);
+    }
+    
+    await team.save();
+    
+    res.json({ message: 'Member removed from team successfully', team });
+  } catch (error) {
+    console.log("Error in removing team member:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Update a team member's role
+const updateMemberRole = async (req, res) => {
+  try {
+    const { teamID, memberID } = req.params;
+    const adminID = req.user.id;
+    const { role } = req.body;
+    
+    if (!role || !['admin', 'member'].includes(role)) {
+      return res.status(400).json({ message: 'Invalid role. Role must be either "admin" or "member"' });
+    }
+    
+    // Find the team
+    const team = await Team.findById(teamID);
+    if (!team) {
+      return res.status(404).json({ message: 'Team not found' });
+    }
+    
+    // Check if user is admin
+    const isAdmin = team.roles && team.roles.get(adminID) === 'admin';
+    const isCreator = team.members[0].toString() === adminID;
+    
+    if (!isAdmin && !isCreator) {
+      return res.status(403).json({ message: 'Only team admins can update roles' });
+    }
+    
+    // Check if member exists in team
+    if (!team.members.some(member => member.toString() === memberID)) {
+      return res.status(400).json({ message: 'Member not found in team' });
+    }
+    
+    // Update role
+    if (!team.roles) {
+      team.roles = new Map();
+    }
+    team.roles.set(memberID, role);
+    await team.save();
+    
+    res.json({ message: `Member role updated to ${role} successfully`, team });
+  } catch (error) {
+    console.log("Error in updating member role:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get available freelancers for team formation
+const getAvailableFreelancers = async (req, res) => {
+  try {
+    const { jobID } = req.params;
+    
+    // Check if job exists and requires a team
+    const job = await Job.findById(jobID);
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+    
+    if (!job.teamRequired) {
+      return res.status(400).json({ message: 'This job does not require a team' });
+    }
+    
+    // Find freelancers with relevant skills
+    // Note: This assumes job has required skills field or we get them from params
+    const { requiredSkills } = req.query;
+    let skillsQuery = {};
+    
+    if (requiredSkills) {
+      const skillsArray = requiredSkills.split(',');
+      skillsQuery = { skills: { $in: skillsArray } };
+    }
+    
+    // Find freelancers with matching skills
+    const freelancers = await Freelancer.find({
+      ...skillsQuery,
+      role: 'freelancer',
+      // Exclude freelancers already in job
+      _id: { $nin: job.freelancers || [] }
+    }).select('name email skills experience -password');
+    
+    res.json(freelancers);
+  } catch (error) {
+    console.log("Error in finding available freelancers:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Apply for a job as a team
+const applyForJobAsTeam = async (req, res) => {
+  try {
+    const { jobID, teamID } = req.params;
+    const freelancerID = req.user.id;
+    
+    // Check if job exists
+    const job = await Job.findById(jobID);
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+    
+    if (job.status !== 'open') {
+      return res.status(400).json({ message: 'This job is not open for applications' });
+    }
+    
+    // Check if team exists
+    const team = await Team.findById(teamID);
+    if (!team) {
+      return res.status(404).json({ message: 'Team not found' });
+    }
+    
+    // Check if user is in the team
+    if (!team.members.some(member => member.toString() === freelancerID)) {
+      return res.status(403).json({ message: 'You must be a team member to apply with this team' });
+    }
+    
+    // Create a gig on behalf of the team
+    const gig = new Gig({
+      jobID,
+      userID: freelancerID, // Main contact person
+      description: `Team Application: ${team.name}. Team ID: ${teamID}`,
+      status: 'pending',
+      isTeamApplication: true,
+      teamID
+    });
+    
+    await gig.save();
+    
+    res.status(201).json({
+      message: 'Successfully applied for the job as a team',
+      gig
+    });
+  } catch (error) {
+    console.log("Error in applying for job as team:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// module.exports = {
+
+// };
+
 
 const createFreelancer = async (req, res) => {
     try {
@@ -147,45 +536,80 @@ const getGigs = async(req,res)=>{
     }
 }
 
-const createTeam = async(req,res)=>{
-    try{
-        let {teamName, teamMembers} = req.body;
-        const freelancerID = req.user.id;
-        teamMembers=[...teamMembers,freelancerID]
-        const team = await Team.create({
-            "name":teamName,
-            "members":teamMembers,
-        });
-        return res.status(201).json({"message":"Succesfully created a new team","team":team});
-    }catch(err){
-        console.log("Error in creating Team by freelancer: ", err.message);
-        return res.status(500).json({message:err.message});
-    }
-}
+// const createTeam = async(req,res)=>{
+//     try{
+//         let {teamName, teamMembers} = req.body;
+//         const freelancerID = req.user.id;
+//         teamMembers=[...teamMembers,freelancerID]
+//         const team = await Team.create({
+//             "name":teamName,
+//             "members":teamMembers,
+//         });
+//         return res.status(201).json({"message":"Succesfully created a new team","team":team});
+//     }catch(err){
+//         console.log("Error in creating Team by freelancer: ", err.message);
+//         return res.status(500).json({message:err.message});
+//     }
+// }
 
-const getAllTeams = async(req,res)=>{
-    try{
-        const freelancerID=req.user.id;
-        const teams = await Team.find({
-            members:freelancerID,
-        })
-        return res.status(201).json(teams);
-    }catch(err){
-        console.log("Error in getting all teams", err.message);
-        return res.status(500).json("Error in getting all teams");
-    }
-}
+// const getAllTeams = async(req,res)=>{
+//     try{
+//         const freelancerID=req.user.id;
+//         const teams = await Team.find({
+//             members:freelancerID,
+//         })
+//         return res.status(201).json(teams);
+//     }catch(err){
+//         console.log("Error in getting all teams", err.message);
+//         return res.status(500).json("Error in getting all teams");
+//     }
+// }
 
-const getTeamByID = async(req,res)=>{
-    try{
-        const {teamID} = req.params;
-        const team = await Team.findById(teamID);
-        return res.json(team);
-    }catch(err){
-        console.log("Error in getting team by id", err.message);
-        return res.status(500).json("Error in getting team by id");
-    }
-}
+// const getTeamByID = async(req,res)=>{
+//     try{
+//         const {teamID} = req.params;
+//         const team = await Team.findById(teamID);
+//         return res.json(team);
+//     }catch(err){
+//         console.log("Error in getting team by id", err.message);
+//         return res.status(500).json("Error in getting team by id");
+//     }
+// }
+
+// const updateTeam =async(req,res)=>{
+//     try{
+//         const {teamID} = req.params;
+//         const {updatedDetails} = req.body;
+//         if(updatedDetails){
+//             updatedDetails.name=updatedDetails.teamName;
+//             delete updatedDetails.teamName;
+//         }
+
+//         const updatedTeam = await Team.findByIdAndUpdate(
+//             teamID,
+//             updatedDetails,
+//             {new:true}
+//         )
+
+//         return res.status(201).json(updatedTeam);
+
+//     }catch(err){
+//         console.log("Error in updating the team details ", err.message);
+//         return res.status(500).json("Error in updating the team details");
+//     }
+// }
+
+// const deleteTeamByID = async(req,res)=>{
+//     try{
+//         const {teamID} = req.params;
+//         const deletedTeam = await Team.findByIdAndDelete(teamID);
+
+//         return res.status(200).json(deletedTeam);
+//     }catch(err){
+//         console.log("Error in deleting the team",err.message);
+//         return res.status(500).json("Error in deleteing the team");
+//     }
+// }
 
 const getJobPosts = async(req,res)=>{
     try{
@@ -197,40 +621,6 @@ const getJobPosts = async(req,res)=>{
     }
 }
 
-const updateTeam =async(req,res)=>{
-    try{
-        const {teamID} = req.params;
-        const {updatedDetails} = req.body;
-        if(updatedDetails){
-            updatedDetails.name=updatedDetails.teamName;
-            delete updatedDetails.teamName;
-        }
-
-        const updatedTeam = await Team.findByIdAndUpdate(
-            teamID,
-            updatedDetails,
-            {new:true}
-        )
-
-        return res.status(201).json(updatedTeam);
-
-    }catch(err){
-        console.log("Error in updating the team details ", err.message);
-        return res.status(500).json("Error in updating the team details");
-    }
-}
-
-const deleteTeamByID = async(req,res)=>{
-    try{
-        const {teamID} = req.params;
-        const deletedTeam = await Team.findByIdAndDelete(teamID);
-
-        return res.status(200).json(deletedTeam);
-    }catch(err){
-        console.log("Error in deleting the team",err.message);
-        return res.status(500).json("Error in deleteing the team");
-    }
-}
 
 const getSubscriptionPlans = async(req,res)=>{
     try {
@@ -304,11 +694,15 @@ module.exports = {
     createGig,
     getGigs,
 
-    createTeam,
-    getAllTeams,
-    getTeamByID,
-    updateTeam,
-    deleteTeamByID,
+    sendTeamInvitation,
+    getTeamInvitations,
+    acceptTeamInvitation,
+    rejectTeamInvitation, 
+    leaveTeam,
+    removeMemberFromTeam,
+    updateMemberRole,
+    getAvailableFreelancers,
+    applyForJobAsTeam,
 
     buySubscription,
     getSubscriptionPlans,

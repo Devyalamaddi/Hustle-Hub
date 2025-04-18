@@ -19,11 +19,14 @@ freelancerApp.get('/gigs',protect,getGigs);//d
 freelancerApp.get('/job-posts',getJobPosts);//d
 
 //todo: teams CRUD  //d
-freelancerApp.post('/teams/new-team', protect, createTeam);
-freelancerApp.get('/teams',protect, getAllTeams);
-freelancerApp.get('/teams/:teamID', protect, getTeamByID);
-freelancerApp.put('/teams/update-team/:teamID/',protect, updateTeam);
-freelancerApp.delete('/teams/delete-team/:teamID', protect, deleteTeamByID);
+freelancerApp.post('/teams/:teamID/invite/:freelancerID', protect, freelancerOnly, sendTeamInvitation);
+freelancerApp.get('/team-invitations', protect, freelancerOnly, getTeamInvitations);
+freelancerApp.post('/teams/:teamID/accept-invitation', protect, freelancerOnly, acceptTeamInvitation);
+freelancerApp.post('/teams/:teamID/reject-invitation', protect, freelancerOnly, rejectTeamInvitation);
+freelancerApp.post('/teams/:teamID/leave', protect, freelancerOnly, leaveTeam);
+freelancerApp.post('/teams/:teamID/remove/:memberID', protect, freelancerOnly, removeMemberFromTeam);
+freelancerApp.put('/teams/:teamID/members/:memberID/role', protect, freelancerOnly, updateMemberRole);
+
 
 // subscriptions (todo: payment gateway)
 freelancerApp.get('/subscriptions', getSubscriptionPlans);
@@ -32,7 +35,6 @@ freelancerApp.post('/buy-subscription/:subscriptionPlanID',protect,buySubscripti
 //reporting a Client
 freelancerApp.post('/report-client/:clientID', protect, reportClient);
 
-//todo: team formation logic
 
 module.exports = freelancerApp;
 
