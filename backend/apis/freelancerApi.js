@@ -1,7 +1,7 @@
 const express = require('express');
 const freelancerApp = express.Router();
 // const Gig = require('../models/gigSchema');
-const { createFreelancer, getAllFreelancers, getFreelancerByID, updateProfileFreelancer, deleteProfileFreelancer, freelancerLogin, getJobPosts, createGig, getGigs,createTeam , getAllTeams,getTeamByID,updateTeam, deleteTeamByID, buySubscription, getSubscriptionPlans, reportClient  } = require('../controllers/freelancerController');
+const { createFreelancer, getAllFreelancers, getFreelancerByID, updateProfileFreelancer, deleteProfileFreelancer, freelancerLogin, getJobPosts, createGig, getGigs,createTeam , getAllTeams,getTeamByID,updateTeam, deleteTeamByID, buySubscription, getSubscriptionPlans, reportClient, sendTeamInvitation, getTeamInvitations, acceptTeamInvitation, rejectTeamInvitation, leaveTeam, removeMemberFromTeam, updateMemberRole  } = require('../controllers/freelancerController');
 const { protect, freelancerOnly } = require('../utils/authUtils');
 
 freelancerApp.post('/signup', createFreelancer);//d

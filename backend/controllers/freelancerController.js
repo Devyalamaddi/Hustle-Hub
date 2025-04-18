@@ -6,11 +6,7 @@ const SubscriptionPlan = require('../models/subscriptionPlanSchema');
 const Client = require('../models/clientSchema');
 const Team = require('../models/teamSchema');
 const Job = require('../models/jobSchema');
-
-const Team = require('../models/teamSchema');
-const Freelancer = require('../models/freelancerSchema');
-const TeamInvitation = require('../models/teamInvitationSchema');
-const Job = require('../models/jobSchema');
+const TeamInvitation = require('../models/TeamInvitation');
 
 // Send an invitation to join a team
 const sendTeamInvitation = async (req, res) => {
