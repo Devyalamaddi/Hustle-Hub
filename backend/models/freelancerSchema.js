@@ -70,7 +70,11 @@ const freelancerSchema = new mongoose.Schema(
     },
     role:{
       type:String,
-    }
+    },
+    portfolio: {
+      type: String,
+      default: null
+    },
     
   },
   { timestamps: true }

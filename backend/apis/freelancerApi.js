@@ -30,7 +30,9 @@ freelancerApp.get('/subscriptions', getSubscriptionPlans);
 freelancerApp.post('/buy-subscription/:subscriptionPlanID',protect,buySubscription);
 
 //reporting a Client
-freelancerApp.post('/report-client/:clientID', protect, reportClient )
+freelancerApp.post('/report-client/:clientID', protect, reportClient);
+
+//todo: team formation logic
 
 module.exports = freelancerApp;
 

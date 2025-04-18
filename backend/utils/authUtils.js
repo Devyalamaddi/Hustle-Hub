@@ -11,14 +11,15 @@ const generateToken = async(userId) => {
   if(!user){
     user = await Freelancer.findById(userId);
   }
-  
-    if (!user) {
+  if (!user) {
     throw new Error('User not found');
-
   }
+  console.log(user)
+  user.password=undefined;
   const token = await jwt.sign({ 
     id: userId, 
-    role: user.role  
+    role: user.role,
+    data: user
   }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN
   })
