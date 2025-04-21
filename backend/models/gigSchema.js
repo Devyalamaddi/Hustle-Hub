@@ -20,7 +20,6 @@ const gigSchema = new mongoose.Schema({
         enum: ['pending', 'accepted', 'rejected'],
         default: 'pending'
     },
-    // New fields for team applications
     isTeamApplication: {
         type: Boolean,
         default: false
@@ -29,11 +28,10 @@ const gigSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Team'
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
-});
+},{timestamps:true});
+
+// // ✅ Composite unique index
+gigSchema.index({ jobID: 1, userID: 1 }, { unique: true });
 
 const Gig = mongoose.model('Gig', gigSchema);
 

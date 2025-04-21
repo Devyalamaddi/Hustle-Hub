@@ -19,7 +19,14 @@ mongoose.connect("mongodb+srv://devendrayalamaddi:FB6LMvrJ9YBV0bCk@hustlehub.guz
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use((req, res, next) => {
+  if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
+    express.json()(req, res, next);
+  } else {
+    next();
+  }
+});
+
 
 // Routes
 app.use('/freelancer-api', freelancerRoutes);
