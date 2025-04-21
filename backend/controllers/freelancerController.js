@@ -388,6 +388,93 @@ const applyForJobAsTeam = async (req, res) => {
   }
 };
 
+
+const getTeamApplications = async (req, res) => {
+  try {
+    const freelancerID = req.user.id
+
+    // Find all teams where the user is a member
+    const teams = await Team.find({
+      members: freelancerID,
+    }).select("_id")
+
+    const teamIDs = teams.map((team) => team._id)
+
+    // Find all gigs that are team applications for these teams
+    const applications = await Gig.find({
+      isTeamApplication: true,
+      teamID: { $in: teamIDs },
+    })
+      .populate("jobID", "title budget clientId")
+      .populate({
+        path: "jobID",
+        populate: {
+          path: "clientId",
+          select: "name",
+        },
+      })
+      .populate({
+        path: "teamID",
+        select: "name members",
+        populate: {
+          path: "members",
+          select: "name",
+        },
+      })
+
+    res.json(applications)
+  } catch (error) {
+    console.log("Error in getting team applications:", error.message)
+    res.status(500).json({ message: error.message })
+  }
+}
+
+const withdrawTeamApplication = async (req, res) => {
+  try {
+    const { id } = req.params
+    const freelancerID = req.user.id
+
+    // Find the application
+    const application = await Gig.findById(id)
+    if (!application) {
+      return res.status(404).json({ message: "Application not found" })
+    }
+
+    // Check if it's a team application
+    if (!application.isTeamApplication) {
+      return res.status(400).json({ message: "This is not a team application" })
+    }
+
+    // Check if the user is a member of the team
+    const team = await Team.findById(application.teamID)
+    if (!team) {
+      return res.status(404).json({ message: "Team not found" })
+    }
+
+    if (!team.members.includes(freelancerID)) {
+      return res.status(403).json({ message: "You are not a member of this team" })
+    }
+
+    // Check if the user is the one who created the application or is an admin
+    const isAdmin = team.roles && team.roles.get(freelancerID) === "admin"
+    const isCreator = application.userID.toString() === freelancerID
+
+    if (!isAdmin && !isCreator) {
+      return res
+        .status(403)
+        .json({ message: "Only the application creator or team admin can withdraw this application" })
+    }
+
+    // Delete the application
+    await Gig.findByIdAndDelete(id)
+
+    res.json({ message: "Team application withdrawn successfully" })
+  } catch (error) {
+    console.log("Error in withdrawing team application:", error.message)
+    res.status(500).json({ message: error.message })
+  }
+}
+
 // module.exports = {
 
 // };
@@ -489,36 +576,42 @@ const deleteProfileFreelancer = async (req, res) => {
     }
 };
 const createGig = async (req, res) => {
+  try {
+      const { jobID, description, status } = req.body;
+      const userID = req.user.id;
+      // console.log(jobID, description, status, userID);
+      if (!jobID || !userID || !description) {
+          return res.status(400).json({ 
+              message: 'Please provide jobID, userID and description' 
+          });
+      }
+      if (status && !['pending', 'accepted', 'rejected'].includes(status)) {
+          return res.status(400).json({
+              message: 'Status must be one of: pending, accepted, rejected'
+          });
+      }
 
-    try {
-        const { jobID, title, description, status } = req.body;
-        const userID=req.user.id;
-        
-        
-        if (!jobID || !userID || !description) {
-            return res.status(400).json({ 
-                message: 'Please provide jobID, userID and description' 
-            });
-        }
+      // ✅ Check if the user already submitted a gig for the same job
+      const existingGig = await Gig.findOne({ jobID, userID });
+      if (existingGig) {
+          return res.status(409).json({
+              message: 'You have already submitted a gig for this job.'
+          });
+      }
 
-        if (status && !['pending', 'accepted', 'rejected'].includes(status)) {
-            return res.status(400).json({
-                message: 'Status must be one of: pending, accepted, rejected'
-            });
-        }
+      const gig = await Gig.create({
+          jobID,
+          userID,
+          description
+      });
 
-        const gig = await Gig.create({
-            jobID,
-            userID,
-            description
-        });
-
-        res.status(201).json(gig);
-    } catch (error) {
-        console.log("Error in createGig", error.message);
-        res.status(500).json({ message: error.message });
-    }
+      res.status(201).json(gig);
+  } catch (error) {
+      console.log("Error in createGig", error.message);
+      res.status(500).json({ message: error.message });
+  }
 };
+
 
 const getGigs = async(req,res)=>{
     try{
@@ -530,6 +623,20 @@ const getGigs = async(req,res)=>{
         console.log("Error in getting freelancer's gigs: ",err.message);
         return res.send(500).json({message: err.message});
     }
+}
+
+const withdrawGig = async(req,res)=>{
+  try{
+    const gigID = req.params.id;
+    const gig = await Gig.findByIdAndDelete(gigID);
+    if(!gig){
+      return res.status(404).json({message: "Gig not found"});
+    }
+    return res.status(200).json({message: "Gig withdrawn successfully"});
+  }catch(err){
+    console.log("Error in withdrawing gig: ",err.message);
+    return res.status(500).json({message: err.message});
+  }
 }
 
 // const createTeam = async(req,res)=>{
@@ -676,6 +783,71 @@ const reportClient = async(req,res)=>{
     }
 }
 
+const createTeam = async (req, res) => {
+  try {
+    const { name } = req.body
+    const freelancerID = req.user.id
+
+    if (!name) {
+      return res.status(400).json({ message: "Team name is required" })
+    }
+
+    // Create a new team with the current user as the first member and admin
+    const team = await Team.create({
+      name,
+      members: [freelancerID],
+      roles: new Map([[freelancerID, "admin"]]),
+      status: "active",
+    })
+
+    res.status(201).json({ message: "Team created successfully", team })
+  } catch (error) {
+    console.log("Error in creating team:", error.message)
+    res.status(500).json({ message: error.message })
+  }
+}
+
+const getAllTeams = async (req, res) => {
+  try {
+    const freelancerID = req.user.id
+
+    // Find all teams where the user is a member
+    const teams = await Team.find({
+      members: freelancerID,
+    }).populate("members", "name email")
+
+    res.json(teams)
+  } catch (error) {
+    console.log("Error in getting teams:", error.message)
+    res.status(500).json({ message: error.message })
+  }
+}
+
+const getTeamById = async(req,res)=>{
+  try{
+    const teamID = req.params.teamID;
+    const freelancerID = req.user.id;
+    console.log(teamID,freelancerID);
+    const team = await Team.findById(teamID).populate("members","name email");
+    console.log(team)
+    if(!team){
+      return res.status(404).json({message:"Team not found"});
+    }
+    if(!team.members.find((member)=>member._id.toString()===freelancerID)){
+      return res.status(403).json({message:"You are not a member of this team"});
+    }
+    res.json(team);
+  }
+  catch(error){
+    console.log("Error in getting team by ID:", error.message);
+    res.status(500).json({message:error.message});
+  }
+}
+
+const applyAsTeam = async(req,res)=>{
+
+}
+
 
 module.exports = {
     createFreelancer,
@@ -689,6 +861,7 @@ module.exports = {
 
     createGig,
     getGigs,
+    withdrawGig,
 
     sendTeamInvitation,
     getTeamInvitations,
@@ -699,9 +872,16 @@ module.exports = {
     updateMemberRole,
     getAvailableFreelancers,
     applyForJobAsTeam,
+    getTeamApplications,
+    withdrawTeamApplication,
 
     buySubscription,
     getSubscriptionPlans,
+
+    createTeam,
+    getAllTeams,
+    getTeamById,
+    applyAsTeam,
 
     reportClient,
 };

@@ -14,7 +14,6 @@ const generateToken = async(userId) => {
   if (!user) {
     throw new Error('User not found');
   }
-  console.log(user)
   user.password=undefined;
   const token = await jwt.sign({ 
     id: userId, 
@@ -41,7 +40,6 @@ const validateClient = async (email, password) => {
   const isMatch = await bcrypt.compare(password, client.password);
     if (!isMatch) {
     throw new Error('Invalid credentials');
-
   }
 
   return client;
@@ -71,7 +69,6 @@ const validateFreelancer = async (email, password) => {
 // Middleware to verify JWT and attach user to request
 const protect = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
-  // console.log(token)
   
   if (!token) {
     return res.status(401).json({ message: 'Not authorized, no token' });
@@ -81,7 +78,6 @@ const protect = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
-    // console.log("end of protect Function")
   } catch (error) {
     return res.status(401).json({ message: 'Not authorized, token failed' });
   }
@@ -92,12 +88,10 @@ const clientOnly = (req, res, next) => {
   if (req.user.role !== 'client') {
     return res.status(403).json({ message: 'Access restricted to clients only' });
   }
-  // console.log("end of cleintOnly");
   next();
 };
 
 const freelancerOnly = (req, res, next) => {
-  // console.log("req in freelancer",req);
   if (req.user.role !== 'freelancer') {
     return res.status(403).json({ message: 'Access restricted to freelancers only' });
   }

@@ -77,11 +77,14 @@ const getAllClientsByID = async (req, res) => {
 
 const updateProfileClient = async (req, res) => {
     try {
+        console.log("entering");
         const updatedClient = await Client.findOneAndUpdate(
             { _id: req.params.id, role: 'client' },
             req.body,
             { new: true }
         );
+
+        // console.log("Updated",updatedClient);
 
         if (!updatedClient) {
             return res.status(404).json({ error: 'Client not found' });
@@ -183,7 +186,7 @@ const getAllJobs = async (req, res) => {
 
 const getJobById = async (req, res) => {
     try {
-        const job = await Job.findById(req.params.id);
+        const job = await Job.findById(req.params.id).populate(["milestones","clientId"]);
         if (!job) {
             return res.status(404).json({ error: 'Job not found' });
         }
@@ -194,18 +197,23 @@ const getJobById = async (req, res) => {
 };
 
 const updateJob = async (req, res) => {
+    console.log("Enterning");
     try {
+        // console.log("passing")
         const updatedJob = await Job.findByIdAndUpdate(
-            req.params.id,
+            {_id:req.params.id},
             req.body,
             { new: true }
         );
+        // console.log("passing")
         if (!updatedJob) {
             return res.status(404).json({ error: 'Job not found' });
         }
+        // console.log("passing")
         res.json(updatedJob);
     } catch (error) {
         res.status(400).json({ error: error.message });
+        console.log("Error in updating job",error.message);
     }
 };
 
@@ -324,6 +332,39 @@ const reportFreelancer = async(req,res)=>{
     }
 }
 
+const updateMilestone = async (req, res) => {
+    const { jobId, milestoneId } = req.params;
+    const { status } = req.body;
+    // console.log("entering");
+
+    try {
+        // Find the job
+        const job = await Job.findById(jobId).populate("milestones");
+        if (!job) {
+            return res.status(404).json({ message: 'Job not found' });
+        }
+        // console.log("passing")
+
+        // Find the milestone
+        // console.log(job.milestones);
+        const milestone = job.milestones.find(milestone => milestone._id.toString() === milestoneId);
+        if (!milestone) {
+            return res.status(404).json({ message: 'Milestone not found' });
+        }
+        // console.log("passing")
+
+        // Update the milestone
+        milestone.status=status;
+        milestone.updatedAt = Date.now();
+        // console.log("passing")
+
+        await job.save();
+        res.status(200).json({ message: 'Milestone updated successfully', job });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+}
+
 
 module.exports = {
     createClient,
@@ -341,5 +382,6 @@ module.exports = {
     finaliseFreelancer,
     getSubscriptionPlansForClients,
     buySubscription,
-    reportFreelancer
+    reportFreelancer,
+    updateMilestone
 };

@@ -43,9 +43,20 @@ const jobSchema = new mongoose.Schema({
     ],
 
     teamRequired: {
-        type: Boolean
+        type: Boolean,
+        default: false,
     },
-});
+    // Minimum team size (optional)
+    minTeamSize: {
+        type: Number,
+        default: 2,
+    },
+    // Maximum team size (optional)
+    maxTeamSize: {
+        type: Number,
+        default: 10,
+    },
+},{timestamps:true});
 
 const Job = mongoose.model('Job', jobSchema);
 module.exports = Job;
