@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
 import { useAuth } from "@/context/auth-context"
-import { User, Briefcase, LogOut, Menu, X, Home, Search, Bell, MessageSquare, Users, Plus } from "lucide-react"
+import { User, Briefcase, LogOut, Menu, X, Home, Search, Bell, MessageSquare, Users, Plus, Video } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -147,6 +147,17 @@ export default function Navbar() {
                   >
                     Subscription
                   </Link>
+                  {isAuthenticated() && (
+                    <Link
+                      href="/video"
+                      className={`text-sm font-medium transition-colors hover:text-primary ${pathname.includes("/video") ? "text-primary" : "text-muted-foreground"}`}
+                    >
+                      <span className="flex items-center gap-1">
+                        <Video size={16} />
+                        Video Calls
+                      </span>
+                    </Link>
+                  )}
                 </>
               )}
             </>
@@ -326,6 +337,10 @@ export default function Navbar() {
                   >
                     <User size={16} />
                     Profile
+                  </Link>
+                  <Link href="/video" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 py-2">
+                    <Video size={16} />
+                    Video Calls
                   </Link>
                   <Button
                     variant="ghost"

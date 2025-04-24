@@ -21,6 +21,7 @@ import {
   ArrowRight,
 } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import VideoCallCard from "@/components/video/video-call-card"
 
 // Define types for API responses
 interface Job {
@@ -288,6 +289,9 @@ export default function ClientDashboard() {
               <p className="text-xs text-muted-foreground">Investment in freelancers</p>
             </CardContent>
           </Card>
+          <div className="col-span-1">
+            <VideoCallCard />
+          </div>
         </motion.div>
 
         {/* Main Content Tabs */}

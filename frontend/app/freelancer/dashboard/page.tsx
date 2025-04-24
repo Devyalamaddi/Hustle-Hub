@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useToast } from "@/components/ui/use-toast"
 import { Search, Briefcase, Clock, DollarSign, ThumbsUp, Users } from "lucide-react"
 import Link from "next/link"
+import VideoCallCard from "@/components/video/video-call-card"
 
 // Define types for API responses
 interface Job {
@@ -324,6 +325,9 @@ export default function FreelancerDashboard() {
               <p className="text-xs text-muted-foreground">Total earned from gigs</p>
             </CardContent>
           </Card>
+          <div className="col-span-1">
+            <VideoCallCard />
+          </div>
         </motion.div>
 
         {/* Team Invitations */}

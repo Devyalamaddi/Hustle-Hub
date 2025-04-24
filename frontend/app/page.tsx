@@ -6,80 +6,80 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { ArrowRight, Briefcase, Star, Users } from "lucide-react"
 import { useInView } from "react-intersection-observer"
-import { Canvas } from "@react-three/fiber"
-import { OrbitControls, PresentationControls, Environment } from "@react-three/drei"
+// import { Canvas } from "@react-three/fiber"
+// import { OrbitControls, PresentationControls, Environment } from "@react-three/drei"
 import Image from "next/image"
 import HeroAsideImage from './Hero-aside-image.jpg';
 
 
 // 3D Model Component
-function TeamModel() {
-  // Using a custom 3D model that represents teamwork/collaboration
-  const group = useRef()
+// function TeamModel() {
+//   // Using a custom 3D model that represents teamwork/collaboration
+//   const group = useRef()
 
-  return (
-    <PresentationControls
-      global
-      rotation={[0.13, 0.1, 0]}
-      polar={[-0.4, 0.2]}
-      azimuth={[-1, 0.75]}
-      config={{ mass: 2, tension: 400 }}
-      snap={{ mass: 4, tension: 400 }}
-    >
-      <group ref={group} dispose={null} position={[0, -1, 0]}>
-        {/* First character */}
-        <mesh position={[-1.5, 0, 0]} castShadow receiveShadow>
-          <capsuleGeometry args={[0.5, 1, 8, 16]} />
-          <meshStandardMaterial color="#4F46E5" roughness={0.3} />
-          <mesh position={[0, 0.8, 0]} castShadow>
-            <sphereGeometry args={[0.3, 32, 32]} />
-            <meshStandardMaterial color="#4F46E5" roughness={0.3} />
-          </mesh>
-        </mesh>
+//   return (
+//     <PresentationControls
+//       global
+//       rotation={[0.13, 0.1, 0]}
+//       polar={[-0.4, 0.2]}
+//       azimuth={[-1, 0.75]}
+//       config={{ mass: 2, tension: 400 }}
+//       snap={{ mass: 4, tension: 400 }}
+//     >
+//       <group ref={group} dispose={null} position={[0, -1, 0]}>
+//         {/* First character */}
+//         <mesh position={[-1.5, 0, 0]} castShadow receiveShadow>
+//           <capsuleGeometry args={[0.5, 1, 8, 16]} />
+//           <meshStandardMaterial color="#4F46E5" roughness={0.3} />
+//           <mesh position={[0, 0.8, 0]} castShadow>
+//             <sphereGeometry args={[0.3, 32, 32]} />
+//             <meshStandardMaterial color="#4F46E5" roughness={0.3} />
+//           </mesh>
+//         </mesh>
 
-        {/* Second character */}
-        <mesh position={[0, 0, 0]} castShadow receiveShadow>
-          <capsuleGeometry args={[0.5, 1, 8, 16]} />
-          <meshStandardMaterial color="#EC4899" roughness={0.3} />
-          <mesh position={[0, 0.8, 0]} castShadow>
-            <sphereGeometry args={[0.3, 32, 32]} />
-            <meshStandardMaterial color="#EC4899" roughness={0.3} />
-          </mesh>
-        </mesh>
+//         {/* Second character */}
+//         <mesh position={[0, 0, 0]} castShadow receiveShadow>
+//           <capsuleGeometry args={[0.5, 1, 8, 16]} />
+//           <meshStandardMaterial color="#EC4899" roughness={0.3} />
+//           <mesh position={[0, 0.8, 0]} castShadow>
+//             <sphereGeometry args={[0.3, 32, 32]} />
+//             <meshStandardMaterial color="#EC4899" roughness={0.3} />
+//           </mesh>
+//         </mesh>
 
-        {/* Third character */}
-        <mesh position={[1.5, 0, 0]} castShadow receiveShadow>
-          <capsuleGeometry args={[0.5, 1, 8, 16]} />
-          <meshStandardMaterial color="#10B981" roughness={0.3} />
-          <mesh position={[0, 0.8, 0]} castShadow>
-            <sphereGeometry args={[0.3, 32, 32]} />
-            <meshStandardMaterial color="#10B981" roughness={0.3} />
-          </mesh>
-        </mesh>
+//         {/* Third character */}
+//         <mesh position={[1.5, 0, 0]} castShadow receiveShadow>
+//           <capsuleGeometry args={[0.5, 1, 8, 16]} />
+//           <meshStandardMaterial color="#10B981" roughness={0.3} />
+//           <mesh position={[0, 0.8, 0]} castShadow>
+//             <sphereGeometry args={[0.3, 32, 32]} />
+//             <meshStandardMaterial color="#10B981" roughness={0.3} />
+//           </mesh>
+//         </mesh>
 
-        {/* Connection lines between characters */}
-        <mesh position={[-0.75, 0, 0]} castShadow>
-          <cylinderGeometry args={[0.05, 0.05, 1.5, 16]} rotation={[0, 0, Math.PI / 2]} />
-          <meshStandardMaterial color="#94A3B8" roughness={0.5} />
-        </mesh>
+//         {/* Connection lines between characters */}
+//         <mesh position={[-0.75, 0, 0]} castShadow>
+//           <cylinderGeometry args={[0.05, 0.05, 1.5, 16]} rotation={[0, 0, Math.PI / 2]} />
+//           <meshStandardMaterial color="#94A3B8" roughness={0.5} />
+//         </mesh>
 
-        <mesh position={[0.75, 0, 0]} castShadow>
-          <cylinderGeometry args={[0.05, 0.05, 1.5, 16]} rotation={[0, 0, Math.PI / 2]} />
-          <meshStandardMaterial color="#94A3B8" roughness={0.5} />
-        </mesh>
+//         <mesh position={[0.75, 0, 0]} castShadow>
+//           <cylinderGeometry args={[0.05, 0.05, 1.5, 16]} rotation={[0, 0, Math.PI / 2]} />
+//           <meshStandardMaterial color="#94A3B8" roughness={0.5} />
+//         </mesh>
 
-        {/* Platform */}
-        <mesh position={[0, -1, 0]} receiveShadow>
-          <cylinderGeometry args={[3, 3, 0.2, 32]} />
-          <meshStandardMaterial color="#1E293B" roughness={0.8} />
-        </mesh>
-      </group>
-    </PresentationControls>
-  )
-}
+//         {/* Platform */}
+//         <mesh position={[0, -1, 0]} receiveShadow>
+//           <cylinderGeometry args={[3, 3, 0.2, 32]} />
+//           <meshStandardMaterial color="#1E293B" roughness={0.8} />
+//         </mesh>
+//       </group>
+//     </PresentationControls>
+//   )
+// }
 
 // Feature Card Component
-const FeatureCard = ({ icon, title, description }) => {
+const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -104,7 +104,7 @@ const FeatureCard = ({ icon, title, description }) => {
 
 export default function Home() {
   const [heroRef, heroInView] = useInView()
-  const canvasRef = useRef()
+  // const canvasRef = useRef()
 
   return (
     <div className="flex flex-col min-h-screen">
