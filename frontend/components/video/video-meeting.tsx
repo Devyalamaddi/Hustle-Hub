@@ -3,14 +3,13 @@
 import { useEffect, useState, useRef } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Loader2, Copy, CheckCircle } from "lucide-react"
+import { Loader2, Copy, CheckCircle } from 'lucide-react'
 import { useToast } from "@/components/ui/use-toast"
 
 interface VideoMeetingProps {
-  roomId: string
+  roomId: string | null
 }
 
-// Declare JitsiMeetExternalAPI as a global type
 declare global {
   interface Window {
     JitsiMeetExternalAPI: any
@@ -22,12 +21,45 @@ export default function VideoMeeting({ roomId }: VideoMeetingProps) {
   const [error, setError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const jitsiContainerRef = useRef<HTMLDivElement>(null)
+  const jitsiApiRef = useRef<any>(null)
   const { toast } = useToast()
+
+  // Get user info from localStorage
+  const getUserInfo = () => {
+    try {
+      const userString = localStorage.getItem('user')
+      const roleString = localStorage.getItem('role')
+      
+      const user = userString ? JSON.parse(userString) : null
+      const role = roleString ? roleString : null
+      
+      return {
+        userId: user?.id || 'anonymous',
+        displayName: user?.name || 'Guest',
+        email: user?.email || '',
+        role: role || 'guest'
+      }
+    } catch (err) {
+      console.error("Error parsing user data from localStorage:", err)
+      return {
+        userId: 'anonymous',
+        displayName: 'Guest',
+        email: '',
+        role: 'guest'
+      }
+    }
+  }
 
   useEffect(() => {
     // Load the Jitsi Meet API script
     const loadJitsiScript = () => {
       return new Promise<void>((resolve, reject) => {
+        const existingScript = document.querySelector("script[src='https://meet.jit.si/external_api.js']")
+        if (existingScript) {
+          resolve()
+          return
+        }
+        
         const script = document.createElement("script")
         script.src = "https://meet.jit.si/external_api.js"
         script.async = true
@@ -40,86 +72,144 @@ export default function VideoMeeting({ roomId }: VideoMeetingProps) {
     const initJitsi = async () => {
       try {
         await loadJitsiScript()
-
-        // Make sure the container is available
-        if (!jitsiContainerRef.current) return
-
-        // @ts-ignore - JitsiMeetExternalAPI is loaded from the script
-        const jitsi = new window.JitsiMeetExternalAPI("meet.jit.si", {
-          roomName: `hustlehub-${roomId}`,
-          width: "100%",
-          height: "600px",
-          parentNode: jitsiContainerRef.current,
-          configOverwrite: {
-            prejoinPageEnabled: false,
-            startWithAudioMuted: true,
-            startWithVideoMuted: false,
-          },
-          interfaceConfigOverwrite: {
-            TOOLBAR_BUTTONS: [
-              "microphone",
-              "camera",
-              "closedcaptions",
-              "desktop",
-              "fullscreen",
-              "fodeviceselection",
-              "hangup",
-              "profile",
-              "chat",
-              "recording",
-              "livestreaming",
-              "etherpad",
-              "sharedvideo",
-              "settings",
-              "raisehand",
-              "videoquality",
-              "filmstrip",
-              "invite",
-              "feedback",
-              "stats",
-              "shortcuts",
-              "tileview",
-              "videobackgroundblur",
-              "download",
-              "help",
-              "mute-everyone",
-              "security",
-            ],
-            SHOW_JITSI_WATERMARK: false,
-            SHOW_WATERMARK_FOR_GUESTS: false,
-            DEFAULT_BACKGROUND: "#3c3c3c",
-          },
-        })
-
-        // Add event listeners
-        jitsi.addEventListeners({
-          videoConferenceJoined: () => {
+        
+        // Wait a bit to ensure the API is fully loaded
+        setTimeout(() => {
+          if (!jitsiContainerRef.current || !window.JitsiMeetExternalAPI) {
+            setError("Failed to initialize video call. Please refresh the page.")
             setLoading(false)
-            toast({
-              title: "Meeting joined",
-              description: "You've successfully joined the meeting",
+            return
+          }
+          
+          const userInfo = getUserInfo()
+          
+          // Initialize Jitsi Meet API
+          const domain = "meet.jit.si"
+          const options = {
+            roomName: `hustlehub-${roomId}`,
+            width: "100%",
+            height: "100%",
+            parentNode: jitsiContainerRef.current,
+            userInfo: {
+              displayName: userInfo.displayName,
+              email: userInfo.email
+            },
+            configOverwrite: {
+              prejoinPageEnabled: false,
+              startWithAudioMuted: true,
+              startWithVideoMuted: false,
+              disableDeepLinking: true
+            },
+            interfaceConfigOverwrite: {
+              TOOLBAR_BUTTONS: [
+                "microphone", "camera", "desktop", "fullscreen",
+                "hangup", "profile", "chat", "recording",
+                "settings", "raisehand", "videoquality",
+                "filmstrip", "invite", "tileview"
+              ],
+              SHOW_JITSI_WATERMARK: false,
+              SHOW_WATERMARK_FOR_GUESTS: false,
+              DEFAULT_BACKGROUND: "#3c3c3c",
+              DISABLE_JOIN_LEAVE_NOTIFICATIONS: true
+            }
+          }
+          
+          try {
+            jitsiApiRef.current = new window.JitsiMeetExternalAPI(domain, options)
+            
+            // Add event listeners
+            jitsiApiRef.current.addEventListeners({
+              videoConferenceJoined: () => {
+                setLoading(false)
+                
+                // Record meeting start
+                fetch('/api/meetings', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    roomId: roomId,
+                    meetingId: `hustlehub-${roomId}`,
+                    userId: userInfo.userId,
+                    userRole: userInfo.role,
+                    action: 'joined',
+                    timestamp: new Date().toISOString()
+                  })
+                }).catch(err => console.error("Error recording meeting join:", err))
+                
+                toast({
+                  title: "Meeting joined",
+                  description: "You've successfully joined the meeting"
+                })
+              },
+              videoConferenceLeft: () => {
+                // Record meeting end
+                const userInfo = getUserInfo()
+                fetch('/api/meetings', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    roomId: roomId,
+                    meetingId: `hustlehub-${roomId}`,
+                    userId: userInfo.userId,
+                    userRole: userInfo.role,
+                    action: 'left',
+                    timestamp: new Date().toISOString()
+                  })
+                }).catch(err => console.error("Error recording meeting leave:", err))
+                
+                toast({
+                  title: "Meeting left",
+                  description: "You've left the meeting"
+                })
+              },
+              participantJoined: (participant: any) => {
+                console.log("Participant joined:", participant)
+              },
+              participantLeft: (participant: any) => {
+                console.log("Participant left:", participant)
+              }
             })
-          },
-          videoConferenceLeft: () => {
-            toast({
-              title: "Meeting left",
-              description: "You've left the meeting",
-            })
-          },
-        })
-
-        // Clean up on unmount
-        return () => {
-          jitsi.dispose()
-        }
+          } catch (err) {
+            console.error("Error creating Jitsi instance:", err)
+            setError("Failed to create meeting. Please try again.")
+            setLoading(false)
+          }
+        }, 1000) // Give a second for the API to fully load
       } catch (err) {
         console.error("Error initializing Jitsi:", err)
         setError("Failed to initialize video call. Please try again.")
         setLoading(false)
       }
     }
-
+  
     initJitsi()
+  
+    return () => {
+      if (jitsiApiRef.current) {
+        // Record meeting end on component unmount
+        const userInfo = getUserInfo()
+        fetch('/api/meetings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            roomId: roomId,
+            meetingId: `hustlehub-${roomId}`,
+            userId: userInfo.userId,
+            userRole: userInfo.role,
+            action: 'left',
+            timestamp: new Date().toISOString()
+          })
+        }).catch(err => console.error("Error recording meeting leave on unmount:", err))
+        
+        jitsiApiRef.current.dispose()
+      }
+    }
   }, [roomId, toast])
 
   const copyMeetingLink = () => {
@@ -128,9 +218,8 @@ export default function VideoMeeting({ roomId }: VideoMeetingProps) {
     setCopied(true)
     toast({
       title: "Link copied!",
-      description: "Meeting link copied to clipboard",
+      description: "Meeting link copied to clipboard"
     })
-
     setTimeout(() => setCopied(false), 3000)
   }
 
@@ -160,7 +249,7 @@ export default function VideoMeeting({ roomId }: VideoMeetingProps) {
         </CardContent>
       </Card>
 
-      <div className="video-container relative min-h-[600px] rounded-xl overflow-hidden border-2 border-gray-200 dark:border-gray-800">
+      <div className="video-container relative rounded-xl overflow-hidden border-2 border-gray-200 dark:border-gray-800" style={{ height: '600px' }}>
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-900 z-10">
             <div className="text-center">

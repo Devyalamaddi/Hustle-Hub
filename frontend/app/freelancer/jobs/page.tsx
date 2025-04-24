@@ -61,7 +61,7 @@ export default function JobsPage() {
   const fetchJobs = async () => {
     try {
       setLoading(true)
-      const response = await fetch("/api/freelancer-api/job-posts", {
+      const response = await fetch("/api/freelancer-api/all-job-posts", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

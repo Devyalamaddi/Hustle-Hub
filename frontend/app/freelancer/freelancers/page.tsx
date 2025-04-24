@@ -443,18 +443,18 @@ export default function FreelancerList() {
                 <p>No teams found. Create a team first.</p>
               )}
             </div>
-            <div className="flex flex-wrap gap-2 p-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex flex-wrap  justify-between gap-2 p-4 border-t border-gray-200 dark:border-gray-700">
               <Button onClick={sendInvite} disabled={!selectedTeamId}>
                 Send Invite
               </Button>
               <Button variant="outline" onClick={closeModal}>
                 Close
               </Button>
-              <Button variant="ghost" onClick={closeModal}>
+              {/* <Button variant="ghost" onClick={closeModal}>
                 Cancel Invite
-              </Button>
+              </Button> */}
               {/* Placeholder buttons for confirm, delete, edit, view invite */}
-              <Button variant="ghost" disabled>
+              {/* <Button variant="ghost" disabled>
                 Confirm Invite
               </Button>
               <Button variant="ghost" disabled>
@@ -465,7 +465,7 @@ export default function FreelancerList() {
               </Button>
               <Button variant="ghost" disabled>
                 View Invite
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>

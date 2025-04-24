@@ -5,6 +5,7 @@ const cors = require('cors');
 const freelancerRoutes = require('./apis/freelancerApi');
 const clientRoutes = require('./apis/clientApi');
 const adminRoutes = require('./apis/adminApi');
+const meetingRoutes = require('./routes/meetingRoutes');
 const app = express();
 
 dotenv.config();
@@ -19,19 +20,13 @@ mongoose.connect("mongodb+srv://devendrayalamaddi:FB6LMvrJ9YBV0bCk@hustlehub.guz
 
 // Middleware
 app.use(cors());
-app.use((req, res, next) => {
-  if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
-    express.json()(req, res, next);
-  } else {
-    next();
-  }
-});
-
+app.use(express.json());
 
 // Routes
 app.use('/freelancer-api', freelancerRoutes);
 app.use('/client-api', clientRoutes);
 app.use('/admin-api', adminRoutes);
+app.use('/api/meetings', meetingRoutes);
 
 // Error handling
 app.use((err, req, res, next) => {

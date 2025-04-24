@@ -26,7 +26,8 @@ const {
     createTeam, 
     getAllTeams, 
     getTeamById,
-    applyAsTeam } = require('../controllers/freelancerController');
+    applyAsTeam,
+    getAllJobPosts } = require('../controllers/freelancerController');
 const { protect, freelancerOnly } = require('../utils/authUtils');
 
 freelancerApp.post('/signup', createFreelancer);//d
@@ -42,7 +43,8 @@ freelancerApp.get('/gigs',protect,getGigs);//d
 freelancerApp.delete('/gigs/:id', protect, freelancerOnly, withdrawGig);//d
 
 //to get all job posts from clients
-freelancerApp.get('/job-posts',getJobPosts);//d
+freelancerApp.get('/job-posts/:freelancerID',getJobPosts);//d
+freelancerApp.get('/all-job-posts',getAllJobPosts);
 
 //teams CRUD 
 freelancerApp.post('/teams', protect, freelancerOnly, createTeam);//d

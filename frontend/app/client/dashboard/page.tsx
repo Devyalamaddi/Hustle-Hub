@@ -102,16 +102,16 @@ export default function ClientDashboard() {
       setJobs(data)
 
       // Fetch gigs for each active job
-      const activeJobsData = data.filter((job) => job.status === "open" || job.status === "in-progress")
+      const activeJobsData = data.filter((job:any) => job.status === "open" || job.status === "in-progress")
 
       for (const job of activeJobsData) {
         fetchGigsForJob(job._id)
       }
 
       // Update stats
-      const activeCount = data.filter((job) => job.status === "in-progress").length
-      const completedCount = data.filter((job) => job.status === "completed").length
-      const totalSpent = data.filter((job) => job.status === "completed").reduce((total, job) => total + job.budget, 0)
+      const activeCount = data.filter((job:any) => job.status === "in-progress").length
+      const completedCount = data.filter((job:any) => job.status === "completed").length
+      const totalSpent = data.filter((job:any) => job.status === "completed").reduce((total:any, job:any) => total + job.budget, 0)
 
       setStats({
         totalJobs: data.length,

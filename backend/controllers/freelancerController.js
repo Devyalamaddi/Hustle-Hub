@@ -715,13 +715,27 @@ const withdrawGig = async(req,res)=>{
 // }
 
 const getJobPosts = async(req,res)=>{
+  const {freelancerID} = req.params;
     try{
-        const jobPosts = await Job.find({}).populate('clientId');
-        return res.json(jobPosts);
+      const gigs = await Gig.find({ userID: freelancerID });
+      const jobIDs = gigs.map(gig => gig.jobID);
+      const jobPosts = await Job.find({ _id: { $in: jobIDs } }).populate('clientId');
+
+      return res.json(jobPosts);
     }catch(err){
-        console.log("Error in getting job posts",err.message);
-        return res.status(500).json({message:"Error in getting job posts"});
+      console.log("Error in getting job posts",err.message);
+      return res.status(500).json({message:"Error in getting job posts"});
     }
+}
+
+const getAllJobPosts =  async(req,res)=>{
+  try{
+    const jobPosts = await Job.find({}).populate('clientId');
+    return res.json(jobPosts);
+  }catch(err){
+      console.log("Error in getting job posts",err.message);
+      return res.status(500).json({message:"Error in getting job posts"});
+  }
 }
 
 
@@ -884,4 +898,5 @@ module.exports = {
     applyAsTeam,
 
     reportClient,
+    getAllJobPosts
 };

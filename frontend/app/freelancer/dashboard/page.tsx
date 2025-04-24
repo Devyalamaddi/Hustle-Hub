@@ -71,17 +71,25 @@ export default function FreelancerDashboard() {
     earnings: 0,
   })
 
+  const [lsUser, setlsUser] = useState<any>("");
+
+  const getUserFromLS = () =>{
+    setlsUser(JSON.parse(localStorage.getItem("user") || ""));
+  }
+
   useEffect(() => {
     if (token) {
       Promise.all([fetchJobs(), fetchGigs(), fetchInvitations()]).finally(() => {
         setLoading(false)
       })
     }
+    getUserFromLS();
   }, [token])
 
   const fetchJobs = async () => {
     try {
-      const response = await fetch("/api/freelancer-api/job-posts", {
+      console.log(lsUser.id);
+      const response = await fetch(`/api/freelancer-api/job-posts/${lsUser?.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -119,11 +127,11 @@ export default function FreelancerDashboard() {
       setGigs(data)
 
       // Update stats based on gigs
-      const activeCount = data.filter((gig) => gig.status === "pending" || gig.status === "accepted").length
-      const completedCount = data.filter((gig) => gig.status === "completed").length
+      const activeCount = data.filter((gig:any) => gig.status === "pending" || gig.status === "accepted").length
+      const completedCount = data.filter((gig:any) => gig.status === "completed").length
       const totalEarnings = data
-        .filter((gig) => gig.status === "completed")
-        .reduce((total, gig) => total + (gig.jobID?.budget || 0), 0)
+        .filter((gig:any) => gig.status === "completed")
+        .reduce((total:any, gig:any) => total + (gig.jobID?.budget || 0), 0)
 
       setStats({
         appliedJobs: data.length,

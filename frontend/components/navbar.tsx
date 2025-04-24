@@ -338,10 +338,10 @@ export default function Navbar() {
                     <User size={16} />
                     Profile
                   </Link>
-                  <Link href="/video" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 py-2">
+                  {/* <Link href="/video" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 py-2">
                     <Video size={16} />
                     Video Calls
-                  </Link>
+                  </Link> */}
                   <Button
                     variant="ghost"
                     className="flex items-center gap-2 w-full justify-start p-2 h-auto"

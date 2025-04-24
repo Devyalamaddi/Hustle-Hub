@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { MapPin, Star, Users, Mail, Link as LinkIcon, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/components/ui/use-toast"
+import { useParams } from "next/navigation"
 
 interface Freelancer {
   _id: string
@@ -24,7 +25,7 @@ interface PageProps {
 }
 
 export default function FreelancerProfilePage({ params }: PageProps) {
-  const { id } = params
+  const { id } = useParams();
   const { toast } = useToast()
   const [loading, setLoading] = useState(true)
   const [freelancer, setFreelancer] = useState<Freelancer | null>(null)
@@ -39,7 +40,10 @@ export default function FreelancerProfilePage({ params }: PageProps) {
         const data = await response.json()
         setFreelancer(data)
       } catch (error) {
-        toast.error("Failed to load freelancer profile")
+        toast({
+          title: "Error",
+          description: "Failed to load freelancer profile"
+        })
       } finally {
         setLoading(false)
       }
