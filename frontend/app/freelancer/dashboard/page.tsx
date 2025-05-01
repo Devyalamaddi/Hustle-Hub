@@ -11,6 +11,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { Search, Briefcase, Clock, DollarSign, ThumbsUp, Users } from "lucide-react"
 import Link from "next/link"
 import VideoCallCard from "@/components/video/video-call-card"
+import { useRouter } from "next/navigation"
 
 // Define types for API responses
 interface Job {
@@ -70,7 +71,7 @@ export default function FreelancerDashboard() {
     completedGigs: 0,
     earnings: 0,
   })
-
+  const router = useRouter();
   const [lsUser, setlsUser] = useState<any>("");
 
   const getUserFromLS = () =>{
@@ -88,7 +89,7 @@ export default function FreelancerDashboard() {
 
   const fetchJobs = async () => {
     try {
-      console.log(lsUser.id);
+      // console.log(lsUser.id);
       const response = await fetch(`http://localhost:8080/freelancer-api/job-posts/${lsUser?.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -333,8 +334,8 @@ export default function FreelancerDashboard() {
               <p className="text-xs text-muted-foreground">Total earned from gigs</p>
             </CardContent>
           </Card>
-          <div className="col-span-1">
-            <VideoCallCard />
+          <div className="col-span-1" onClick={()=> router.push("/client/meetings")}>
+            <VideoCallCard  />
           </div>
         </motion.div>
 

@@ -40,6 +40,7 @@ export default function Navbar() {
   const dashboardPath = isFreelancer ? "/freelancer/dashboard" : "/client/dashboard"
   const profilePath = isFreelancer ? "/freelancer/profile" : "/client/profile"
   const subscriptionPath = isFreelancer ? "/freelancer/subscriptions" : "/client/subscriptions"
+  const meetingPath = isFreelancer ? "/freelancer/meetings" :"/client/meetings"
 
   const router = useRouter();
 
@@ -120,6 +121,12 @@ export default function Navbar() {
                   >
                     Find Freelancers
                   </Link>
+                  <Link
+                    href={meetingPath}
+                    className={`text-sm font-medium transition-colors hover:text-primary ${pathname.includes("/subscriptions") ? "text-primary" : "text-muted-foreground"}`}
+                  >
+                    Meetings
+                  </Link>
                 </>
               ) : (
                 <>
@@ -147,17 +154,12 @@ export default function Navbar() {
                   >
                     Subscription
                   </Link>
-                  {isAuthenticated() && (
-                    <Link
-                      href="/video"
-                      className={`text-sm font-medium transition-colors hover:text-primary ${pathname.includes("/video") ? "text-primary" : "text-muted-foreground"}`}
-                    >
-                      <span className="flex items-center gap-1">
-                        <Video size={16} />
-                        Video Calls
-                      </span>
-                    </Link>
-                  )}
+                  <Link
+                    href={meetingPath}
+                    className={`text-sm font-medium transition-colors hover:text-primary ${pathname.includes("/subscriptions") ? "text-primary" : "text-muted-foreground"}`}
+                  >
+                    Meetings
+                  </Link>
                 </>
               )}
             </>
