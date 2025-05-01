@@ -3,7 +3,8 @@ const Meeting = require('../models/meetingModel');
 // Create a new meeting
 const createMeeting = async (req, res) => {
   try {
-    const { title, freelancerID, clientID, meetLink, date, time, description } = req.body;
+    console.log("Creating meeting with body:", req.body);
+    const { title, freelancerID, clientID, meetLink, date, time} = req.body;
     if (!title || !freelancerID || !clientID || !meetLink || !date || !time) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
@@ -13,8 +14,7 @@ const createMeeting = async (req, res) => {
       clientID,
       meetLink,
       date,
-      time,
-      description,
+      time
     });
     await meeting.save();
     res.status(201).json(meeting);

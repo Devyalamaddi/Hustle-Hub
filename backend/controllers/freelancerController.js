@@ -475,10 +475,6 @@ const withdrawTeamApplication = async (req, res) => {
   }
 }
 
-// module.exports = {
-
-// };
-
 
 const createMeetingController = require('./meetingController');
 
@@ -577,6 +573,7 @@ const deleteProfileFreelancer = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 const createGig = async (req, res) => {
   try {
       const { jobID, description, status } = req.body;
@@ -613,7 +610,6 @@ const createGig = async (req, res) => {
       res.status(500).json({ message: error.message });
   }
 };
-
 
 const getGigs = async(req,res)=>{
     try{
@@ -861,9 +857,48 @@ const getTeamById = async(req,res)=>{
 }
 
 const applyAsTeam = async(req,res)=>{
-
 }
 
+
+const getFreelancerClients = async (req, res) => {
+  try {
+    const { freelancerID } = req.params;
+    // Find jobs where freelancerID is in freelancers array
+    const jobs = await Job.find({ freelancers: freelancerID }).populate('clientId');
+
+    const clientIds = jobs.map(job => job.clientId._id.toString());
+    // Remove duplicates
+    const uniqueClientIds = [...new Set(clientIds)];
+    // console.log(uniqueClientIds);
+    // Find clients by uniqueClientIds
+    const clients = await Client.find({ _id: { $in: uniqueClientIds } });
+    // console.log(clients)
+    // Map clientId to jobs
+    const jobsByClient = {};
+    jobs.forEach(job => {
+      const clientIdStr = job.clientId._id.toString();
+      if (!jobsByClient[clientIdStr]) {
+        jobsByClient[clientIdStr] = [];
+      }
+      jobsByClient[clientIdStr].push(job);
+    });
+
+    // Attach jobs to clients
+    const clientsWithJobs = clients.map(client => {
+      return {
+        ...client.toObject(),
+        jobs: jobsByClient[client._id.toString()] || []
+      };
+    });
+
+    console.log("Freelancer clients with jobs:", clientsWithJobs);
+
+    res.send(clientsWithJobs);
+  } catch (error) {
+    console.log("Error in getting freelancer clients with jobs:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
 
 module.exports = {
     createFreelancer,
@@ -901,6 +936,7 @@ module.exports = {
 
     reportClient,
     getAllJobPosts,
+    getFreelancerClients,
 
     // Meeting controller functions
     createMeeting: createMeetingController.createMeeting,

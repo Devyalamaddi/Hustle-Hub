@@ -75,6 +75,12 @@ const freelancerSchema = new mongoose.Schema(
       type: String,
       default: null
     },
+    clients: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Client'
+      }
+    ],
     
   },
   { timestamps: true }

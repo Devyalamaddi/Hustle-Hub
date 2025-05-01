@@ -49,4 +49,9 @@ clientApp.get('/meetings/:id', protect, clientOnly, getMeetingById);
 clientApp.put('/meetings/:id', protect, clientOnly, updateMeeting);
 clientApp.delete('/meetings/:id', protect, clientOnly, deleteMeeting);
 
+const { getClientFreelancersWithJobs } = require('../controllers/clientController');
+
+// Add new route to get client's freelancers with jobs
+clientApp.get('/:clientID/freelancers', getClientFreelancersWithJobs);
+
 module.exports = clientApp;

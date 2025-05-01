@@ -88,5 +88,10 @@ freelancerApp.get('/meetings/:id', protect, freelancerOnly, getMeetingById);
 freelancerApp.put('/meetings/:id', protect, freelancerOnly, updateMeeting);
 freelancerApp.delete('/meetings/:id', protect, freelancerOnly, deleteMeeting);
 
+const { getFreelancerClients } = require('../controllers/freelancerController');
+
+// Add new route to get freelancer's clients
+freelancerApp.get('/freelancers/:freelancerID/clients', getFreelancerClients);
+
 module.exports = freelancerApp;
 

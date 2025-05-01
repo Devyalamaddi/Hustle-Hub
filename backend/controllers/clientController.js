@@ -369,6 +369,49 @@ const updateMilestone = async (req, res) => {
 }
 
 
+const getClientFreelancersWithJobs = async (req, res) => {
+  try {
+    console.log(req.params.clientID)
+    const {clientID} = req.params;
+    // Find jobs for this client
+    const jobs = await Job.find({ clientId: clientID }).populate('freelancers');
+    // Extract freelancer IDs
+    const freelancerIds = [];
+    jobs.forEach(job => {
+      job.freelancers.forEach(freelancer => {
+        if (!freelancerIds.includes(freelancer._id.toString())) {
+          freelancerIds.push(freelancer._id.toString());
+        }
+      });
+    });
+    // Find freelancers by IDs
+    const freelancers = await Freelancer.find({ _id: { $in: freelancerIds } });
+    // Map freelancerId to jobs
+    const jobsByFreelancer = {};
+    jobs.forEach(job => {
+      job.freelancers.forEach(freelancer => {
+        const fid = freelancer._id.toString();
+        if (!jobsByFreelancer[fid]) {
+          jobsByFreelancer[fid] = [];
+        }
+        jobsByFreelancer[fid].push(job);
+      });
+    });
+    // Attach jobs to freelancers
+    const freelancersWithJobs = freelancers.map(freelancer => {
+      return {
+        ...freelancer.toObject(),
+        jobs: jobsByFreelancer[freelancer._id.toString()] || []
+      };
+    });
+    console.log(freelancersWithJobs);
+    res.json(freelancersWithJobs);
+  } catch (error) {
+    console.log("Error in getting client freelancers with jobs:", error.message);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
     createClient,
     clientLogin,
@@ -387,13 +430,14 @@ module.exports = {
     buySubscription,
     reportFreelancer,
     updateMilestone,
+    getClientFreelancersWithJobs,
 
     // Meeting controller functions
     createMeeting: meetingController.createMeeting,
     getMeetingsForClient: async (req, res) => {
       try {
         const clientID = req.user.id;
-        const meetings = await require('../models/meetingModel').find({ clientID });
+        const meetings = await require('../models/meetingModel').find({ clientID }).populate("freelancerID").populate("clientID");
         res.json(meetings);
       } catch (error) {
         res.status(500).json({ message: error.message });
