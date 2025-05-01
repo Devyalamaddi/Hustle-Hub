@@ -73,6 +73,20 @@ freelancerApp.post('/buy-subscription/:subscriptionPlanID',protect,buySubscripti
 //reporting a Client
 freelancerApp.post('/report-client/:clientID', protect, reportClient);
 
+// Meeting routes
+const {
+  createMeeting,
+  getMeetingsForFreelancer,
+  getMeetingById,
+  updateMeeting,
+  deleteMeeting,
+} = require('../controllers/freelancerController');
+
+freelancerApp.post('/meetings', protect, freelancerOnly, createMeeting);
+freelancerApp.get('/meetings', protect, freelancerOnly, getMeetingsForFreelancer);
+freelancerApp.get('/meetings/:id', protect, freelancerOnly, getMeetingById);
+freelancerApp.put('/meetings/:id', protect, freelancerOnly, updateMeeting);
+freelancerApp.delete('/meetings/:id', protect, freelancerOnly, deleteMeeting);
 
 module.exports = freelancerApp;
 

@@ -32,6 +32,21 @@ clientApp.get('/subscriptions', getSubscriptionPlansForClients);//d
 clientApp.post('/buy-subscription/:subscriptionPlanID', protect, buySubscription);
 
 //reporting a freelancer
-clientApp.post('/report-freelancer/:freelancerID', protect, clientOnly, reportFreelancer )
+clientApp.post('/report-freelancer/:freelancerID', protect, clientOnly, reportFreelancer );
+
+// Meeting routes
+const {
+  createMeeting,
+  getMeetingsForClient,
+  getMeetingById,
+  updateMeeting,
+  deleteMeeting,
+} = require('../controllers/clientController');
+
+clientApp.post('/meetings', protect, clientOnly, createMeeting);
+clientApp.get('/meetings', protect, clientOnly, getMeetingsForClient);
+clientApp.get('/meetings/:id', protect, clientOnly, getMeetingById);
+clientApp.put('/meetings/:id', protect, clientOnly, updateMeeting);
+clientApp.delete('/meetings/:id', protect, clientOnly, deleteMeeting);
 
 module.exports = clientApp;

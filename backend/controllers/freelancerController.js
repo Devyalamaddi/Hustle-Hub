@@ -480,6 +480,8 @@ const withdrawTeamApplication = async (req, res) => {
 // };
 
 
+const createMeetingController = require('./meetingController');
+
 const createFreelancer = async (req, res) => {
     try {
         const { name, email, password, skills, experience, portfolio } = req.body;
@@ -898,5 +900,12 @@ module.exports = {
     applyAsTeam,
 
     reportClient,
-    getAllJobPosts
+    getAllJobPosts,
+
+    // Meeting controller functions
+    createMeeting: createMeetingController.createMeeting,
+    getMeetingsForFreelancer: createMeetingController.getMeetingsForFreelancer,
+    getMeetingById: createMeetingController.getMeetingById,
+    updateMeeting: createMeetingController.updateMeeting,
+    deleteMeeting: createMeetingController.deleteMeeting,
 };

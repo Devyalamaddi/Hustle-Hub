@@ -7,6 +7,8 @@ const { generateToken, validateClient } = require('../utils/authUtils');
 const SubscriptionPlan = require('../models/subscriptionPlanSchema');
 const Freelancer = require('../models/freelancerSchema.js');
 
+const meetingController = require('./meetingController');
+
 const createClient = async (req, res) => {
     try {
         const { name, email, password, companyName, industry, contactInfo } = req.body;
@@ -384,5 +386,20 @@ module.exports = {
     getSubscriptionPlansForClients,
     buySubscription,
     reportFreelancer,
-    updateMilestone
+    updateMilestone,
+
+    // Meeting controller functions
+    createMeeting: meetingController.createMeeting,
+    getMeetingsForClient: async (req, res) => {
+      try {
+        const clientID = req.user.id;
+        const meetings = await require('../models/meetingModel').find({ clientID });
+        res.json(meetings);
+      } catch (error) {
+        res.status(500).json({ message: error.message });
+      }
+    },
+    getMeetingById: meetingController.getMeetingById,
+    updateMeeting: meetingController.updateMeeting,
+    deleteMeeting: meetingController.deleteMeeting,
 };
