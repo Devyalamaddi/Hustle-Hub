@@ -17,7 +17,7 @@ const SubscriptionPage = () => {
   useEffect(() => {
     const fetchSubscriptionPlans = async () => {
       try {
-        const response = await fetch('/api/freelancer-api/subscriptions');
+        const response = await fetch('http://localhost:8080/freelancer-api/subscriptions');
         const data = await response.json();
         setSubscriptionPlans(data);
       } catch (error) {

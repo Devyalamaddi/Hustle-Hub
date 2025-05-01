@@ -51,7 +51,7 @@ export default function FreelancerGigs() {
 
   const fetchGigs = async () => {
     try {
-      const response = await fetch("/api/freelancer-api/gigs", {
+      const response = await fetch("http://localhost:8080/freelancer-api/gigs", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -75,7 +75,7 @@ export default function FreelancerGigs() {
 
   const withdrawApplication = async (gigId: string) => {
     try {
-      const response = await fetch(`/api/freelancer-api/gigs/${gigId}`, {
+      const response = await fetch(`http://localhost:8080/freelancer-api/gigs/${gigId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -5,7 +5,6 @@ const cors = require('cors');
 const freelancerRoutes = require('./apis/freelancerApi');
 const clientRoutes = require('./apis/clientApi');
 const adminRoutes = require('./apis/adminApi');
-const meetingRoutes = require('./routes/meetingRoutes');
 const app = express();
 
 dotenv.config();
@@ -26,7 +25,6 @@ app.use(express.json());
 app.use('/freelancer-api', freelancerRoutes);
 app.use('/client-api', clientRoutes);
 app.use('/admin-api', adminRoutes);
-app.use('/api/meetings', meetingRoutes);
 
 // Error handling
 app.use((err, req, res, next) => {

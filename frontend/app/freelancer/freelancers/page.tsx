@@ -88,7 +88,7 @@ export default function FreelancerList() {
 
   const fetchFreelancers = async () => {
     try {
-      const response = await fetch("/api/freelancer-api/freelancers", {
+      const response = await fetch("http://localhost:8080/freelancer-api/freelancers", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -129,7 +129,7 @@ export default function FreelancerList() {
     setSelectedTeamId(null)
     try {
       // Fetch teams created by the current user (inviter)
-      const response = await fetch("/api/freelancer-api/teams", {
+      const response = await fetch("http://localhost:8080/freelancer-api/teams", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -169,7 +169,7 @@ export default function FreelancerList() {
       return
     }
     try {
-      const response = await fetch(`/api/freelancer-api/teams/${selectedTeamId}/invite/${selectedFreelancer._id}`, {
+      const response = await fetch(`http://localhost:8080/freelancer-api/teams/${selectedTeamId}/invite/${selectedFreelancer._id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { MapPin, Star, Users, Mail, Link as LinkIcon, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { useToast } from "@/components/ui/use-toast"
+import { useParams } from "next/navigation"
 // import { useToast } from "@/hooks/use-toast"
 
 interface Freelancer {
@@ -18,14 +19,10 @@ interface Freelancer {
   completedJobs?: number
 }
 
-interface PageProps {
-  params: {
-    id: string
-  }
-}
 
-export default function FreelancerProfilePage({ params }: PageProps) {
-  const { id } = params
+
+export default function FreelancerProfilePage() {
+  const { id } = useParams()
   const { toast } = useToast();
   const [loading, setLoading] = useState(true)
   const [freelancer, setFreelancer] = useState<Freelancer | null>(null)
@@ -33,7 +30,7 @@ export default function FreelancerProfilePage({ params }: PageProps) {
   useEffect(() => {
     async function fetchFreelancer() {
       try {
-        const response = await fetch(`/api/freelancer-api/freelancers/${id}`)
+        const response = await fetch(`http://localhost:8080/freelancer-api/freelancers/${id}`)
         if (!response.ok) {
           throw new Error("Failed to fetch freelancer")
         }

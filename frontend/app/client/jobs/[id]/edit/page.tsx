@@ -73,7 +73,7 @@ export default function EditJobPage() {
     async function fetchJob() {
       setIsLoading(true)
       try {
-        const response = await fetch(`/api/client-api/jobs/${jobId}`, {
+        const response = await fetch(`http://localhost:8080/client-api/jobs/${jobId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -125,7 +125,7 @@ export default function EditJobPage() {
     setIsSubmitting(true)
     try {
       console.log(values);
-      const response = await fetch(`/api/client-api/jobs/${jobId}`, {
+      const response = await fetch(`http://localhost:8080/client-api/jobs/${jobId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

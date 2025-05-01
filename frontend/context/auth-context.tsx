@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string, role: "freelancer" | "client") => {
     setLoading(true)
     try {
-      const endpoint = role === "freelancer" ? "/api/freelancer-api/login" : "/api/client-api/login"
+      const endpoint = role === "freelancer" ? "http://localhost:8080/freelancer-api/login" : "http://localhost:8080/client-api/login"
 
       const response = await fetch(endpoint, {
         method: "POST",
@@ -125,7 +125,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const register = async (userData: any, role: "freelancer" | "client") => {
     setLoading(true)
     try {
-      const endpoint = role === "freelancer" ? "/api/freelancer-api/signup" : "/api/client-api/signin"
+      const endpoint = role === "freelancer" ? "http://localhost:8080/freelancer-api/signup" : "http://localhost:8080/client-api/signin"
 
       const response = await fetch(endpoint, {
         method: "POST",

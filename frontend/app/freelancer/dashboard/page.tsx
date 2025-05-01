@@ -89,7 +89,7 @@ export default function FreelancerDashboard() {
   const fetchJobs = async () => {
     try {
       console.log(lsUser.id);
-      const response = await fetch(`/api/freelancer-api/job-posts/${lsUser?.id}`, {
+      const response = await fetch(`http://localhost:8080/freelancer-api/job-posts/${lsUser?.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -113,7 +113,7 @@ export default function FreelancerDashboard() {
 
   const fetchGigs = async () => {
     try {
-      const response = await fetch("/api/freelancer-api/gigs", {
+      const response = await fetch("http://localhost:8080/freelancer-api/gigs", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -151,7 +151,7 @@ export default function FreelancerDashboard() {
 
   const fetchInvitations = async () => {
     try {
-      const response = await fetch("/api/freelancer-api/team-invitations", {
+      const response = await fetch("http://localhost:8080/freelancer-api/team-invitations", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -171,7 +171,7 @@ export default function FreelancerDashboard() {
 
   const handleInvitation = async (invitationId: string, teamId: string, action: "accept" | "reject") => {
     try {
-      const endpoint = `/api/freelancer-api/teams/${teamId}/${action}-invitation`
+      const endpoint = `http://localhost:8080/freelancer-api/teams/${teamId}/${action}-invitation`
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
@@ -203,7 +203,7 @@ export default function FreelancerDashboard() {
 
   const applyForJob = async (jobId: string) => {
     try {
-      const response = await fetch("/api/freelancer-api/gigs", {
+      const response = await fetch("http://localhost:8080/freelancer-api/gigs", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -238,7 +238,7 @@ export default function FreelancerDashboard() {
 
   // Check if user has already applied for a job
   const hasApplied = (jobId: string) => {
-    return gigs.some((gig) => gig.jobID._id === jobId)
+    return gigs.some((gig) => gig.jobID?._id === jobId)
   }
 
   const containerVariants = {

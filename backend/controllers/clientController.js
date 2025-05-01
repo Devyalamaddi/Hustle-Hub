@@ -186,7 +186,7 @@ const getAllJobs = async (req, res) => {
 
 const getJobById = async (req, res) => {
     try {
-        const job = await Job.findById(req.params.id).populate(["milestones","clientId"]);
+        const job = await Job.findById(req.params.id).populate(["milestones","clientId","freelancers"]);
         if (!job) {
             return res.status(404).json({ error: 'Job not found' });
         }
@@ -246,6 +246,7 @@ const getGigsByJob = async (req, res) => {
 const finaliseFreelancer = async (req, res) => {
     try {
         const { jobID, freelancerID } = req.params;
+        console.log(jobID, freelancerID);
 
         // Get all gigs for the job
         const gig = await Gig.findOneAndUpdate(

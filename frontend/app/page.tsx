@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import Link from "next/link"
@@ -10,6 +10,7 @@ import { useInView } from "react-intersection-observer"
 // import { OrbitControls, PresentationControls, Environment } from "@react-three/drei"
 import Image from "next/image"
 import HeroAsideImage from './Hero-aside-image.jpg';
+import { useRouter } from "next/navigation"
 
 
 // 3D Model Component
@@ -84,6 +85,23 @@ const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode; titl
     triggerOnce: true,
     threshold: 0.1,
   })
+  const router = useRouter();
+
+  useEffect(()=>{
+    const checkLogin = () => {
+      const user = localStorage.getItem("user");
+      if(user){
+        const role = JSON.parse(user).role;
+        if(role === "freelancer"){
+          router.push("/freelancer/dashboard");
+        }else if(role === "client"){
+          router.push("/client/dashboard");
+        }
+      }
+    }
+    checkLogin();
+  })
+  
 
   return (
     <motion.div

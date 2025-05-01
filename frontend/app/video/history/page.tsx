@@ -48,7 +48,7 @@ export default function MeetingHistory() {
           return
         }
         
-        const response = await fetch(`/api/meetings?userId=${userId}`)
+        const response = await fetch(`http://localhost:8080/meetings?userId=${userId}`)
         
         if (!response.ok) {
           throw new Error(`Error fetching meeting history: ${response.status}`)

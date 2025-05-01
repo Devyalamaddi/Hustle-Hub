@@ -81,7 +81,7 @@ export default function JobDetailsPage() {
 
   const fetchJob = async () => {
     try {
-      const response = await fetch(`/api/client-api/jobs/${id}`, {
+      const response = await fetch(`http://localhost:8080/client-api/jobs/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -92,6 +92,7 @@ export default function JobDetailsPage() {
       }
 
       const data = await response.json()
+      console.log("Job:",data);
       setJob(data)
     } catch (error) {
       console.error("Error fetching job:", error)
@@ -105,7 +106,7 @@ export default function JobDetailsPage() {
 
   const fetchApplications = async () => {
     try {
-      const response = await fetch(`/api/client-api/jobs/${id}/gigs`, {
+      const response = await fetch(`http://localhost:8080/client-api/jobs/${id}/gigs`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -130,7 +131,7 @@ export default function JobDetailsPage() {
 
   const updateJobStatus = async (status: string) => {
     try {
-      const response = await fetch(`/api/client-api/jobs/${id}`, {
+      const response = await fetch(`http://localhost:8080/client-api/jobs/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -163,7 +164,7 @@ export default function JobDetailsPage() {
   const updateMilestoneStatus = async (milestoneId: string, status: string) => {
     try {
       // console.log(id,"JobID",milestoneId,"MileStoneID");
-      const response = await fetch(`/api/client-api/jobs/${id}/milestones/${milestoneId}`, {
+      const response = await fetch(`http://localhost:8080/client-api/jobs/${id}/milestones/${milestoneId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -205,13 +206,14 @@ export default function JobDetailsPage() {
     try {
       console.log(freelancerId,"freelancer");
       console.log(id,"jobID");
-      const response = await fetch(`/api/client-api/jobs/${id}/confirm-gig/${freelancerId}`, {
+      const response = await fetch(`http://localhost:8080/client-api/jobs/${id}/confirm-gig/${freelancerId}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       })
+      console.log("response:",response);
 
       if (!response.ok) {
         throw new Error("Failed to confirm freelancer")
@@ -241,7 +243,7 @@ export default function JobDetailsPage() {
     }
 
     try {
-      const response = await fetch(`/api/client-api/jobs/${id}`, {
+      const response = await fetch(`http://localhost:8080/client-api/jobs/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -596,7 +598,8 @@ export default function JobDetailsPage() {
                 {job.freelancers && job.freelancers.length > 0 ? (
                   <div className="space-y-4">
                     {job.freelancers.map((freelancer) => (
-                      <div key={freelancer._id} className="flex items-center justify-between">
+                      <div key={freelancer?._id} className="flex items-center justify-between">
+                        {/* <p>{freelancer?.}</p> */}
                         <div className="flex items-center gap-3">
                           <Avatar className="h-10 w-10">
                             <AvatarFallback>{getInitials(freelancer.name)}</AvatarFallback>

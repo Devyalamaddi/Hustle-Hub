@@ -34,7 +34,7 @@ export default function CreateTeamPage() {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch("/api/freelancer-api/teams", {
+      const response = await fetch("http://localhost:8080/freelancer-api/teams", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

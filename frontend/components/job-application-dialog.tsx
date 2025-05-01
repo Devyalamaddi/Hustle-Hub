@@ -75,7 +75,7 @@ export function JobApplicationDialog({
 
     setLoadingTeams(true)
     try {
-      const response = await fetch("/api/freelancer-api/teams", {
+      const response = await fetch("http://localhost:8080/freelancer-api/teams", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -104,7 +104,7 @@ export function JobApplicationDialog({
     try {
       // If teamId is provided, apply as a team
       if (values.teamId && values.teamId !== "individual") {
-        const response = await fetch(`/api/freelancer-api/jobs/${jobId}/apply-as-team/${values.teamId}`, {
+        const response = await fetch(`http://localhost:8080/freelancer-api/jobs/${jobId}/apply-as-team/${values.teamId}`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -120,7 +120,7 @@ export function JobApplicationDialog({
         }
       } else {
         // Apply as an individual
-        const response = await fetch("/api/freelancer-api/gigs", {
+        const response = await fetch("http://localhost:8080/freelancer-api/gigs", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
