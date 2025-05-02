@@ -856,8 +856,7 @@ const getTeamById = async(req,res)=>{
   }
 }
 
-const applyAsTeam = async(req,res)=>{
-}
+
 
 
 const getFreelancerClients = async (req, res) => {
@@ -932,7 +931,6 @@ module.exports = {
     createTeam,
     getAllTeams,
     getTeamById,
-    applyAsTeam,
 
     reportClient,
     getAllJobPosts,

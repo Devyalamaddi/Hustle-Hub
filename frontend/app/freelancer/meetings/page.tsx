@@ -82,7 +82,7 @@ export default function FreelancerMeetingsPage() {
       if (!user) {
         user = JSON.parse(localStorage.getItem("user") || "{}")
       }
-      const freelancerID = user.id
+      const freelancerID = user?.id
       const res = await fetch(`/api/freelancer-api/freelancers/${freelancerID}/clients`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },

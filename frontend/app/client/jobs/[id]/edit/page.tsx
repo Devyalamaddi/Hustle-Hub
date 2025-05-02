@@ -82,6 +82,7 @@ export default function EditJobPage() {
           throw new Error("Failed to fetch job details")
         }
         const data = await response.json()
+        console.log(data);
 
         // Map fetched data to form default values
         form.reset({
@@ -131,8 +132,9 @@ export default function EditJobPage() {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({values}),
+        body: JSON.stringify(values),
       })
+      console.log(response);
 
       if (!response.ok) {
         throw new Error("Failed to update job")

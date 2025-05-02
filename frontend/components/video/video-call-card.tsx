@@ -9,11 +9,11 @@ import { useState } from "react"
 export default function VideoCallCard() {
   const router = useRouter()
   const [isCreating, setIsCreating] = useState(false)
+  const role = JSON.parse(localStorage.getItem("user") || "{}").role
 
   const createNewMeeting = () => {
     setIsCreating(true)
-    const roomId = Math.random().toString(36).substring(2, 9)
-    setTimeout(() => router.push(`/video/${roomId}`), 500)
+    setTimeout(() => router.push(`/${role}/meetings`), 500)
   }
 
   const goToVideoPage = () => {

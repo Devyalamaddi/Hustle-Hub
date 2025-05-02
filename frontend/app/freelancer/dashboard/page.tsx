@@ -78,14 +78,6 @@ export default function FreelancerDashboard() {
     setlsUser(JSON.parse(localStorage.getItem("user") || ""));
   }
 
-  useEffect(() => {
-    if (token) {
-      Promise.all([fetchJobs(), fetchGigs(), fetchInvitations()]).finally(() => {
-        setLoading(false)
-      })
-    }
-    getUserFromLS();
-  }, [token])
 
   const fetchJobs = async () => {
     try {
@@ -257,6 +249,15 @@ export default function FreelancerDashboard() {
     hidden: { y: 20, opacity: 0 },
     visible: { y: 0, opacity: 1 },
   }
+
+  useEffect(() => {
+    if (token) {
+      Promise.all([fetchJobs(), fetchGigs(), fetchInvitations()]).finally(() => {
+        setLoading(false)
+      })
+    }
+    getUserFromLS();
+  }, [token])
 
   if (loading) {
     return (

@@ -53,7 +53,7 @@ export function JobApplicationDialog({
   jobDescription = "",
   onSuccess,
 }: JobApplicationDialogProps) {
-  const { token, user } = useAuth()
+  let { token, user } = useAuth()
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -68,6 +68,9 @@ export function JobApplicationDialog({
       teamId: undefined,
     },
   })
+
+  const storedUser = localStorage.getItem("user");
+  user = storedUser ? JSON.parse(storedUser) : null;
 
   // Fetch teams when dialog opens
   const fetchTeams = async () => {
@@ -104,6 +107,7 @@ export function JobApplicationDialog({
     try {
       // If teamId is provided, apply as a team
       if (values.teamId && values.teamId !== "individual") {
+        console.log(jobId);
         const response = await fetch(`http://localhost:8080/freelancer-api/jobs/${jobId}/apply-as-team/${values.teamId}`, {
           method: "POST",
           headers: {

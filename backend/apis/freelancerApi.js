@@ -26,8 +26,8 @@ const {
     createTeam, 
     getAllTeams, 
     getTeamById,
-    applyAsTeam,
-    getAllJobPosts } = require('../controllers/freelancerController');
+    getAllJobPosts, 
+    applyForJobAsTeam} = require('../controllers/freelancerController');
 const { protect, freelancerOnly } = require('../utils/authUtils');
 
 freelancerApp.post('/signup', createFreelancer);//d
@@ -56,7 +56,7 @@ freelancerApp.get('/teams/:teamID', protect, freelancerOnly, getTeamById);//d
 freelancerApp.get("/team-applications", protect, freelancerOnly, getTeamApplications);
 freelancerApp.delete("/team-applications/:id", protect, freelancerOnly, withdrawTeamApplication);
 
-freelancerApp.post('/jobs/:jobId/apply-as-team/:teamID', protect, freelancerOnly, applyAsTeam);
+freelancerApp.post('/jobs/:jobId/apply-as-team/:teamID', protect, freelancerOnly, applyForJobAsTeam);
 freelancerApp.get('/team-invitations', protect, freelancerOnly, getTeamInvitations);//d
 freelancerApp.post('/teams/:teamID/accept-invitation', protect, freelancerOnly, acceptTeamInvitation);//d
 freelancerApp.post('/teams/:teamID/invite/:freelancerID', protect, freelancerOnly, sendTeamInvitation);//d

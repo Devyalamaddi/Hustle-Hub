@@ -199,24 +199,77 @@ const getJobById = async (req, res) => {
 };
 
 const updateJob = async (req, res) => {
-    console.log("Enterning");
-    try {
-        // console.log("passing")
-        const updatedJob = await Job.findByIdAndUpdate(
-            {_id:req.params.id},
-            req.body,
-            { new: true }
-        );
-        // console.log("passing")
-        if (!updatedJob) {
-            return res.status(404).json({ error: 'Job not found' });
-        }
-        // console.log("passing")
-        res.json(updatedJob);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-        console.log("Error in updating job",error.message);
+  console.log("Entering updateJob");
+  try {
+    console.log(req.params.id);
+    console.log(req.body);
+
+    const existingJob = await Job.findById(req.params.id);
+    if (!existingJob) {
+      return res.status(404).json({ error: "Job not found" });
     }
+
+    const updateData = existingJob.toObject();
+
+    // Only update fields present in req.body
+    for (const key in req.body) {
+      if (key === "milestones" && Array.isArray(req.body.milestones)) {
+        const milestoneIds = [];
+
+        for (const milestone of req.body.milestones) {
+          if (milestone._id) {
+            // Update existing milestone
+            const updatedMilestone = await Milestone.findByIdAndUpdate(
+              milestone._id,
+              { ...milestone,
+                jobId: req.params.id,
+                title: milestone.title,
+                description: milestone.description,
+                amount: milestone.amount,
+                dueDate: milestone.dueDate,
+                createdBy: req.user.id
+              },
+              { new: true }
+            );
+            if (updatedMilestone) {
+              milestoneIds.push(updatedMilestone._id);
+            }
+          } else {
+            // Create new milestone
+            const newMilestone = await Milestone.create({
+                ...milestone, 
+                jobId: req.params.id,
+                title: milestone.title,
+                description: milestone.description,
+                amount: milestone.amount,
+                dueDate: milestone.dueDate,
+                createdBy: req.user.id
+            });
+            milestoneIds.push(newMilestone._id);
+          }
+        }
+
+        updateData.milestones = milestoneIds;
+      } else {
+        updateData[key] = req.body[key];
+      }
+    }
+
+    const updatedJob = await Job.findByIdAndUpdate(
+      { _id: req.params.id },
+      updateData,
+      { new: true }
+    );
+
+    if (!updatedJob) {
+      return res.status(404).json({ error: "Job not found" });
+    }
+
+    res.json(updatedJob);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+    console.log("Error in updating job", error.message);
+  }
 };
 
 const deleteJob = async (req, res) => {
@@ -237,7 +290,7 @@ const getGigsByJob = async (req, res) => {
         // const { freelancerID } = req.query;
 
         // Get all gigs for the job
-        const gigs = await Gig.find({ jobID });
+        const gigs = await Gig.find({ jobID }).populate('teamID');
 
         res.status(200).json(gigs);
     } catch (error) {
@@ -246,30 +299,41 @@ const getGigsByJob = async (req, res) => {
 };
 
 const finaliseFreelancer = async (req, res) => {
-    try {
-        const { jobID, freelancerID } = req.params;
-        console.log(jobID, freelancerID);
+  try {
+    const { jobID } = req.params;
+    const { freelancers } = req.body;
+    console.log(freelancers);
 
-        // Get all gigs for the job
-        const gig = await Gig.findOneAndUpdate(
-            { $and: [{ jobID }, { userID: freelancerID }] }, 
-            { $set: { status: "accepted" } },
-            { new: true } 
-        );
-        
-          
-        // If freelancerID is provided, update the job
-        if (freelancerID) {
-            await Job.findByIdAndUpdate(jobID, {
-                $push: { freelancers: freelancerID }
-            });
-        }
-
-        res.status(200).json(gig);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+    if (!Array.isArray(freelancers) || freelancers.length === 0) {
+      return res.status(400).json({ message: "Freelancers array is required and cannot be empty" });
     }
-}
+
+    const updatedGigs = [];
+
+    for (const freelancerID of freelancers) {
+      // Update gig status to accepted for each freelancer
+      const gig = await Gig.findOneAndUpdate(
+        { jobID, userID: freelancerID },
+        { $set: { status: "accepted" } },
+        { new: true }
+      );
+
+      if (gig) {
+        updatedGigs.push(gig);
+      }
+
+      // Add freelancer to job's freelancers array if not already present
+      await Job.findByIdAndUpdate(
+        jobID,
+        { $addToSet: { freelancers: freelancerID } }
+      );
+    }
+
+    res.status(200).json({ message: "Freelancers finalized successfully", updatedGigs });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 
 const getSubscriptionPlansForClients = async(req,res)=>{

@@ -4,7 +4,7 @@ import { toast } from "@/hooks/use-toast"
 import { useState, useEffect } from "react"
 
 interface User {
-  _id: string
+  id: string
   name: string
   email: string
   role: string
@@ -16,10 +16,10 @@ interface User {
 }
 
 export default function ClientProfilePage() {
-  const clientId=JSON.parse(localStorage.getItem("user") || "{}")._id
+  const clientId=JSON.parse(localStorage.getItem("user") || "{}").id
   const [user, setUser] = useState<User | null>(null)
   const [isEditing, setIsEditing] = useState(false)
-  const [formData, setFormData] = useState<Omit<User, "_id">>({
+  const [formData, setFormData] = useState<Omit<User, "id">>({
     name: "",
     email: "",
     role: "",
@@ -43,6 +43,7 @@ export default function ClientProfilePage() {
   
         const data = await response.json();
         data.password=undefined
+        console.log(data);
         setUser(data);
         setFormData({ ...data });
       } catch (error) {

@@ -204,36 +204,43 @@ export default function JobDetailsPage() {
 
   const confirmFreelancer = async (freelancerId: any) => {
     try {
-      console.log(freelancerId,"freelancer");
-      console.log(id,"jobID");
+      if (!job || !job.freelancers) {
+        throw new Error("Job or freelancers data not loaded");
+      }
+
+      // Find the team of the freelancer if any
+      // Since 'team' property does not exist on freelancer, we need to fetch team members differently
+      // Assuming we have a way to get team members from the application or job data
+      // For now, fallback to confirming only the single freelancer
+
+      // Confirm single freelancer
       const response = await fetch(`http://localhost:8080/client-api/jobs/${id}/confirm-gig/${freelancerId}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      })
-      console.log("response:",response);
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to confirm freelancer")
+        throw new Error("Failed to confirm freelancer");
       }
 
       toast({
         title: "Success",
-        description: "Freelancer confirmed for this job",
-      })
+        description: "Freelancer(s) confirmed for this job",
+      });
 
       // Refresh job and applications
-      fetchJob()
-      fetchApplications()
+      fetchJob();
+      fetchApplications();
     } catch (error) {
-      console.error("Error confirming freelancer:", error)
+      console.error("Error confirming freelancer:", error);
       toast({
         title: "Error",
-        description: "Failed to confirm freelancer",
+        description: "Failed to confirm freelancer(s)",
         variant: "destructive",
-      })
+      });
     }
   }
 

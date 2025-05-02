@@ -115,6 +115,7 @@ export default function PostJobPage() {
           status: "open",
         }),
       })
+      console.log(response)
 
       if (!response.ok) {
         throw new Error("Failed to create job")

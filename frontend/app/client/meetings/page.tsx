@@ -119,6 +119,11 @@ export default function ClientMeetingsPage() {
     setError(null)
   }
 
+  const createMeet = () =>{
+    // Open the Google Meet landing page in a new tab
+    window.open("https://calendar.google.com/calendar/u/0/r/eventedit?vcon=meet&dates=now&hl=en&pli=1", "_blank", "noopener,noreferrer")
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
@@ -166,9 +171,12 @@ export default function ClientMeetingsPage() {
   async function handleDelete(id: string) {
     if (!confirm("Are you sure you want to delete this meeting?")) return
     try {
-      const res = await fetch(`/api/client-api/meetings/${id}`, {
+      const res = await fetch(`http://localhost:8080/client-api/meetings/${id}`, {
         method: "DELETE",
-        credentials: "include",
+        headers: { 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+         },
       })
       if (!res.ok) throw new Error("Failed to delete meeting")
       await fetchMeetings()
@@ -191,6 +199,25 @@ export default function ClientMeetingsPage() {
       {formVisible && (
         <div className="flex space-x-6">
           <form onSubmit={handleSubmit} className="mb-6 border p-4 rounded shadow max-w-md flex-1">
+          <div className="mb-2">
+              <label className="block font-semibold mb-1" htmlFor="freelancer">
+                Freelancer *
+              </label>
+              <select
+                id="freelancer"
+                value={selectedFreelancerId}
+                onChange={(e) => setSelectedFreelancerId(e.target.value)}
+                className="w-full border rounded p-2"
+                required
+              >
+                <option value="">Select a freelancer</option>
+                {freelancers.map((freelancer) => (
+                  <option key={freelancer._id} value={freelancer._id}>
+                    {freelancer.name} ({freelancer.email})
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="mb-2">
               <label className="block font-semibold mb-1" htmlFor="title">
                 Title *
@@ -216,6 +243,9 @@ export default function ClientMeetingsPage() {
                 className="w-full border rounded p-2"
                 required
               />
+              <Button onClick={createMeet}>
+                Get the link
+              </Button>
             </div>
             <div className="mb-2">
               <label className="block font-semibold mb-1" htmlFor="date">
@@ -243,25 +273,7 @@ export default function ClientMeetingsPage() {
                 required
               />
             </div>
-            <div className="mb-2">
-              <label className="block font-semibold mb-1" htmlFor="freelancer">
-                Freelancer *
-              </label>
-              <select
-                id="freelancer"
-                value={selectedFreelancerId}
-                onChange={(e) => setSelectedFreelancerId(e.target.value)}
-                className="w-full border rounded p-2"
-                required
-              >
-                <option value="">Select a freelancer</option>
-                {freelancers.map((freelancer) => (
-                  <option key={freelancer._id} value={freelancer._id}>
-                    {freelancer.name} ({freelancer.email})
-                  </option>
-                ))}
-              </select>
-            </div>
+            
             <div className="flex space-x-4 mt-4">
               <Button type="submit">{editingId ? "Update" : "Create"}</Button>
               <Button type="button" variant="outline" onClick={closeForm}>

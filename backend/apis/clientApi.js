@@ -25,7 +25,7 @@ clientApp.put('/jobs/:jobId/milestones/:milestoneId', protect, clientOnly, updat
 
 // Get all gigs for a job and update with finalized freelancer
 clientApp.get('/jobs/:jobID/gigs', getGigsByJob);//d
-clientApp.post('/jobs/:jobID/confirm-gig/:freelancerID', finaliseFreelancer);//d
+clientApp.post('/jobs/:jobID/confirm-gig', finaliseFreelancer);//d
 
 //subscriptions
 clientApp.get('/subscriptions', getSubscriptionPlansForClients);//d

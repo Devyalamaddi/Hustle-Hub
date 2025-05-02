@@ -1,4 +1,0 @@
-### Admin API Routes
-
-### Get disabled users
-GET http://localhost:8080/admin-api/disabled-users
