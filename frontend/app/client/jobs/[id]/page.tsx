@@ -92,7 +92,6 @@ export default function JobDetailsPage() {
       }
 
       const data = await response.json()
-      console.log("Job:",data);
       setJob(data)
     } catch (error) {
       console.error("Error fetching job:", error)
@@ -117,7 +116,6 @@ export default function JobDetailsPage() {
       }
 
       const data = await response.json()
-      console.log("Applications:",data);
       setApplications(data)
     } catch (error) {
       console.error("Error fetching applications:", error)
@@ -163,7 +161,6 @@ export default function JobDetailsPage() {
 
   const updateMilestoneStatus = async (milestoneId: string, status: string) => {
     try {
-      // console.log(id,"JobID",milestoneId,"MileStoneID");
       const response = await fetch(`http://localhost:8080/client-api/jobs/${id}/milestones/${milestoneId}`, {
         method: "PUT",
         headers: {
@@ -204,9 +201,7 @@ export default function JobDetailsPage() {
 
   const confirmFreelancer = async (application:any) => {
     try {
-      // console.log(application);
       const freelancers = application.teamID?.members;
-      console.log(freelancers);
       const response = await fetch(`http://localhost:8080/client-api/jobs/${id}/confirm-gig`, {
         method: "POST",
         headers: {
@@ -564,7 +559,7 @@ export default function JobDetailsPage() {
                             </>
                           )}
                           {application.status === "accepted" && (
-                            <Button size="sm" variant="outline" className="ml-auto">
+                            <Button size="sm" variant="outline" className="ml-auto" >
                               <MessageSquare size={16} className="mr-1" />
                               Contact
                             </Button>

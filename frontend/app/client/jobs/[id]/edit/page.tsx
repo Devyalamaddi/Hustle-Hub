@@ -82,7 +82,6 @@ export default function EditJobPage() {
           throw new Error("Failed to fetch job details")
         }
         const data = await response.json()
-        console.log(data);
 
         // Map fetched data to form default values
         form.reset({
@@ -125,7 +124,6 @@ export default function EditJobPage() {
   const onSubmit: import("react-hook-form").SubmitHandler<z.infer<typeof formSchema>> = async (values) => {
     setIsSubmitting(true)
     try {
-      console.log(values);
       const response = await fetch(`http://localhost:8080/client-api/jobs/${jobId}`, {
         method: "PUT",
         headers: {
@@ -134,7 +132,6 @@ export default function EditJobPage() {
         },
         body: JSON.stringify(values),
       })
-      console.log(response);
 
       if (!response.ok) {
         throw new Error("Failed to update job")

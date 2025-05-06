@@ -81,7 +81,6 @@ export default function FreelancerDashboard() {
 
   const fetchJobs = async () => {
     try {
-      // console.log(lsUser.id);
       const response = await fetch(`http://localhost:8080/freelancer-api/job-posts/${lsUser?.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,

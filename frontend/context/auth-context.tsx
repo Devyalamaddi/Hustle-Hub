@@ -71,7 +71,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         body: JSON.stringify({ email, password }),
       })
 
-      console.log(response);
 
       const data = await response.json()
 

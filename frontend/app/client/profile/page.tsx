@@ -43,7 +43,6 @@ export default function ClientProfilePage() {
   
         const data = await response.json();
         data.password=undefined
-        console.log(data);
         setUser(data);
         setFormData({ ...data });
       } catch (error) {

@@ -167,10 +167,8 @@ export default function VideoMeeting({ roomId }: VideoMeetingProps) {
                 })
               },
               participantJoined: (participant: any) => {
-                console.log("Participant joined:", participant)
               },
               participantLeft: (participant: any) => {
-                console.log("Participant left:", participant)
               }
             })
           } catch (err) {
