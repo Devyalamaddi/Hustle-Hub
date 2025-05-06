@@ -301,7 +301,7 @@ const getGigsByJob = async (req, res) => {
 const finaliseFreelancer = async (req, res) => {
   try {
     const { jobID } = req.params;
-    const { freelancers } = req.body;
+    const freelancers  = req.body;
     console.log(freelancers);
 
     if (!Array.isArray(freelancers) || freelancers.length === 0) {

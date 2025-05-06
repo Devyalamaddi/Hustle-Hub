@@ -251,12 +251,13 @@ export default function FreelancerDashboard() {
   }
 
   useEffect(() => {
+    getUserFromLS();
     if (token) {
       Promise.all([fetchJobs(), fetchGigs(), fetchInvitations()]).finally(() => {
         setLoading(false)
       })
     }
-    getUserFromLS();
+    
   }, [token])
 
   if (loading) {

@@ -88,6 +88,7 @@ export default function FreelancerList() {
 
   const fetchFreelancers = async () => {
     try {
+      const freelancerLS = JSON.parse(localStorage.getItem('user') || "{}");
       const response = await fetch("http://localhost:8080/freelancer-api/freelancers", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -100,15 +101,21 @@ export default function FreelancerList() {
 
       const data = await response.json()
 
+      //remove the loggedIn user from the data
+      const filteredData = data.filter((freelancer:any) =>
+        freelancer._id !== freelancerLS.id,
+      )
+
       // Add some mock data for demonstration
-      const enhancedData = data.map((freelancer: Freelancer) => ({
+      const enhancedData = filteredData.map((freelancer: Freelancer) => ({
         ...freelancer,
         location:
           freelancer.location ||
           ["New York", "San Francisco", "Remote", "London", "Berlin"][Math.floor(Math.random() * 5)],
-        rating: freelancer.rating || (Math.floor(Math.random() * 10) + 35) / 10, // Random rating between 3.5 and 4.5
-        completedJobs: freelancer.completedJobs || Math.floor(Math.random() * 50) + 1, // Random completed jobs between 1 and 50
+        rating: freelancer.rating || (Math.floor(Math.random() * 10) + 35) / 10,
+        completedJobs: freelancer.completedJobs || Math.floor(Math.random() * 50) + 1,
       }))
+
 
       setFreelancers(enhancedData)
       setFilteredFreelancers(enhancedData)
@@ -175,6 +182,7 @@ export default function FreelancerList() {
           Authorization: `Bearer ${token}`,
         },
       })
+      console.log(response)
       if (!response.ok) {
         throw new Error("Failed to send invite")
       }

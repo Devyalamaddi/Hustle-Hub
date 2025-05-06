@@ -24,6 +24,7 @@ const sendTeamInvitation = async (req, res) => {
     if (!team.members.includes(senderID)) {
       return res.status(403).json({ message: 'You must be a team member to invite others' });
     }
+
     
     // Check if sender is admin or the team creator (first member)
     const isAdmin = team.roles && team.roles.get(senderID) === 'admin';

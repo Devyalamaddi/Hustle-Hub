@@ -359,7 +359,7 @@ export default function PostJobPage() {
                       append({
                         title: "",
                         description: "",
-                        amount: undefined,
+                        amount: 0,
                         dueDate: "",
                       })
                     }

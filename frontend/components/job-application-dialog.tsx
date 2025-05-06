@@ -118,6 +118,7 @@ export function JobApplicationDialog({
             description: values.description,
           }),
         })
+        console.log("response",response);
 
         if (!response.ok) {
           throw new Error("Failed to apply for job as a team")
@@ -135,6 +136,7 @@ export function JobApplicationDialog({
             description: values.description,
           }),
         })
+        console.log("response",response);
 
         if(response.status === 409){
           toast({
@@ -298,7 +300,7 @@ export function JobApplicationDialog({
                 )}
               />
 
-              {teams.length > 0 && (
+              {teams?.length > 0 ? (
                 <FormField
                   control={form.control}
                   name="teamId"
@@ -328,6 +330,10 @@ export function JobApplicationDialog({
                     </FormItem>
                   )}
                 />
+              ):(
+                <div>
+                  Form a team if you want to apply as a team
+                </div>
               )}
 
               <DialogFooter>

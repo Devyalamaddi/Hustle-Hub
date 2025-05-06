@@ -69,6 +69,7 @@ const validateFreelancer = async (email, password) => {
 // Middleware to verify JWT and attach user to request
 const protect = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
+  console.log(token)
   if (!token) {
     return res.status(401).json({ message: 'Not authorized, no token' });
   }
@@ -93,6 +94,7 @@ const clientOnly = (req, res, next) => {
 };
 
 const freelancerOnly = (req, res, next) => {
+  console.log(req.user.role);
   if (req.user.role !== 'freelancer') {
     return res.status(403).json({ message: 'Access restricted to freelancers only' });
   }

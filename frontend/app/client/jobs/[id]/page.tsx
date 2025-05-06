@@ -202,24 +202,18 @@ export default function JobDetailsPage() {
     }
   }
 
-  const confirmFreelancer = async (freelancerId: any) => {
+  const confirmFreelancer = async (application:any) => {
     try {
-      if (!job || !job.freelancers) {
-        throw new Error("Job or freelancers data not loaded");
-      }
-
-      // Find the team of the freelancer if any
-      // Since 'team' property does not exist on freelancer, we need to fetch team members differently
-      // Assuming we have a way to get team members from the application or job data
-      // For now, fallback to confirming only the single freelancer
-
-      // Confirm single freelancer
-      const response = await fetch(`http://localhost:8080/client-api/jobs/${id}/confirm-gig/${freelancerId}`, {
+      // console.log(application);
+      const freelancers = application.teamID?.members;
+      console.log(freelancers);
+      const response = await fetch(`http://localhost:8080/client-api/jobs/${id}/confirm-gig`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(freelancers)
       });
 
       if (!response.ok) {
@@ -564,7 +558,7 @@ export default function JobDetailsPage() {
                               >
                                 Reject
                               </Button>
-                              <Button size="sm" onClick={() => confirmFreelancer(application.userID)}>
+                              <Button size="sm" onClick={() => confirmFreelancer(application)}>
                                 Hire Freelancer
                               </Button>
                             </>
