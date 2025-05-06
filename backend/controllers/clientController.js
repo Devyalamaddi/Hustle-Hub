@@ -43,7 +43,6 @@ const clientLogin = async (req, res) => {
         const client = await validateClient(email, password);
         if (client) {
             const token = await generateToken(client._id);
-            console.log("token",token);
             res.status(200).json({ token });
         } else {
             res.status(401).json({ message: 'Invalid credentials' });
@@ -79,14 +78,12 @@ const getAllClientsByID = async (req, res) => {
 
 const updateProfileClient = async (req, res) => {
     try {
-        console.log("entering");
         const updatedClient = await Client.findOneAndUpdate(
             { _id: req.params.id, role: 'client' },
             req.body,
             { new: true }
         );
 
-        // console.log("Updated",updatedClient);
 
         if (!updatedClient) {
             return res.status(404).json({ error: 'Client not found' });
@@ -117,7 +114,6 @@ const createJob = async (req, res) => {
     try {
         const { title, description, budget, type, status, teamRequired, milestones } = req.body;
         const clientId = req.user.id; 
-        // console.log("clientId:",req.user);
         // Step 1: Create the job without milestones
         const job = await Job.create({
             title,
@@ -199,10 +195,7 @@ const getJobById = async (req, res) => {
 };
 
 const updateJob = async (req, res) => {
-  console.log("Entering updateJob");
   try {
-    console.log(req.params.id);
-    console.log(req.body);
 
     const existingJob = await Job.findById(req.params.id);
     if (!existingJob) {
@@ -302,7 +295,6 @@ const finaliseFreelancer = async (req, res) => {
   try {
     const { jobID } = req.params;
     const freelancers  = req.body;
-    console.log(freelancers);
 
     if (!Array.isArray(freelancers) || freelancers.length === 0) {
       return res.status(400).json({ message: "Freelancers array is required and cannot be empty" });
@@ -350,14 +342,11 @@ const getSubscriptionPlansForClients = async(req,res)=>{
 const buySubscription = async(req,res)=>{
     try{
         const {subscriptionPlanID } = req.params;
-        // console.log("Hi")
         const clientID = req.user.id;
-        // console.log(subscriptionPlanID);
         const subscriptionPlan = await SubscriptionPlan.findById({_id:subscriptionPlanID});
         if(!subscriptionPlan){
             return res.status(404).json({message:'subscription not found'});
         }
-        // console.log(subscriptionPlan);
 
         const client = await Client.findByIdAndUpdate(
             {_id:clientID}, 
@@ -371,7 +360,6 @@ const buySubscription = async(req,res)=>{
             { new: true } // This ensures the updated document is returned
         );
 
-        // console.log("hiepojoiinoi",client)
         return res.status(201).json(client);
     }catch(err){
         console.log("Error in buying subscription",err.message);
@@ -402,7 +390,6 @@ const reportFreelancer = async(req,res)=>{
 const updateMilestone = async (req, res) => {
     const { jobId, milestoneId } = req.params;
     const { status } = req.body;
-    // console.log("entering");
 
     try {
         // Find the job
@@ -410,20 +397,16 @@ const updateMilestone = async (req, res) => {
         if (!job) {
             return res.status(404).json({ message: 'Job not found' });
         }
-        // console.log("passing")
 
         // Find the milestone
-        // console.log(job.milestones);
         const milestone = job.milestones.find(milestone => milestone._id.toString() === milestoneId);
         if (!milestone) {
             return res.status(404).json({ message: 'Milestone not found' });
         }
-        // console.log("passing")
 
         // Update the milestone
         milestone.status=status;
         milestone.updatedAt = Date.now();
-        // console.log("passing")
 
         await job.save();
         res.status(200).json({ message: 'Milestone updated successfully', job });
@@ -435,7 +418,6 @@ const updateMilestone = async (req, res) => {
 
 const getClientFreelancersWithJobs = async (req, res) => {
   try {
-    console.log(req.params.clientID)
     const {clientID} = req.params;
     // Find jobs for this client
     const jobs = await Job.find({ clientId: clientID }).populate('freelancers');
@@ -468,7 +450,6 @@ const getClientFreelancersWithJobs = async (req, res) => {
         jobs: jobsByFreelancer[freelancer._id.toString()] || []
       };
     });
-    console.log(freelancersWithJobs);
     res.json(freelancersWithJobs);
   } catch (error) {
     console.log("Error in getting client freelancers with jobs:", error.message);

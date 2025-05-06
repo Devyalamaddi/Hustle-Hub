@@ -3,16 +3,16 @@ const Meeting = require('../models/meetingModel');
 // Create a new meeting
 const createMeeting = async (req, res) => {
   try {
-    console.log("Creating meeting with body:", req.body);
-    const { title, freelancerID, clientID, meetLink, date, time} = req.body;
-    if (!title || !freelancerID || !clientID || !meetLink || !date || !time) {
+    const { title, freelancerID, clientID, clientMeetLink, freelancerMeetLink, date, time} = req.body;
+    if (!title || !freelancerID || !clientID || !clientMeetLink || !freelancerMeetLink || !date || !time) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
     const meeting = new Meeting({
       title,
       freelancerID,
       clientID,
-      meetLink,
+      clientMeetLink,
+      freelancerMeetLink,
       date,
       time
     });
@@ -27,7 +27,7 @@ const createMeeting = async (req, res) => {
 const getMeetingsForFreelancer = async (req, res) => {
   try {
     const freelancerID = req.user.id;
-    const meetings = await Meeting.find({ freelancerID });
+    const meetings = await Meeting.find({ freelancerID }).populate('clientID').populate('freelancerID');
     res.json(meetings);
   } catch (error) {
     res.status(500).json({ message: error.message });

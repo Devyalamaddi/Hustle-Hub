@@ -15,7 +15,11 @@ const meetingSchema = new mongoose.Schema({
     ref: 'Client',
     required: true,
   },
-  meetLink: {
+  clientMeetLink: {
+    type: String,
+    required: true,
+  },
+  freelancerMeetLink: {
     type: String,
     required: true,
   },

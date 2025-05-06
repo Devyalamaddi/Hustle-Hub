@@ -579,7 +579,6 @@ const createGig = async (req, res) => {
   try {
       const { jobID, description, status } = req.body;
       const userID = req.user.id;
-      // console.log(jobID, description, status, userID);
       if (!jobID || !userID || !description) {
           return res.status(400).json({ 
               message: 'Please provide jobID, userID and description' 
@@ -638,80 +637,6 @@ const withdrawGig = async(req,res)=>{
   }
 }
 
-// const createTeam = async(req,res)=>{
-//     try{
-//         let {teamName, teamMembers} = req.body;
-//         const freelancerID = req.user.id;
-//         teamMembers=[...teamMembers,freelancerID]
-//         const team = await Team.create({
-//             "name":teamName,
-//             "members":teamMembers,
-//         });
-//         return res.status(201).json({"message":"Succesfully created a new team","team":team});
-//     }catch(err){
-//         console.log("Error in creating Team by freelancer: ", err.message);
-//         return res.status(500).json({message:err.message});
-//     }
-// }
-
-// const getAllTeams = async(req,res)=>{
-//     try{
-//         const freelancerID=req.user.id;
-//         const teams = await Team.find({
-//             members:freelancerID,
-//         })
-//         return res.status(201).json(teams);
-//     }catch(err){
-//         console.log("Error in getting all teams", err.message);
-//         return res.status(500).json("Error in getting all teams");
-//     }
-// }
-
-// const getTeamByID = async(req,res)=>{
-//     try{
-//         const {teamID} = req.params;
-//         const team = await Team.findById(teamID);
-//         return res.json(team);
-//     }catch(err){
-//         console.log("Error in getting team by id", err.message);
-//         return res.status(500).json("Error in getting team by id");
-//     }
-// }
-
-// const updateTeam =async(req,res)=>{
-//     try{
-//         const {teamID} = req.params;
-//         const {updatedDetails} = req.body;
-//         if(updatedDetails){
-//             updatedDetails.name=updatedDetails.teamName;
-//             delete updatedDetails.teamName;
-//         }
-
-//         const updatedTeam = await Team.findByIdAndUpdate(
-//             teamID,
-//             updatedDetails,
-//             {new:true}
-//         )
-
-//         return res.status(201).json(updatedTeam);
-
-//     }catch(err){
-//         console.log("Error in updating the team details ", err.message);
-//         return res.status(500).json("Error in updating the team details");
-//     }
-// }
-
-// const deleteTeamByID = async(req,res)=>{
-//     try{
-//         const {teamID} = req.params;
-//         const deletedTeam = await Team.findByIdAndDelete(teamID);
-
-//         return res.status(200).json(deletedTeam);
-//     }catch(err){
-//         console.log("Error in deleting the team",err.message);
-//         return res.status(500).json("Error in deleteing the team");
-//     }
-// }
 
 const getJobPosts = async(req,res)=>{
   const {freelancerID} = req.params;
@@ -752,7 +677,6 @@ const buySubscription = async(req,res)=>{
     try{
         const {subscriptionPlanID } = req.params;
         const freelancerID = req.user.id;
-        // console.log(subscriptionPlanID);
         const subscriptionPlan = await SubscriptionPlan.findById({_id:subscriptionPlanID});
         if(!subscriptionPlan){
             return res.status(404).json({message:'subscription not found'});
@@ -788,7 +712,6 @@ const reportClient = async(req,res)=>{
             {new:true}
         );
         
-        // console.log("clientID",clientID);
         return res.status(201).json(client);
     }catch(err){
         console.log("Error while reporting a client",err.message);
@@ -840,9 +763,7 @@ const getTeamById = async(req,res)=>{
   try{
     const teamID = req.params.teamID;
     const freelancerID = req.user.id;
-    console.log(teamID,freelancerID);
     const team = await Team.findById(teamID).populate("members","name email");
-    console.log(team)
     if(!team){
       return res.status(404).json({message:"Team not found"});
     }
@@ -869,10 +790,8 @@ const getFreelancerClients = async (req, res) => {
     const clientIds = jobs.map(job => job.clientId._id.toString());
     // Remove duplicates
     const uniqueClientIds = [...new Set(clientIds)];
-    // console.log(uniqueClientIds);
     // Find clients by uniqueClientIds
     const clients = await Client.find({ _id: { $in: uniqueClientIds } });
-    // console.log(clients)
     // Map clientId to jobs
     const jobsByClient = {};
     jobs.forEach(job => {
@@ -890,8 +809,6 @@ const getFreelancerClients = async (req, res) => {
         jobs: jobsByClient[client._id.toString()] || []
       };
     });
-
-    console.log("Freelancer clients with jobs:", clientsWithJobs);
 
     res.send(clientsWithJobs);
   } catch (error) {
