@@ -272,24 +272,14 @@ export default function ClientFreelancers() {
                             <div>
                               <CardTitle className="text-lg">{freelancer.name}</CardTitle>
                               <div className="flex items-center gap-2 mt-1">
-                                {freelancer.location && (
-                                  <div className="flex items-center text-sm text-muted-foreground">
-                                    <MapPin size={14} className="mr-1" />
-                                    {freelancer.location}
-                                  </div>
-                                )}
+                                
                                 {freelancer.rating && (
                                   <div className="flex items-center text-sm text-muted-foreground">
                                     <Star size={14} className="mr-1 text-yellow-500" />
                                     {freelancer.rating.toFixed(1)}
                                   </div>
                                 )}
-                                {freelancer.completedJobs && (
-                                  <div className="flex items-center text-sm text-muted-foreground">
-                                    <Users size={14} className="mr-1" />
-                                    {freelancer.completedJobs} jobs
-                                  </div>
-                                )}
+                                
                               </div>
                             </div>
                           </div>

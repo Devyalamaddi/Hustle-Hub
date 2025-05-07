@@ -169,7 +169,7 @@ export default function FreelancerProfilePage({ params }: PageProps) {
 
         <div className="pt-4 border-t border-border">
           <a
-            href={`mailto:${freelancer.email}`}
+            href={`https://mail.google.com/mail/u/0/#inbox?compose=new`}
             className="inline-block bg-primary text-primary-foreground px-6 py-2 rounded-lg mt-4 hover:bg-primary/90 transition"
           >
             Contact Freelancer

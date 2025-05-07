@@ -37,7 +37,9 @@ export default function FreelancerProfilePage() {
         const data = await response.json()
         setFreelancer(data)
       } catch (error) {
-        toast.error("Failed to load freelancer profile")
+        toast({
+          title: "Failed to load freelancer profile"
+        })
       } finally {
         setLoading(false)
       }
@@ -52,6 +54,28 @@ export default function FreelancerProfilePage() {
       .join("")
       .toUpperCase()
   }
+
+  const copyTheEmail = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    if (freelancer?.email) {
+      navigator.clipboard.writeText(freelancer.email)
+        .then(() => {
+          toast({
+            title: "Copied to clipboard",
+            description: `Email address ${freelancer.email} copied successfully.`,
+          });
+          setTimeout(() => {
+            window.open(`https://mail.google.com/mail/u/0/#inbox?compose=new`, "_blank");
+          }, 1000);
+        })
+        .catch(() => {
+          toast({
+            title: "Copy failed",
+            description: "Failed to copy email address.",
+          });
+        });
+    }
+  };
 
   if (loading) {
     return (
@@ -163,8 +187,10 @@ export default function FreelancerProfilePage() {
     
           <div className="pt-4 border-t border-border">
             <a
-              href={`mailto:${freelancer.email}`}
+              href={`https://mail.google.com/mail/u/0/#inbox?compose=new`}
+              target="_blank"
               className="inline-block bg-primary text-primary-foreground px-6 py-2 rounded-lg mt-4 hover:bg-primary/90 transition"
+              onClick={copyTheEmail} //write the function to copy the email form the feild 'contact'
             >
               Contact Freelancer
             </a>
