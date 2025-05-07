@@ -22,11 +22,10 @@ HustleHub is a freelancing platform designed to connect talented freelancers wit
 - Bcrypt for password hashing
 
 ### Frontend
-- React
+- NextJS
 - Vite
 - Material-UI
 - TailwindCSS
-- Three.js
 - Framer Motion
 - Zustand for state management
 
@@ -61,8 +60,8 @@ pnpm run dev
 ```
 
 4. Access the application
-- Backend will run on `http://localhost:5000`
-- Frontend will run on `http://localhost:5173`
+- Backend will run on `http://localhost:8080`
+- Frontend will run on `http://localhost:3000`
 
 ## Environment Variables
 
