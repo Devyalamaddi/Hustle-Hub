@@ -35,7 +35,7 @@ export default function FreelancerProfilePage() {
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const response = await fetch(`http://localhost:8080/freelancer-api/freelancers/${user?.id}`, {
+        const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/freelancers/${user?.id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -87,7 +87,7 @@ export default function FreelancerProfilePage() {
 
   const handleSave = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/freelancer-api/freelancers/${user?.id}`, {
+      const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/freelancers/${user?.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -38,7 +38,7 @@ const ClientsPage: React.FC = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await fetch('http://localhost:8080/client-api/clients');
+        const response = await fetch('https://hustle-hub-backend.onrender.com/client-api/clients');
         if (!response.ok) {
           throw new Error(`Error fetching clients: ${response.statusText}`);
         }

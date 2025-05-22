@@ -47,7 +47,7 @@ export default function ClientJobs() {
 
   const fetchJobs = async () => {
     try {
-      const response = await fetch("http://localhost:8080/client-api/jobs", {
+      const response = await fetch("https://hustle-hub-backend.onrender.com/client-api/jobs", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -71,7 +71,7 @@ export default function ClientJobs() {
 
   const updateJobStatus = async (jobId: string, status: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/client-api/jobs/${jobId}`, {
+      const response = await fetch(`https://hustle-hub-backend.onrender.com/client-api/jobs/${jobId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

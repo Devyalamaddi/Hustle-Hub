@@ -48,7 +48,7 @@ export default function JobDetailPage() {
   const fetchJob = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`http://localhost:8080/freelancer-api/job-posts/${id}`, {
+      const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/job-posts/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

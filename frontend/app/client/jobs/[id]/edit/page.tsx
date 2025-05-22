@@ -73,7 +73,7 @@ export default function EditJobPage() {
     async function fetchJob() {
       setIsLoading(true)
       try {
-        const response = await fetch(`http://localhost:8080/client-api/jobs/${jobId}`, {
+        const response = await fetch(`https://hustle-hub-backend.onrender.com/client-api/jobs/${jobId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -124,7 +124,7 @@ export default function EditJobPage() {
   const onSubmit: import("react-hook-form").SubmitHandler<z.infer<typeof formSchema>> = async (values) => {
     setIsSubmitting(true)
     try {
-      const response = await fetch(`http://localhost:8080/client-api/jobs/${jobId}`, {
+      const response = await fetch(`https://hustle-hub-backend.onrender.com/client-api/jobs/${jobId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

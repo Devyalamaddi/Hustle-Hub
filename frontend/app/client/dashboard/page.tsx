@@ -88,7 +88,7 @@ export default function ClientDashboard() {
 
   const fetchJobs = async () => {
     try {
-      const response = await fetch("http://localhost:8080/client-api/jobs", {
+      const response = await fetch("https://hustle-hub-backend.onrender.com/client-api/jobs", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -131,7 +131,7 @@ export default function ClientDashboard() {
 
   const fetchGigsForJob = async (jobId: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/client-api/jobs/${jobId}/gigs`, {
+      const response = await fetch(`https://hustle-hub-backend.onrender.com/client-api/jobs/${jobId}/gigs`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -153,7 +153,7 @@ export default function ClientDashboard() {
 
   const confirmFreelancer = async (jobId: string, freelancerId: string) => {
     try {
-      const response = await fetch(`http://localhost:8080/client-api/jobs/${jobId}/confirm-gig/${freelancerId}`, {
+      const response = await fetch(`https://hustle-hub-backend.onrender.com/client-api/jobs/${jobId}/confirm-gig/${freelancerId}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

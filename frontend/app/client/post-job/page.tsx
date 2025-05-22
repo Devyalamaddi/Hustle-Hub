@@ -104,7 +104,7 @@ export default function PostJobPage() {
       variant: "destructive",
       })
 
-      const response = await fetch("http://localhost:8080/client-api/post-job", {
+      const response = await fetch("https://hustle-hub-backend.onrender.com/client-api/post-job", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

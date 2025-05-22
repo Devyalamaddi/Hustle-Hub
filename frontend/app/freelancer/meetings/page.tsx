@@ -204,7 +204,7 @@ export default function FreelancerMeetingsPage() {
   async function handleDelete(id: string) {
     if (!confirm("Are you sure you want to delete this meeting?")) return
     try {
-      const res = await fetch(`http://localhost:8080/freelancer-api/meetings/${id}`, {
+      const res = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/meetings/${id}`, {
         method: "DELETE",
         headers:{
           Authorization: `Bearer ${token}`,

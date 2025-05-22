@@ -97,7 +97,7 @@ export default function TeamDetailPage() {
 
   const fetchTeam = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/freelancer-api/teams/${id}`, {
+      const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/teams/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -122,7 +122,7 @@ export default function TeamDetailPage() {
 
   const fetchFreelancers = async () => {
     try {
-      const response = await fetch("http://localhost:8080/freelancer-api/freelancers", {
+      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/freelancers", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -145,7 +145,7 @@ export default function TeamDetailPage() {
 
     setIsProcessing(true)
     try {
-      const response = await fetch(`http://localhost:8080/freelancer-api/teams/${id}/invite/${selectedFreelancer._id}`, {
+      const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/teams/${id}/invite/${selectedFreelancer._id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -180,7 +180,7 @@ export default function TeamDetailPage() {
 
     setIsProcessing(true)
     try {
-      const response = await fetch(`http://localhost:8080/freelancer-api/teams/${id}/remove/${selectedMember._id}`, {
+      const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/teams/${id}/remove/${selectedMember._id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -216,7 +216,7 @@ export default function TeamDetailPage() {
 
     setIsProcessing(true)
     try {
-      const response = await fetch(`http://localhost:8080/freelancer-api/teams/${id}/members/${selectedMember._id}/role`, {
+      const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/teams/${id}/members/${selectedMember._id}/role`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,

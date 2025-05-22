@@ -45,7 +45,7 @@ const ClientPage: React.FC<ClientPageProps> = ({ params }) => {
     if (paramId) {
       const fetchClient = async () => {
         try {
-          const response = await fetch(`http://localhost:8080/client-api/clients/${paramId}`);
+          const response = await fetch(`https://hustle-hub-backend.onrender.com/client-api/clients/${paramId}`);
           if (!response.ok) {
             throw new Error(`Error fetching client: ${response.statusText}`);
           }

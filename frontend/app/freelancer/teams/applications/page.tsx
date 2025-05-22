@@ -51,7 +51,7 @@ export default function TeamApplicationsPage() {
   const fetchTeamApplications = async () => {
     try {
       setLoading(true)
-      const response = await fetch("http://localhost:8080/freelancer-api/team-applications", {
+      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/team-applications", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -81,7 +81,7 @@ export default function TeamApplicationsPage() {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/freelancer-api/team-applications/${applicationId}`, {
+      const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/team-applications/${applicationId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

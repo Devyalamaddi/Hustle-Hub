@@ -21,7 +21,7 @@ async function handleRequest(request: NextRequest, routeParts: string[], method:
   const routePath = routeParts.join("/")
 
   // Get the backend URL from environment variables or use default
-  const backendUrl = process.env.BACKEND_URL || "http://localhost:8080"
+  const backendUrl = process.env.BACKEND_URL || "https://hustle-hub-backend.onrender.com"
 
   // Forward the request to the Express backend
   const url = `${backendUrl}/${routePath}`

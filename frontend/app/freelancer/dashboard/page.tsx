@@ -81,7 +81,7 @@ export default function FreelancerDashboard() {
 
   const fetchJobs = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/freelancer-api/job-posts/${lsUser?.id}`, {
+      const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/job-posts/${lsUser?.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -105,7 +105,7 @@ export default function FreelancerDashboard() {
 
   const fetchGigs = async () => {
     try {
-      const response = await fetch("http://localhost:8080/freelancer-api/gigs", {
+      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/gigs", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -143,7 +143,7 @@ export default function FreelancerDashboard() {
 
   const fetchInvitations = async () => {
     try {
-      const response = await fetch("http://localhost:8080/freelancer-api/team-invitations", {
+      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/team-invitations", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -163,7 +163,7 @@ export default function FreelancerDashboard() {
 
   const handleInvitation = async (invitationId: string, teamId: string, action: "accept" | "reject") => {
     try {
-      const endpoint = `http://localhost:8080/freelancer-api/teams/${teamId}/${action}-invitation`
+      const endpoint = `https://hustle-hub-backend.onrender.com/freelancer-api/teams/${teamId}/${action}-invitation`
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
@@ -195,7 +195,7 @@ export default function FreelancerDashboard() {
 
   const applyForJob = async (jobId: string) => {
     try {
-      const response = await fetch("http://localhost:8080/freelancer-api/gigs", {
+      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/gigs", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
