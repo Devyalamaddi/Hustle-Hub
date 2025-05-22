@@ -66,8 +66,8 @@ export default function Navbar() {
       <div className="container mx-auto flex h-16 items-center px-4 justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
-            <div className="bg-blue-600 text-white p-1 rounded">
-              <Briefcase size={20} />
+            <div className=" text-white p-1 rounded">
+              <img src="/favicon.png" alt="HustleHub Logo" width={20} height={20} />
             </div>
             <span className="font-bold text-lg hidden sm:inline-block">HustleHub</span>
           </Link>
