@@ -10,7 +10,7 @@ const app = express();
 dotenv.config();
 
 // Database connection
-mongoose.connect("mongodb+srv://devendrayalamaddi:FB6LMvrJ9YBV0bCk@hustlehub.guz17.mongodb.net/?retryWrites=true&w=majority&appName=HustleHub")
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => {
     console.error('MongoDB connection error:', err);
@@ -19,7 +19,7 @@ mongoose.connect("mongodb+srv://devendrayalamaddi:FB6LMvrJ9YBV0bCk@hustlehub.guz
 
 // Middleware
 app.use(cors({
-  origin: "https://hustle-hub-nu.vercel.app"
+  origin: process.env.CORS_ORIGIN,
 }));
 app.use(express.json());
 

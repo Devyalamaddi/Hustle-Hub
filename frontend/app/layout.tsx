@@ -12,7 +12,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "HustleHub - Find Freelancers & Jobs",
   description: "Connect with top freelancers or find your next gig",
-    generator: 'v0.dev'
+  icons: "/favicon.png",
 }
 
 export default function RootLayout({
