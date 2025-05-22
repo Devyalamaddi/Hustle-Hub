@@ -65,7 +65,14 @@ export default function ClientMeetingsPage() {
 
   const [freelancers, setFreelancers] = useState<any[]>([])
   const [selectedFreelancerId, setSelectedFreelancerId] = useState<string>("")
-  const token = localStorage.getItem("token") || ""
+  const [token, setToken] = useState("")
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedToken = localStorage.getItem("token") || ""
+      setToken(storedToken)
+    }
+  }, [])
 
   // New states
   const [viewMode, setViewMode] = useState<"table" | "cards">("table")
