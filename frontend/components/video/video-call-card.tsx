@@ -4,12 +4,21 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button"
 import { Video, ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function VideoCallCard() {
   const router = useRouter()
   const [isCreating, setIsCreating] = useState(false)
-  const role = JSON.parse(localStorage.getItem("user") || "{}").role
+  
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUser = localStorage.getItem("user");
+      const parsedUser = storedUser ? JSON.parse(storedUser) : {};
+      setRole(parsedUser.role || null);
+    }
+  }, []);
 
   const createNewMeeting = () => {
     setIsCreating(true)

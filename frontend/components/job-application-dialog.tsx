@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   Dialog,
   DialogContent,
@@ -53,7 +53,7 @@ export function JobApplicationDialog({
   jobDescription = "",
   onSuccess,
 }: JobApplicationDialogProps) {
-  let { token, user } = useAuth()
+  let { token} = useAuth()
   const { toast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -69,8 +69,14 @@ export function JobApplicationDialog({
     },
   })
 
-  const storedUser = localStorage.getItem("user");
-  user = storedUser ? JSON.parse(storedUser) : null;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUser = localStorage.getItem("user");
+      setUser(storedUser ? JSON.parse(storedUser) : null);
+    }
+  }, []);
 
   // Fetch teams when dialog opens
   const fetchTeams = async () => {

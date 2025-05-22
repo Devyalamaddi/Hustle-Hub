@@ -16,7 +16,6 @@ interface User {
 }
 
 export default function ClientProfilePage() {
-  const clientId=JSON.parse(localStorage.getItem("user") || "{}").id
   const [user, setUser] = useState<User | null>(null)
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState<Omit<User, "id">>({
@@ -29,6 +28,18 @@ export default function ClientProfilePage() {
     // password: "",
     certifications: [],
   })
+  const [clientId, setClientId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user");
+      if (user) {
+        const parsed = JSON.parse(user);
+        setClientId(parsed.id || null);
+      }
+    }
+  }, []);
+
 
   useEffect(() => {
     const fetchUser = async () => {

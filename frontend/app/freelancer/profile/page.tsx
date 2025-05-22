@@ -28,9 +28,22 @@ export default function FreelancerProfilePage() {
     completedJobs: 0,
   })
 
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
-
   const [formData, setFormData] = useState({ ...profile })
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser));
+        } catch (e) {
+          console.error("Invalid JSON in localStorage user", e);
+        }
+      }
+    }
+  }, []);
 
   useEffect(() => {
     async function fetchProfile() {
