@@ -18,7 +18,9 @@ mongoose.connect("mongodb+srv://devendrayalamaddi:FB6LMvrJ9YBV0bCk@hustlehub.guz
   });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "https://hustle-hub-nu.vercel.app"
+}));
 app.use(express.json());
 
 // Routes
