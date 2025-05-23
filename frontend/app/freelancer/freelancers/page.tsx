@@ -89,7 +89,7 @@ export default function FreelancerList() {
   const fetchFreelancers = async () => {
     try {
       const freelancerLS = JSON.parse(localStorage.getItem('user') || "{}");
-      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/freelancers", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/freelancers`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -136,7 +136,7 @@ export default function FreelancerList() {
     setSelectedTeamId(null)
     try {
       // Fetch teams created by the current user (inviter)
-      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/teams", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/teams`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -176,7 +176,7 @@ export default function FreelancerList() {
       return
     }
     try {
-      const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/teams/${selectedTeamId}/invite/${selectedFreelancer._id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/teams/${selectedTeamId}/invite/${selectedFreelancer._id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -196,6 +196,8 @@ const getJobById = async (req, res) => {
 
 const updateJob = async (req, res) => {
   try {
+    const {status} = req.body;
+    console.log(status);
 
     const existingJob = await Job.findById(req.params.id);
     if (!existingJob) {

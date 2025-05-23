@@ -72,7 +72,7 @@ export default function TeamsPage() {
 
   const fetchTeams = async () => {
     try {
-      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/teams", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/teams`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -96,7 +96,7 @@ export default function TeamsPage() {
 
   const fetchInvitations = async () => {
     try {
-      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/team-invitations", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/team-invitations`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -117,7 +117,7 @@ export default function TeamsPage() {
     setIsProcessing(true)
     try {
       const endpoint = accept ? "accept-invitation" : "reject-invitation"
-      const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/teams/${teamId}/${endpoint}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/teams/${teamId}/${endpoint}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -157,7 +157,7 @@ export default function TeamsPage() {
 
     setIsProcessing(true)
     try {
-      const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/teams/${selectedTeam._id}/leave`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/teams/${selectedTeam._id}/leave`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

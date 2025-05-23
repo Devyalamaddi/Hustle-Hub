@@ -76,7 +76,7 @@ export default function ClientFreelancers() {
 
   const fetchFreelancers = async () => {
     try {
-      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/freelancers", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/freelancers`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

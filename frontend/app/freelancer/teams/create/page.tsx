@@ -34,7 +34,7 @@ export default function CreateTeamPage() {
     setIsSubmitting(true)
 
     try {
-      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/teams", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/teams`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

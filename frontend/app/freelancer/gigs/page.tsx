@@ -51,7 +51,7 @@ export default function FreelancerGigs() {
 
   const fetchGigs = async () => {
     try {
-      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/gigs", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/gigs`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -75,7 +75,7 @@ export default function FreelancerGigs() {
 
   const withdrawApplication = async (gigId: string) => {
     try {
-      const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/gigs/${gigId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/gigs/${gigId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -33,7 +33,7 @@ export default function FreelancerProfilePage({ params }: PageProps) {
   useEffect(() => {
     async function fetchFreelancer() {
       try {
-        const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/freelancers/${id}`)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/freelancers/${id}`)
         if (!response.ok) {
           throw new Error("Failed to fetch freelancer")
         }

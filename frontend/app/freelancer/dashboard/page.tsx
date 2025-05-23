@@ -68,9 +68,9 @@ export default function FreelancerDashboard() {
   const [stats, setStats] = useState({
     appliedJobs: 0,
     activeGigs: 0,
-    completedGigs: 0,
     earnings: 0,
   })
+  const [completedJobs, setCompletedJobs] = useState(0);
   const router = useRouter();
   const [lsUser, setlsUser] = useState<any>("");
 
@@ -81,17 +81,19 @@ export default function FreelancerDashboard() {
 
   const fetchJobs = async () => {
     try {
-      const response = await fetch(`https://hustle-hub-backend.onrender.com/freelancer-api/job-posts/${lsUser?.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/job-posts/${lsUser?.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-
+      
       if (!response.ok) {
         throw new Error("Failed to fetch jobs")
       }
-
+      
       const data = await response.json()
+      const completedCount = data.filter((gig:any) => gig.status === "completed").length
+      setCompletedJobs(completedCount);
       setJobs(data)
     } catch (error) {
       console.error("Error fetching jobs:", error)
@@ -105,7 +107,7 @@ export default function FreelancerDashboard() {
 
   const fetchGigs = async () => {
     try {
-      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/gigs", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/gigs`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -128,7 +130,6 @@ export default function FreelancerDashboard() {
       setStats({
         appliedJobs: data.length,
         activeGigs: activeCount,
-        completedGigs: completedCount,
         earnings: totalEarnings,
       })
     } catch (error) {
@@ -143,7 +144,7 @@ export default function FreelancerDashboard() {
 
   const fetchInvitations = async () => {
     try {
-      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/team-invitations", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/team-invitations`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -163,7 +164,7 @@ export default function FreelancerDashboard() {
 
   const handleInvitation = async (invitationId: string, teamId: string, action: "accept" | "reject") => {
     try {
-      const endpoint = `https://hustle-hub-backend.onrender.com/freelancer-api/teams/${teamId}/${action}-invitation`
+      const endpoint = `${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/teams/${teamId}/${action}-invitation`
       const response = await fetch(endpoint, {
         method: "POST",
         headers: {
@@ -195,7 +196,7 @@ export default function FreelancerDashboard() {
 
   const applyForJob = async (jobId: string) => {
     try {
-      const response = await fetch("https://hustle-hub-backend.onrender.com/freelancer-api/gigs", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/gigs`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -321,7 +322,7 @@ export default function FreelancerDashboard() {
               <ThumbsUp size={16} className="text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.completedGigs}</div>
+              <div className="text-2xl font-bold">{completedJobs}</div>
               <p className="text-xs text-muted-foreground">Successfully delivered projects</p>
             </CardContent>
           </Card>

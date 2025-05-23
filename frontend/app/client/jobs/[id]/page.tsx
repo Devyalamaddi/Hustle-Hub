@@ -81,7 +81,7 @@ export default function JobDetailsPage() {
 
   const fetchJob = async () => {
     try {
-      const response = await fetch(`https://hustle-hub-backend.onrender.com/client-api/jobs/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/client-api/jobs/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -105,7 +105,7 @@ export default function JobDetailsPage() {
 
   const fetchApplications = async () => {
     try {
-      const response = await fetch(`https://hustle-hub-backend.onrender.com/client-api/jobs/${id}/gigs`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/client-api/jobs/${id}/gigs`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -129,7 +129,7 @@ export default function JobDetailsPage() {
 
   const updateJobStatus = async (status: string) => {
     try {
-      const response = await fetch(`https://hustle-hub-backend.onrender.com/client-api/jobs/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/client-api/jobs/${id}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -161,7 +161,7 @@ export default function JobDetailsPage() {
 
   const updateMilestoneStatus = async (milestoneId: string, status: string) => {
     try {
-      const response = await fetch(`https://hustle-hub-backend.onrender.com/client-api/jobs/${id}/milestones/${milestoneId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/client-api/jobs/${id}/milestones/${milestoneId}`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -202,7 +202,7 @@ export default function JobDetailsPage() {
   const confirmFreelancer = async (application:any) => {
     try {
       const freelancers = application.teamID?.members;
-      const response = await fetch(`https://hustle-hub-backend.onrender.com/client-api/jobs/${id}/confirm-gig`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/client-api/jobs/${id}/confirm-gig`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -239,7 +239,7 @@ export default function JobDetailsPage() {
     }
 
     try {
-      const response = await fetch(`https://hustle-hub-backend.onrender.com/client-api/jobs/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/client-api/jobs/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -17,7 +17,7 @@ const SubscriptionPage = () => {
   useEffect(() => {
     const fetchSubscriptionPlans = async () => {
       try {
-        const response = await fetch('https://hustle-hub-backend.onrender.com/freelancer-api/subscriptions');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/freelancer-api/subscriptions`);
         const data = await response.json();
         setSubscriptionPlans(data);
       } catch (error) {

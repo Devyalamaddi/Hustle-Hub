@@ -44,7 +44,7 @@ export default function ClientProfilePage() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`https://hustle-hub-backend.onrender.com/client-api/clients/${clientId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/client-api/clients/${clientId}`, {
           method: "GET",
         });
   
@@ -81,7 +81,7 @@ export default function ClientProfilePage() {
     try{
       const updatedUser = { ...user, ...formData }
       const tk=localStorage.getItem("token")
-      const resUser = await fetch(`https://hustle-hub-backend.onrender.com/client-api/clients/${clientId}`, {
+      const resUser = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/client-api/clients/${clientId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
